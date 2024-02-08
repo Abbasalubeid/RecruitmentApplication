@@ -29,14 +29,12 @@
 				return;
 			}
 			const data = await res.json();
-			// Mapping over the fetched competences data to create instances of the Competence model.
 			competences = data.competences.map(
 				(competenceData: {
 					competence_profile: CompetenceProfile[];
 					competence_id: number;
 					name: string;
 				}) => {
-					// For each competence, map over its competence_profile array to create CompetenceProfile instances.
 					const profiles = competenceData.competence_profile.map(
 						(profileData) =>
 							new CompetenceProfile(
@@ -52,7 +50,7 @@
 		} catch (e) {
 			errorMessage = 'An unexpected error occurred while fetching competences.';
 		} finally {
-			isLoading = false; // Set loading state to false when fetching completes
+			isLoading = false;
 		}
 	});
 
