@@ -4,6 +4,13 @@ export class CompetenceProfile {
 	competence_id: number;
 	years_of_experience: number;
 
+	/**
+	 * Constructs a new CompetenceProfile instance.
+	 * @param competence_profile_id The ID of the competence profile.
+	 * @param person_id The ID of the person associated with this competence profile.
+	 * @param competence_id The ID of the competence associated with this profile.
+	 * @param years_of_experience The years of experience in this competence profile.
+	 */
 	constructor(
 		competence_profile_id: number,
 		person_id: number,
