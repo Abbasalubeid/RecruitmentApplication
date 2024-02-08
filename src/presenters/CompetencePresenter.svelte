@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import TableView from '../views/TableView.svelte';
+	import ErrorView from '../views/ErrorView.svelte';
+	import LoadingView from '../views/LoadingView.svelte';
 	import { tableMapperValues } from '@skeletonlabs/skeleton';
 	import { Competence } from '../models/Competence';
 	import { CompetenceProfile } from '../models/CompetenceProfile';
@@ -11,33 +13,47 @@
 	 */
 	let competences: Competence[] = [];
 
+	let errorMessage: string | undefined;
+	let isLoading: boolean = false;
+
 	/**
 	 * Fetches competences data from the API upon component mount, transforms the
 	 * raw data into model instances, and stores them in the `competences` array.
 	 */
 	onMount(async () => {
-		const res = await fetch('/api/competences');
-		const data = await res.json();
-		// Mapping over the fetched competences data to create instances of the Competence model.
-		competences = data.competences.map(
-			(competenceData: {
-				competence_profile: CompetenceProfile[];
-				competence_id: number;
-				name: string;
-			}) => {
-				// For each competence, map over its competence_profile array to create CompetenceProfile instances.
-				const profiles = competenceData.competence_profile.map(
-					(profileData) =>
-						new CompetenceProfile(
-							profileData.competence_profile_id,
-							profileData.person_id,
-							profileData.competence_id,
-							profileData.years_of_experience
-						)
-				);
-				return new Competence(competenceData.competence_id, competenceData.name, profiles);
+		try {
+			isLoading = true;
+			const res = await fetch('/api/competences');
+			if (!res.ok) {
+				errorMessage = 'Failed to fetch competences';
+				return;
 			}
-		);
+			const data = await res.json();
+			// Mapping over the fetched competences data to create instances of the Competence model.
+			competences = data.competences.map(
+				(competenceData: {
+					competence_profile: CompetenceProfile[];
+					competence_id: number;
+					name: string;
+				}) => {
+					// For each competence, map over its competence_profile array to create CompetenceProfile instances.
+					const profiles = competenceData.competence_profile.map(
+						(profileData) =>
+							new CompetenceProfile(
+								profileData.competence_profile_id,
+								profileData.person_id,
+								profileData.competence_id,
+								profileData.years_of_experience
+							)
+					);
+					return new Competence(competenceData.competence_id, competenceData.name, profiles);
+				}
+			);
+		} catch (e) {
+			errorMessage = 'An unexpected error occurred while fetching competences.';
+		} finally {
+			isLoading = false; // Set loading state to false when fetching completes
+		}
 	});
 
 	/**
@@ -67,9 +83,13 @@
 	]);
 </script>
 
-{#if competences.length > 0}
+{#if errorMessage}
+	<ErrorView message={errorMessage} />
+{:else if competences.length > 0}
 	<TableView
 		head={['Competence Name', 'Person ID', 'Competence ID', 'Experience']}
 		body={bodyData}
 	/>
+{:else}
+	<LoadingView message={'Fetching competences'} />
 {/if}
