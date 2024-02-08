@@ -10,11 +10,10 @@ export async function GET() {
 	try {
 		const competences = await prisma.competence.findMany({
 			include: {
-				competence_profile: true // Include related competence profiles in the response
+				competence_profile: true
 			}
 		});
 
-		// Return a 200 OK response with the competences data
 		return new Response(JSON.stringify({ competences }), {
 			status: 200,
 			headers: {
@@ -24,9 +23,8 @@ export async function GET() {
 	} catch (error) {
 		console.error('LOG: Failed to fetch competences:', error);
 
-		// Return a 500 Internal Server Error response in case of a failure
 		return new Response(JSON.stringify({ error: 'Failed to fetch competences' }), {
-			status: 500, // Internal Server Error
+			status: 500,
 			headers: {
 				'Content-Type': 'application/json'
 			}
