@@ -29,25 +29,19 @@
 				return;
 			}
 			const data = await res.json();
-			competences = data.competences.map(
-				(competenceData: {
-					competence_profile: CompetenceProfile[];
-					competence_id: number;
-					name: string;
-				}) => {
-					const profiles = competenceData.competence_profile.map(
-						(profileData) =>
-							new CompetenceProfile(
-								profileData.competence_profile_id,
-								profileData.person_id,
-								profileData.competence_id,
-								profileData.years_of_experience
-							)
-					);
-					return new Competence(competenceData.competence_id, competenceData.name, profiles);
-				}
-			);
-		} catch (e) {
+			competences = data.competences.map((competenceData: Competence) => {
+				const profiles = competenceData.competence_profile.map(
+					(profileData) =>
+						new CompetenceProfile(
+							profileData.competence_profile_id,
+							profileData.person_id,
+							profileData.competence_id,
+							profileData.years_of_experience
+						)
+				);
+				return new Competence(competenceData.competence_id, competenceData.name, profiles);
+			});
+		} catch (error) {
 			errorMessage = 'An unexpected error occurred while fetching competences.';
 		} finally {
 			isLoading = false;
