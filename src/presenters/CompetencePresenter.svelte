@@ -14,6 +14,7 @@
 	let competences: Competence[] = [];
 
 	let errorMessage: string | undefined;
+	let errorStatus: number | undefined;
 	let isLoading: boolean = false;
 
 	/**
@@ -25,7 +26,8 @@
 			isLoading = true;
 			const res = await fetch('/api/competences');
 			if (!res.ok) {
-				errorMessage = 'Failed to fetch competences';
+				errorMessage = res.statusText;
+				errorStatus = res.status;
 				return;
 			}
 			const data = await res.json();
@@ -76,7 +78,7 @@
 </script>
 
 {#if errorMessage}
-	<ErrorView message={errorMessage} />
+	<ErrorView {errorMessage} {errorStatus} />
 {:else if competences.length > 0}
 	<TableView
 		head={['Competence Name', 'Person ID', 'Competence ID', 'Experience']}
