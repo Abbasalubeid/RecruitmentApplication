@@ -1,0 +1,25 @@
+{
+	"login": "Logga in",
+	"logout": "Logga ut",
+	"username": "Användarnamn",
+	"password": "Lösenord",
+	"email": "E-post",
+	"submit": "Skicka",
+	"cancel": "Avbryt",
+	"loading": "Laddar",
+	"competenceName": "Kompetens",
+	"personId": "Person ID",
+	"competenceId": "Kompetens ID",
+	"yearsOfExperience": "Erfarenhet",
+	"fetchingCompetences": "Hämtar kompetenser...",
+	"goToHomepage": "Gå till startsidan",
+	"goToLogin": "Gå till inloggning",
+	"error": {
+		"invalidCredentials": "Ogiltigt användarnamn eller lösenord.",
+		"requiredField": "Detta fält är obligatoriskt.",
+		"invalidEmail": "Ogiltigt e-postformat.",
+		"minLength": "Detta fält måste vara minst 12 tecken långt.",
+		"fetchError": "Kunde inte hämta.",
+		"unexpected": "Ett oväntat fel inträffade."
+	}
+}
