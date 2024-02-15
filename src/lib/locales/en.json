@@ -1,0 +1,25 @@
+{
+	"login": "Login",
+	"logout": "Logout",
+	"username": "Username",
+	"password": "Password",
+	"email": "Email",
+	"submit": "Submit",
+	"cancel": "Cancel",
+	"loading": "Loading",
+	"competenceName": "Competence Name",
+	"personId": "Person ID",
+	"competenceId": "Competence ID",
+	"yearsOfExperience": "Years of Experience",
+	"fetchingCompetences": "Fetching competences...",
+	"goToHomepage": "Go to Homepage",
+	"goToLogin": "Go to Login",
+	"error": {
+		"invalidCredentials": "Invalid username or password.",
+		"requiredField": "This field is required.",
+		"invalidEmail": "Invalid email format.",
+		"minLength": "This field must be at least 12 characters long.",
+		"fetchError": "Could not fetch data.",
+		"unexpected": "An unexpected error occurred."
+	}
+}
