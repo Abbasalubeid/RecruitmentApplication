@@ -7,7 +7,6 @@
 
 import en from './en.json';
 import sv from './sv.json';
-import ar from './ar.json';
 // Import additional locales as you add them
 
 /**
@@ -16,7 +15,6 @@ import ar from './ar.json';
  */
 export const locales = {
 	en: en,
-	sv: sv,
-	ar: ar
+	sv: sv
 	// Add additional locales here
 };
