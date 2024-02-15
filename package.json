@@ -40,6 +40,8 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@prisma/client": "^5.9.1"
+		"@prisma/client": "^5.9.1",
+		"iconify-icon": "^2.0.0",
+		"svelte-i18n": "^4.0.0"
 	}
 }
