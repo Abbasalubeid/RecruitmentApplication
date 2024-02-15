@@ -23,7 +23,7 @@
 	onMount(async () => {
 		try {
 			isLoading = true;
-			const res = await fetch('/api/competencess');
+			const res = await fetch('/api/competences');
 			if (!res.ok) {
 				errorKey = 'error.fetchError';
 				errorStatus = res.status;
