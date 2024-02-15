@@ -49,7 +49,7 @@
 		}
 	});
 
-	$: errorMessage = errorKey ? $t(errorKey).toString() : undefined;
+	$: errorMessage = errorKey ? $t(errorKey) : undefined;
 
 	/**
 	 * Transforms the array of Competence instances into a flat array suitable for rendering in the TableView component. Each Competence instance might have multiple CompetenceProfile instances associated with it, which are flattened into a single array.
@@ -74,10 +74,10 @@
 	]);
 
 	$: translatedHead = [
-		$t('competenceName').toString(),
-		$t('personId').toString(),
-		$t('competenceId').toString(),
-		$t('yearsOfExperience').toString()
+		$t('competenceName'),
+		$t('personId'),
+		$t('competenceId'),
+		$t('yearsOfExperience')
 	];
 </script>
 
@@ -86,5 +86,5 @@
 {:else if competences.length > 0}
 	<TableView head={translatedHead} body={bodyData} />
 {:else}
-	<LoadingView message={$t('loading')} />
+	<LoadingView />
 {/if}
