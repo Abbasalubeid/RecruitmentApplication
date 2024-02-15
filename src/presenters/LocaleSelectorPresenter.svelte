@@ -37,6 +37,6 @@
 	<DropDownView
 		selectedOption={selectedLocale}
 		options={availableLocales}
-		on:change={(e) => handleLocaleChange(e.detail)}
+		on:onLangSelect={(e) => handleLocaleChange(e.detail)}
 	/>
 </div>
