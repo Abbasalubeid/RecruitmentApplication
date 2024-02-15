@@ -3,6 +3,7 @@
 	export let errorStatus: number = 500;
 
 	import 'iconify-icon';
+	import { t } from 'svelte-i18n';
 </script>
 
 {#if errorMessage}
@@ -23,7 +24,7 @@
 					class="flex items-center gap-2 rounded-full bg-red-700 px-4 py-2 text-white hover:bg-red-800"
 				>
 					<iconify-icon icon="line-md:arrow-left" class="text-white" width="24" height="24" />
-					<span> Go to homepage</span>
+					<span>{$t('goToHomepage')}</span>
 				</button>
 			</a>
 		</div>
