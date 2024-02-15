@@ -8,7 +8,7 @@
 
 	function handleChange(event: Event): void {
 		const selectedValue = (event.target as HTMLSelectElement).value;
-		dispatch('change', selectedValue);
+		dispatch('onLangSelect', selectedValue);
 	}
 </script>
 
