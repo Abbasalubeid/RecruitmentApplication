@@ -11,8 +11,8 @@ export class Logger {
 	 * @param {string} logName - The name of the log file.
 	 */
 	public static logError(e: Error, logName: string) {
-		const directoryPath = 'logs'; // directory path
-		const filePath = 'logs/' + logName + '.txt'; // file path
+		const directoryPath = 'logs';
+		const filePath = 'logs/' + logName + '.txt';
 		const fileContent = e.message;
 
 		fs.mkdir(directoryPath, { recursive: true }, (err) => {
