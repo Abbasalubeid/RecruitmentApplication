@@ -3,15 +3,22 @@
 	 * Presenter component for locale selection.
 	 * This component utilizes the `DropDownView` to render a dropdown menu for locale selection
 	 * It dynamically generates a selection dropdown based on the available locales defined in the `localeConfig.ts`.
-	 * Changes to the selected locale are handled and propagated to the `svelte-i18n` library to update the application's locale.
+	 *
+	 * The application's locale is updated based on the 'lang' query parameter in the URL.
 	 *
 	 */
-
-	import { locale } from 'svelte-i18n';
 	import DropDownView from '../views/DropDownView.svelte';
 	import { locales } from '$lib/locales/localeConfig';
+	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
+	import { derived } from 'svelte/store';
 
-	let selectedLocale = 'en';
+	// Derive the language from the URL query parameters
+	const lang = derived(page, ($page) => $page.url.searchParams.get('lang') || 'en');
+
+	let selectedLocale: string;
+
+	$: selectedLocale = $lang;
 
 	// Generates an array of available locales for the selection dropdown
 	const availableLocales = Object.keys(locales).map((value) => ({
@@ -21,15 +28,17 @@
 
 	/**
 	 * Handles changes in the selected locale via the DropDownView component.
-	 * Updates the application-wide locale setting to reflect the user's selection,
-	 * which in turn triggers the re-rendering of localized text across the application.
+	 * Updates the URL's query parameters to reflect the user's selection,
+	 * which in turn updates the application's locale accordingly.
 	 *
 	 * @function handleLocaleChange
 	 * @param {string} selectedValue - The locale key corresponding to the user's selection.
 	 */
 	function handleLocaleChange(selectedValue: string): void {
-		locale.set(selectedValue);
-		selectedLocale = selectedValue;
+		const url = new URL(window.location.href);
+		url.searchParams.set('lang', selectedValue);
+
+		goto(url.toString(), { replaceState: true });
 	}
 </script>
 
