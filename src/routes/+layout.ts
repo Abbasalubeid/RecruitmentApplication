@@ -35,8 +35,8 @@ export async function load({ url, fetch }): Promise<object> {
 			userInfo.name,
 			userInfo.surname,
 			userInfo.email,
-			userInfo.role,
-			userInfo.username
+			userInfo.username,
+			userInfo.role
 		);
 		userStore.updateUser(user);
 	}

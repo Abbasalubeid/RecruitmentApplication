@@ -43,17 +43,34 @@ export class CompetenceProfile {
 		return formatted || 'Less than a month';
 	}
 
-	public static getCompetenceProfileByPersonAndCompetence(competence: any, person: any, competence_profiles: CompetenceProfile[]) {
+	/**
+	 * Finds the competence profile in the given array based on the provided competence and person.
+	 *
+	 * @param {any} competence - The competence object to match against.
+	 * @param {any} person - The person object to match against.
+	 * @param {CompetenceProfile[]} competence_profiles - The array of competence profiles to search within.
+	 * @returns {CompetenceProfile | undefined} The competence profile found based on the provided competence and person, or undefined if no match is found.
+	 */
+	public static getCompetenceProfileByPersonAndCompetence(
+		competence: any,
+		person: any,
+		competence_profiles: CompetenceProfile[]
+	) {
 		const competence_profile = competence_profiles.find(
 			(cp) => cp.competence_id === competence.competence_id && cp.person_id === person.person_id
 		);
 		return competence_profile;
 	}
 
-	public static getCompetenceProfileById(id: number, competence_profiles: CompetenceProfile[]){
-		const index = competence_profiles.findIndex(
-			(c) => c.competence_profile_id == id
-		);
+	/**
+	 * Finds the index of the competence profile in the given array based on the provided ID.
+	 *
+	 * @param {number} id - The ID of the competence profile to search for.
+	 * @param {CompetenceProfile[]} competence_profiles - The array of competence profiles to search within.
+	 * @returns {number} The index of the competence profile in the array, or -1 if the ID is not found.
+	 */
+	public static getCompetenceProfileById(id: number, competence_profiles: CompetenceProfile[]) {
+		const index = competence_profiles.findIndex((c) => c.competence_profile_id == id);
 		return index;
 	}
 }

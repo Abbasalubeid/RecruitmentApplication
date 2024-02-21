@@ -48,8 +48,8 @@
 				userInfo.name,
 				userInfo.surname,
 				userInfo.email,
-				userInfo.role,
-				userInfo.username
+				userInfo.username,
+				userInfo.role
 			);
 			userStore.updateUser(person);
 
