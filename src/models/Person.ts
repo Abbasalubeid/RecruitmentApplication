@@ -1,34 +1,39 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import type { Role } from './Role';
+
+/**
+ * Represents an individual within the organization, encapsulating their personal details and role.
+ */
 export class Person {
 	person_id: number;
 	name: string;
 	surname: string;
 	email: string;
-	role_id: number;
+	role: Role;
 	username: string;
 
 	/**
-     * Constructs a new Person object.
-     * @param {number} person_id - The unique identifier for the person.
-     * @param {string} name - The person's first name.
-     * @param {string} surname - The person's last name.
-     * @param {string} email - The person's email address.
-     * @param {number} role_id - The role ID associated with the person.
-     * @param {string} username - The person's username.
-     */
+	 * Constructs a new Person instance.
+	 * @param person_id - Unique identifier for the person.
+	 * @param name - First name of the person.
+	 * @param surname - Surname of the person.
+	 * @param email - Email address of the person.
+	 * @param role - Role of the person within the organization.
+	 * @param username - Username for the person's account.
+	 */
 	constructor(
 		person_id: number,
 		name: string,
 		surname: string,
 		email: string,
-		role_id: number,
+		role: Role,
 		username: string
 	) {
 		this.person_id = person_id;
 		this.name = name;
 		this.surname = surname;
 		this.email = email;
-		this.role_id = role_id;
+    this.role = role;
 		this.username = username;
 	}
 
@@ -52,5 +57,13 @@ export class Person {
 			p.surname.includes(name)
 		);
 		return possible_persons;
+	}
+
+	/**
+	 * Returns the full name of the person by concatenating the first name and surname.
+	 * @returns Full name of the person.
+	 */
+	getFullName(): string {
+		return `${this.name} ${this.surname}`;
 	}
 }

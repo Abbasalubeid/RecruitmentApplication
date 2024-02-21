@@ -1,5 +1,6 @@
 import { join } from 'path';
 import type { Config } from 'tailwindcss';
+import { customTheme } from './customTheme';
 
 // 1. Import the Skeleton plugin
 import { skeleton } from '@skeletonlabs/tw-plugin';
@@ -18,8 +19,9 @@ const config = {
 	plugins: [
 		skeleton({
 			themes: {
+				custom: [customTheme],
 				// Register each theme within this array:
-				preset: ['skeleton', 'modern', 'crimson', 'wintry', 'vintage', 'gold-nouveau']
+				preset: ['skeleton', 'modern', 'wintry', 'crimson', 'vintage', 'gold-nouveau']
 			}
 		})
 	]
