@@ -6,9 +6,9 @@
 
 	import LoginView from '../views/LoginView.svelte';
 	import { t } from 'svelte-i18n';
-	import { goto } from '$app/navigation';
 	import { userStore } from '$lib/stores/UserStore';
 	import { Person } from '../models/Person';
+	import { navigateWithQuery } from '$lib/util/navigation';
 
 	let errorKey: string | undefined;
 	let loading = false;
@@ -56,7 +56,7 @@
 			const queryParams = new URLSearchParams(window.location.search);
 			const lang = queryParams.get('lang');
 
-			goto(`/?${lang ? `lang=${lang}` : ''}`);
+			navigateWithQuery('/');
 		} catch (err) {
 			errorKey = 'error.unexpected';
 			loading = false;
