@@ -1,31 +1,33 @@
 <script lang="ts">
+	/**
+	 * The CompetencePresenter component serves as a mediator between the model and view for displaying competences. Upon initialization, it fetches competence data from a designated API, processes the received data into structured models, and prepares it for presentation by the TableView component.
+	 */
+
 	import { onMount } from 'svelte';
+	import { t } from 'svelte-i18n';
 	import TableView from '../views/TableView.svelte';
 	import ErrorView from '../views/ErrorView.svelte';
 	import LoadingView from '../views/LoadingView.svelte';
 	import { tableMapperValues } from '@skeletonlabs/skeleton';
 	import { Competence } from '../models/Competence';
 	import { CompetenceProfile } from '../models/CompetenceProfile';
+	import { ErrorHandler } from '$lib/util/errorHandler';
 
-	/**
-	 * Stores an array of Competence instances. This will be populated with data
-	 * fetched from the API and processed into model instances.
-	 */
 	let competences: Competence[] = [];
-
-	let errorMessage: string | undefined;
+	let errorKey: string | undefined;
+	let errorStatus: number | undefined;
 	let isLoading: boolean = false;
 
 	/**
-	 * Fetches competences data from the API upon component mount, transforms the
-	 * raw data into model instances, and stores them in the `competences` array.
+	 * Lifecycle hook for component initialization and data fetching. It attempts to fetch competence data from the API, processes the response into Competence model instances, and handles any errors that might occur during the fetch operation.
 	 */
 	onMount(async () => {
 		try {
 			isLoading = true;
 			const res = await fetch('/api/competences');
 			if (!res.ok) {
-				errorMessage = 'Failed to fetch competences';
+				errorKey = ErrorHandler.handleApiError(new Error());
+				errorStatus = res.status;
 				return;
 			}
 			const data = await res.json();
@@ -36,23 +38,23 @@
 							profileData.competence_profile_id,
 							profileData.person_id,
 							profileData.competence_id,
-							profileData.years_of_experience
+							profileData.years_of_experience,
+							profileData.status
 						)
 				);
 				return new Competence(competenceData.competence_id, competenceData.name, profiles);
 			});
-		} catch (error) {
-			errorMessage = 'An unexpected error occurred while fetching competences.';
+		} catch (error: any) {
+			errorKey = ErrorHandler.handleUnexpectedError(error);
 		} finally {
 			isLoading = false;
 		}
 	});
 
+	$: errorMessage = errorKey ? $t(errorKey) : undefined;
+
 	/**
-	 * Transforms the array of Competence instances into a flat array suitable for
-	 * rendering in the TableView component. Each Competence instance might have
-	 * multiple CompetenceProfile instances associated with it, which are flattened
-	 * into a single array with the `flatMap` method.
+	 * Transforms the array of Competence instances into a flat array suitable for rendering in the TableView component. Each Competence instance might have multiple CompetenceProfile instances associated with it, which are flattened into a single array.
 	 */
 	$: transformedData = competences.flatMap((competence) =>
 		competence.competence_profile.map((profile) => ({
@@ -64,8 +66,7 @@
 	);
 
 	/**
-	 * Prepares the data for the table body by mapping the `transformedData` to the
-	 * fields specified.
+	 * Prepares the data for the table body by mapping the transformed competence data to the specified fields. This ensures the data structure aligns with the TableView component's requirements for rendering.
 	 */
 	$: bodyData = tableMapperValues(transformedData, [
 		'competenceName',
@@ -73,15 +74,19 @@
 		'competence_id',
 		'years_of_experience'
 	]);
+
+	$: translatedHead = [
+		$t('competenceName'),
+		$t('personId'),
+		$t('competenceId'),
+		$t('yearsOfExperience')
+	];
 </script>
 
 {#if errorMessage}
-	<ErrorView message={errorMessage} />
+	<ErrorView {errorMessage} {errorStatus} />
 {:else if competences.length > 0}
-	<TableView
-		head={['Competence Name', 'Person ID', 'Competence ID', 'Experience']}
-		body={bodyData}
-	/>
+	<TableView classSetting="" interactive={false} head={translatedHead} body={bodyData} />
 {:else}
-	<LoadingView message={'Fetching competences'} />
+	<LoadingView />
 {/if}

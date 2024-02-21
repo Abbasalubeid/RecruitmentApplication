@@ -18,6 +18,7 @@
 		"@sveltejs/kit": "^2.0.0",
 		"@sveltejs/vite-plugin-svelte": "^3.0.0",
 		"@types/eslint": "8.56.0",
+		"@types/jsonwebtoken": "^9.0.5",
 		"@types/node": "^20.11.16",
 		"@typescript-eslint/eslint-plugin": "^6.0.0",
 		"@typescript-eslint/parser": "^6.0.0",
@@ -40,6 +41,9 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@prisma/client": "^5.9.1"
+		"@prisma/client": "^5.9.1",
+		"iconify-icon": "^2.0.0",
+		"jsonwebtoken": "^9.0.2",
+		"svelte-i18n": "^4.0.0"
 	}
 }
