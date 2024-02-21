@@ -1,4 +1,5 @@
 {
+	"welcome": "Välkommen",
 	"login": "Logga in",
 	"logout": "Logga ut",
 	"username": "Användarnamn",
@@ -9,6 +10,8 @@
 	"loading": "Laddar",
 	"competenceName": "Kompetens",
 	"personId": "Person ID",
+	"role": "Roll",
+	"recruiter": "Rekryterare",
 	"competenceId": "Kompetens ID",
 	"yearsOfExperience": "Erfarenhet",
 	"fetchingCompetences": "Hämtar kompetenser...",
