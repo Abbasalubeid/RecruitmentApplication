@@ -1,4 +1,5 @@
 <script lang="ts">
+	import LoginPromptView from './../views/LoginPromptView.svelte';
 	/**
 	 * HomePagePresenter Component
 	 * Responsible for fetching the current user's data from the userStore and rendering the UserInfoView with the user's details.
@@ -8,8 +9,10 @@
 	import { userStore } from '$lib/stores/UserStore';
 	import type { Person } from '../models/Person';
 	import UserInfoView from '../views/UserInfoView.svelte';
+	import LoadingView from '../views/LoadingView.svelte';
 
 	let person: Person | null = null;
+	let loading = true;
 
 	/**
 	 * onMount Lifecycle Hook
@@ -19,14 +22,19 @@
 	onMount(() => {
 		userStore.subscribe((userData) => {
 			person = userData;
+			loading = false;
 		});
 	});
 </script>
 
-{#if person}
+{#if loading}
+	<LoadingView />
+{:else if person}
 	<UserInfoView
 		fullName={person.getFullName()}
 		role={person.role.name}
 		username={person.username}
 	/>
+{:else}
+	<LoginPromptView />
 {/if}
