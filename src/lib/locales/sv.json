@@ -21,5 +21,22 @@
 		"minLength": "Detta fält måste vara minst 12 tecken långt.",
 		"fetchError": "Kunde inte hämta.",
 		"unexpected": "Ett oväntat fel inträffade."
-	}
+	},
+	"personName": "Fullständigt namn",
+	"competence": "Kompetens",
+	"competenceProfileId": "Ansöknings ID",
+	"accepted": "Accepterad",
+	"rejected": "Avslagen",
+	"unhandled": "Ohanterad",
+	"name": "Namn",
+	"job": "Job",
+	"experience": "Erfarenhet",
+	"availability": "Tillgänglighet",
+	"Filter table search": "Filtrera tabellsökning",
+	"lotteries": "Lotteri",
+	"ticket sales": "Biljett försäljning",
+	"roller coaster operation": "Berg- och dalbana operatör",
+	"Lotteri": "lotteries",
+	"Biljett försäljning": "ticket sales",
+	"Berg- och dalbana operatör": "roller coaster operation"
 }
