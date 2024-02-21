@@ -17,6 +17,7 @@
 	"fetchingCompetences": "Hämtar kompetenser...",
 	"goToHomepage": "Gå till startsidan",
 	"goToLogin": "Gå till inloggning",
+	"logInToContinue": "Logga in för att fortsätta",
 	"error": {
 		"invalidCredentials": "Ogiltigt användarnamn eller lösenord.",
 		"requiredField": "Detta fält är obligatoriskt.",

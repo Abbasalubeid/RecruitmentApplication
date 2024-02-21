@@ -17,6 +17,7 @@
 	"fetchingCompetences": "Fetching competences...",
 	"goToHomepage": "Go to Homepage",
 	"goToLogin": "Go to Login",
+	"logInToContinue": "Log in to continue",
 	"error": {
 		"invalidCredentials": "Invalid username or password.",
 		"requiredField": "This field is required.",
