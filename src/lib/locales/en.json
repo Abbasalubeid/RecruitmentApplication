@@ -1,4 +1,5 @@
 {
+	"welcome": "Welcome",
 	"login": "Login",
 	"logout": "Logout",
 	"username": "Username",
@@ -9,6 +10,8 @@
 	"loading": "Loading",
 	"competenceName": "Competence Name",
 	"personId": "Person ID",
+	"role": "Role",
+	"recruiter": "Recruiter",
 	"competenceId": "Competence ID",
 	"yearsOfExperience": "Years of Experience",
 	"fetchingCompetences": "Fetching competences...",
