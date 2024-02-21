@@ -9,7 +9,7 @@ export class Person {
 	name: string;
 	surname: string;
 	email: string;
-	role: Role;
+	role?: Role;
 	username: string;
 
 	/**
@@ -18,43 +18,60 @@ export class Person {
 	 * @param name - First name of the person.
 	 * @param surname - Surname of the person.
 	 * @param email - Email address of the person.
-	 * @param role - Role of the person within the organization.
 	 * @param username - Username for the person's account.
+	 * @param role - Role of the person within the organization (optional).
 	 */
 	constructor(
 		person_id: number,
 		name: string,
 		surname: string,
 		email: string,
-		role: Role,
-		username: string
+		username: string,
+		role?: Role
 	) {
 		this.person_id = person_id;
 		this.name = name;
 		this.surname = surname;
 		this.email = email;
-    this.role = role;
 		this.username = username;
+		this.role = role;
 	}
 
+	/**
+	 * Finds the first person in the given array whose first name and surname match the provided values.
+	 *
+	 * @param {string} firstName - The first name of the person to search for.
+	 * @param {string} surname - The surname of the person to search for.
+	 * @param {Person[]} persons - The array of persons to search within.
+	 * @returns {Person | undefined} The first person found with the matching first name and surname, or undefined if no match is found.
+	 */
 	public static getFirstPersonByFullname(firstName: string, surname: string, persons: Person[]) {
-		const person = persons.find(
-			(p) =>
-				p.name === firstName &&
-				p.surname === surname
-		);
+		const person = persons.find((p) => p.name === firstName && p.surname === surname);
 		return person;
 	}
+
+	/**
+	 * Finds a person in the given array based on their competence profile.
+	 *
+	 * @param {any} competence_profile - The competence profile to match against.
+	 * @param {Person[]} persons - The array of persons to search within.
+	 * @returns {Person | undefined} The person found based on the competence profile, or undefined if no match is found.
+	 */
 	public static getPersonByCompetenceProfile(competence_profile: any, persons: Person[]) {
 		const person = persons.find((p) => p.person_id === competence_profile.person_id);
 		return person;
 	}
 
+	/**
+	 * Finds all persons in the given array whose name or surname contain the specified substring.
+	 * 
+	 * @param {string} name - The substring to search for within names and surnames.
+	 * @param {Person[]} persons - The array of persons to search within.
+	 * @returns {Person[]} An array of persons whose names or surnames contain the specified substring.
+	 */
 	public static getPersonsContainingName(name: string, persons: Person[]) {
 		const possible_persons = persons.filter(
-			(p) =>
-			p.name.includes(name) ||
-			p.surname.includes(name)
+			(p) => p.name.includes(name) || p.surname.includes(name)
 		);
 		return possible_persons;
 	}

@@ -17,13 +17,32 @@ export class Competence {
 		this.name = name;
 		this.competence_profile = competence_profile;
 	}
+	/**
+	 * Finds the competence in the given array based on the provided name.
+	 *
+	 * @param {Competence[]} competences - The array of competences to search within.
+	 * @param {string} name - The name of the competence to search for.
+	 * @returns {Competence | undefined} The competence found based on the provided name, or undefined if no match is found.
+	 */
 	public static getCompetenceByName(competences: Competence[], name: string) {
 		const competence = competences.find((c) => c.name === name);
 		return competence;
 	}
 
-	public static getCompetenceByCompetenceProfile(competence_profile: any, competences: Competence[]) {
-		const competence = competences.find((c) => c.competence_id === competence_profile.competence_id);
+	/**
+	 * Finds the competence in the given array based on the provided competence profile.
+	 *
+	 * @param {any} competence_profile - The competence profile object to match against.
+	 * @param {Competence[]} competences - The array of competences to search within.
+	 * @returns {Competence | undefined} The competence found based on the provided competence profile, or undefined if no match is found.
+	 */
+	public static getCompetenceByCompetenceProfile(
+		competence_profile: any,
+		competences: Competence[]
+	) {
+		const competence = competences.find(
+			(c) => c.competence_id === competence_profile.competence_id
+		);
 		return competence;
 	}
 }

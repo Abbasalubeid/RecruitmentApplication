@@ -66,7 +66,6 @@
 						personData.name,
 						personData.surname,
 						personData.email,
-						personData.role_id,
 						personData.username
 					)
 			);
