@@ -25,5 +25,25 @@
 		"minLength": "This field must be at least 12 characters long.",
 		"fetchError": "Could not fetch data.",
 		"unexpected": "An unexpected error occurred."
-	}
+	},
+	"personName": "Full name",
+	"competence": "Competence",
+	"competenceProfileId": "Application ID",
+	"accepted": "Accepted",
+	"rejected": "Rejected",
+	"unhandled": "Unhandled",
+	"Accepted": "accepted",
+	"Rejected": "rejected",
+	"Unhandled": "unhandled",
+	"name": "Name",
+	"job": "Job",
+	"experience": "Experience",
+	"availability": "Availability",
+	"Filter table search": "Filter table search",
+	"lotteries": "Lotteries",
+	"ticket sales": "Ticket sales",
+	"roller coaster operation": "Roller coaster operation",
+	"Lotteries": "lotteries",
+	"Ticket sales": "ticket sales",
+	"Roller coaster operation": "roller coaster operation"
 }

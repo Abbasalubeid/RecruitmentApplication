@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Role } from './Role';
 
 /**
@@ -32,8 +33,30 @@ export class Person {
 		this.name = name;
 		this.surname = surname;
 		this.email = email;
-		this.role = role;
+    this.role = role;
 		this.username = username;
+	}
+
+	public static getFirstPersonByFullname(firstName: string, surname: string, persons: Person[]) {
+		const person = persons.find(
+			(p) =>
+				p.name === firstName &&
+				p.surname === surname
+		);
+		return person;
+	}
+	public static getPersonByCompetenceProfile(competence_profile: any, persons: Person[]) {
+		const person = persons.find((p) => p.person_id === competence_profile.person_id);
+		return person;
+	}
+
+	public static getPersonsContainingName(name: string, persons: Person[]) {
+		const possible_persons = persons.filter(
+			(p) =>
+			p.name.includes(name) ||
+			p.surname.includes(name)
+		);
+		return possible_persons;
 	}
 
 	/**

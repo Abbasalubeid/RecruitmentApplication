@@ -11,6 +11,7 @@
 	import { tableMapperValues } from '@skeletonlabs/skeleton';
 	import { Competence } from '../models/Competence';
 	import { CompetenceProfile } from '../models/CompetenceProfile';
+	import { ErrorHandler } from '$lib/util/errorHandler';
 
 	let competences: Competence[] = [];
 	let errorKey: string | undefined;
@@ -25,7 +26,7 @@
 			isLoading = true;
 			const res = await fetch('/api/competences');
 			if (!res.ok) {
-				errorKey = 'error.fetchError';
+				errorKey = ErrorHandler.handleApiError(new Error());
 				errorStatus = res.status;
 				return;
 			}
@@ -37,13 +38,14 @@
 							profileData.competence_profile_id,
 							profileData.person_id,
 							profileData.competence_id,
-							profileData.years_of_experience
+							profileData.years_of_experience,
+							profileData.status
 						)
 				);
 				return new Competence(competenceData.competence_id, competenceData.name, profiles);
 			});
-		} catch (error) {
-			errorKey = 'error.unexpected';
+		} catch (error: any) {
+			errorKey = ErrorHandler.handleUnexpectedError(error);
 		} finally {
 			isLoading = false;
 		}
@@ -84,7 +86,7 @@
 {#if errorMessage}
 	<ErrorView {errorMessage} {errorStatus} />
 {:else if competences.length > 0}
-	<TableView head={translatedHead} body={bodyData} />
+	<TableView classSetting="" interactive={false} head={translatedHead} body={bodyData} />
 {:else}
 	<LoadingView />
 {/if}
