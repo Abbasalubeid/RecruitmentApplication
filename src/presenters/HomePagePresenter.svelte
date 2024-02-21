@@ -11,6 +11,8 @@
 	import UserInfoView from '../views/UserInfoView.svelte';
 	import LoadingView from '../views/LoadingView.svelte';
 
+	import { goto } from '$app/navigation';
+
 	let person: Person | null = null;
 	let loading = true;
 
@@ -25,6 +27,16 @@
 			loading = false;
 		});
 	});
+
+	/**
+	 * Handles navigation to the login page.
+	 * If present, preserves the 'lang' query parameter to maintain language preference across navigation.
+	 */
+	function handleLoginRequest() {
+		const queryParams = new URLSearchParams(window.location.search);
+		const lang = queryParams.get('lang');
+		goto(`/login?${lang ? `lang=${lang}` : ''}`);
+	}
 </script>
 
 {#if loading}
@@ -36,5 +48,5 @@
 		username={person.username}
 	/>
 {:else}
-	<LoginPromptView />
+	<LoginPromptView on:requestLogin={handleLoginRequest} />
 {/if}
