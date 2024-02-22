@@ -41,7 +41,7 @@
 {:else if person}
 	<UserInfoView
 		fullName={person.getFullName()}
-		role={person.role.name}
+		role={person.role?.name}
 		username={person.username}
 	/>
 {:else}
