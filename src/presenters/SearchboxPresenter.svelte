@@ -27,15 +27,16 @@
 	 * @param event - The event object containing the chip value.
 	 */
 	function onAdd(event: any) {
-		let possible_persons = Person.getPersonsContainingName(
-			Utilities.capitalizeFirstLetter(event.detail.chipValue),
-			persons
+		let possible_persons = persons.filter(
+			(p) =>
+				p.name.includes(Utilities.capitalizeFirstLetter(event.detail.chipValue)) ||
+				p.surname.includes(Utilities.capitalizeFirstLetter(event.detail.chipValue))
 		);
 
 		let possible_persons_ids: number[] = possible_persons.map((person) => person.person_id);
 
 		let possible_job = competences.filter((c) => c.name.includes(event.detail.chipValue));
-		
+
 		let possible_job_ids: number[] = possible_job.map((job) => job.competence_id);
 
 		let possible_competence_profiles = competence_profiles.filter(

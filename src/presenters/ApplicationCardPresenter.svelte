@@ -40,7 +40,7 @@
 				return;
 			}
 			const { updatedId } = await resCompetenceProfiles.json();
-			let indexOfOldCompetenceProfile = CompetenceProfile.getCompetenceProfileById(updatedId, competence_profiles)
+			let indexOfOldCompetenceProfile = competence_profiles.findIndex((c) => c.competence_profile_id == id);
 			competence_profiles[indexOfOldCompetenceProfile].status = status;
 			updateTable(competence_profiles);
 		} catch (error: any) {

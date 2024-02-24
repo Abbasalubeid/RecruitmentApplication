@@ -18,16 +18,4 @@ export class Availability {
 		this.from_date = from_date;
 		this.to_date = to_date;
 	}
-
-	/**
-	 * Retrieves the availabilities for a given person from the provided array of availabilities.
-	 *
-	 * @param {any} person - The person object for whom availabilities are being retrieved.
-	 * @param {Availability[]} availabilities - The array of availabilities to search within.
-	 * @returns {Availability[]} An array of availabilities belonging to the specified person.
-	 */
-	public static getAvailabilitiesForPerson(person: any, availabilities: Availability[]) {
-		const personAvailability = availabilities.filter((a) => a.person_id === person?.person_id);
-		return personAvailability;
-	}
 }
