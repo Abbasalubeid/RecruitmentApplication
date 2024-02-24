@@ -17,7 +17,7 @@
 	</p>
 	<button
 		on:click={requestLogin}
-		class="inline-block cursor-pointer rounded-full border-2 border-primary-500 bg-transparent px-6 py-3"
+		class="inline-block cursor-pointer rounded-full border-2 border-primary-500 bg-transparent px-6 py-3 hover:bg-primary-900"
 	>
 		{$t('login')}
 	</button>
