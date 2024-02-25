@@ -12,6 +12,7 @@
 	"personId": "Person ID",
 	"role": "Roll",
 	"recruiter": "Rekryterare",
+	"applicant": "Sökande",
 	"competenceId": "Kompetens ID",
 	"yearsOfExperience": "Erfarenhet",
 	"fetchingCompetences": "Hämtar kompetenser...",

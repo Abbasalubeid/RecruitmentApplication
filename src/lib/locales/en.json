@@ -12,6 +12,7 @@
 	"personId": "Person ID",
 	"role": "Role",
 	"recruiter": "Recruiter",
+	"applicant": "Applicant",
 	"competenceId": "Competence ID",
 	"yearsOfExperience": "Years of Experience",
 	"fetchingCompetences": "Fetching competences...",
