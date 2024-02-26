@@ -1,31 +1,27 @@
 <script lang="ts">
-	import LoginPromptView from './../views/LoginPromptView.svelte';
 	/**
 	 * HomePagePresenter Component
-	 * Responsible for fetching the current user's data from the userStore and rendering the UserInfoView with the user's details.
+	 * This component is responsible for determining the user's authentication state and rendering
+	 * either the UserInfoView with the user's details if they are logged in, or the LoginPromptView
+	 * to allow the user to log in. It also displays a loading state while the user's information is being fetched.
 	 */
 
-	import { onMount } from 'svelte';
-	import { userStore } from '$lib/stores/UserStore';
-	import type { Person } from '../models/Person';
+	import LoginPromptView from './../views/LoginPromptView.svelte';
 	import UserInfoView from '../views/UserInfoView.svelte';
 	import LoadingView from '../views/LoadingView.svelte';
 	import { navigateWithQuery } from '$lib/util/navigation';
+	import { page } from '$app/stores';
 
-	let person: Person | null = null;
+	let currentUser: any = null;
 	let loading = true;
 
-	/**
-	 * onMount Lifecycle Hook
-	 *
-	 * Subscribes to the userStore to obtain the current user's data upon component mount.
-	 */
-	onMount(() => {
-		userStore.subscribe((userData) => {
-			person = userData;
-			loading = false;
-		});
-	});
+	$: if ($page.data.user) {
+		currentUser = $page.data.user;
+		loading = false;
+	} else {
+		currentUser = null;
+		loading = false;
+	}
 
 	/**
 	 * Handles navigation to the login page.
@@ -38,12 +34,8 @@
 
 {#if loading}
 	<LoadingView />
-{:else if person}
-	<UserInfoView
-		fullName={person.getFullName()}
-		role={person.role?.name}
-		username={person.username}
-	/>
+{:else if currentUser}
+	<UserInfoView name={currentUser.name} role={currentUser.role} username={currentUser.username} />
 {:else}
 	<LoginPromptView on:requestLogin={handleLoginRequest} />
 {/if}
