@@ -10,6 +10,8 @@
 	import { Person } from '../models/Person';
 	import { navigateWithQuery } from '$lib/util/navigation';
 
+	export let originallyRequestedPath: string;
+
 	let errorKey: string | undefined;
 	let loading = false;
 
@@ -53,10 +55,7 @@
 			);
 			userStore.updateUser(person);
 
-			const queryParams = new URLSearchParams(window.location.search);
-			const lang = queryParams.get('lang');
-
-			navigateWithQuery('/');
+			navigateWithQuery(originallyRequestedPath);
 		} catch (err) {
 			errorKey = 'error.unexpected';
 			loading = false;
