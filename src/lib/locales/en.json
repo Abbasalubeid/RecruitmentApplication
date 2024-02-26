@@ -19,6 +19,7 @@
 	"goToHomepage": "Go to Homepage",
 	"goToLogin": "Go to Login",
 	"logInToContinue": "Log in to continue",
+	"accessDenied": "Access Denied",
 	"error": {
 		"invalidCredentials": "Invalid username or password.",
 		"requiredField": "This field is required.",

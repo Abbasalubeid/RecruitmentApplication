@@ -19,6 +19,7 @@
 	"goToHomepage": "Gå till startsidan",
 	"goToLogin": "Gå till inloggning",
 	"logInToContinue": "Logga in för att fortsätta",
+	"accessDenied": "Åtkomst nekad",
 	"error": {
 		"invalidCredentials": "Ogiltigt användarnamn eller lösenord.",
 		"requiredField": "Detta fält är obligatoriskt.",
