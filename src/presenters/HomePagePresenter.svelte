@@ -11,17 +11,20 @@
 	import LoadingView from '../views/LoadingView.svelte';
 	import { navigateWithQuery } from '$lib/util/navigation';
 	import { page } from '$app/stores';
+	import { onMount } from 'svelte';
 
 	let currentUser: any = null;
 	let loading = true;
 
-	$: if ($page.data.user) {
-		currentUser = $page.data.user;
-		loading = false;
-	} else {
-		currentUser = null;
-		loading = false;
-	}
+	onMount(async () => {
+		if ($page.data.user) {
+			currentUser = $page.data.user;
+			loading = false;
+		} else {
+			currentUser = null;
+			loading = false;
+		}
+	});
 
 	/**
 	 * Handles navigation to the login page.
