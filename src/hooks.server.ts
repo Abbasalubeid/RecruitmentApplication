@@ -1,4 +1,3 @@
-// src/hooks.server.ts
 import { redirectWithQuery } from '$lib/util/navigation';
 import { authenticateUser } from '$lib/server/authenticateUser';
 import { routeMetadata } from '$lib/metadata/routeMeta';
