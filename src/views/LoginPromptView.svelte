@@ -11,13 +11,13 @@
 
 <div class="flex min-h-screen flex-col items-center justify-center space-y-4">
 	<p
-		class="bg-gradient-to-br from-primary-500 to-primary-100 bg-clip-text text-center text-2xl font-bold text-transparent"
+		class="bg-gradient-to-br from-primary-400 to-primary-800 bg-clip-text text-center text-2xl font-bold text-transparent"
 	>
 		{$t('logInToContinue')}
 	</p>
 	<button
 		on:click={requestLogin}
-		class="inline-block cursor-pointer rounded-full border-2 border-primary-500 bg-transparent px-6 py-3 hover:bg-primary-900"
+		class="inline-block cursor-pointer rounded-full border-2 border-primary-500 bg-transparent px-6 py-3 hover:bg-primary-700"
 	>
 		{$t('login')}
 	</button>

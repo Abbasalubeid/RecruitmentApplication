@@ -7,7 +7,7 @@
 
 <div class="flex min-h-screen flex-col items-center justify-center space-y-4">
 	<h1
-		class="h1 bg-gradient-to-br from-primary-500 to-primary-100 bg-clip-text text-center text-2xl font-bold text-transparent"
+		class="bg-gradient-to-br from-primary-400 to-primary-800 bg-clip-text text-center text-2xl font-bold text-transparent"
 	>
 		{$t('welcome')}, {fullName}!
 	</h1>
