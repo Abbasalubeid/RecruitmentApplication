@@ -2,6 +2,7 @@
 import { redirectWithQuery } from '$lib/util/navigation';
 import { authenticateUser } from '$lib/server/authenticateUser';
 import { routeMetadata } from '$lib/metadata/routeMeta';
+import { Person } from './models/Person';
 
 /**
  * Global server hook for managing authentication, authorization, and custom redirection logic
@@ -16,9 +17,13 @@ import { routeMetadata } from '$lib/metadata/routeMeta';
  * @returns {Promise} - Resolves the event, potentially modifying the response based on authentication and authorization logic.
  */
 export async function handle({ event, resolve }) {
-	const userData = await authenticateUser(event.cookies.get('token'));
+	let currentUser: Person | null = null;
+	const user = await authenticateUser(event.cookies.get('token'));
 
-	event.locals.user = userData;
+	if (user) {
+		currentUser = user;
+		event.locals.user = currentUser;
+	}
 
 	const { pathname, search } = event.url;
 	const routeMeta = routeMetadata[pathname];
@@ -28,18 +33,23 @@ export async function handle({ event, resolve }) {
 	}
 
 	// If the route specifies a redirection for authenticated users, apply it.
-	if (userData && routeMeta?.redirectIfAuthenticated) {
+	if (currentUser && routeMeta?.redirectIfAuthenticated) {
 		redirectWithQuery(search, routeMeta.redirectIfAuthenticated);
 	}
 
 	// For routes requiring authentication, redirect unauthenticated users to the login page.
-	if (!userData && routeMeta?.requiresAuth) {
+	if (!currentUser && routeMeta?.requiresAuth) {
 		event.cookies.set('org-path', pathname, { path: '/', httpOnly: true, sameSite: 'strict' });
 		redirectWithQuery(search, '/login');
 	}
 
 	// For routes specifying required roles, check the authenticated user's role.
-	if (userData && routeMeta?.roles && !routeMeta.roles.includes(userData.role)) {
+	if (
+		currentUser &&
+		currentUser.role &&
+		routeMeta?.roles &&
+		!routeMeta.roles.includes(currentUser.role.name)
+	) {
 		redirectWithQuery(search, '/unauthorized');
 	}
 

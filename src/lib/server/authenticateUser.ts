@@ -3,6 +3,8 @@
 import { JWT_SECRET } from '$env/static/private';
 import jwt from 'jsonwebtoken';
 import prisma from './prismaClient';
+import { Person } from '../../models/Person';
+import type { Role } from '../../models/Role';
 
 /**
  * Verifies the user's JWT token and retrieves their information from the database.
@@ -28,11 +30,14 @@ export async function authenticateUser(token: string | undefined) {
 		});
 
 		if (user && user.role) {
-			return {
-				name: user.name as string,
-				username: user.username as string,
-				role: user.role.name as string
-			};
+			return new Person(
+				user.person_id,
+				user.name as string,
+				user.surname as string,
+				user.email as string,
+				user.username as string,
+				user.role as Role
+			);
 		}
 
 		// User not found or role not assigned
