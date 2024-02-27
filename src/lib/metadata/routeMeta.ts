@@ -10,8 +10,9 @@
  */
 
 interface RouteMeta {
-	requiresAuth: boolean;
+	public?: boolean;
 	redirectIfAuthenticated?: string;
+	requiresAuth?: boolean;
 	roles?: string[];
 }
 
@@ -20,7 +21,7 @@ interface RouteMetadata {
 }
 
 export const routeMetadata: RouteMetadata = {
-	'/': { requiresAuth: false },
-	'/login': { requiresAuth: false, redirectIfAuthenticated: '/' },
+	'/': { public: true },
+	'/login': { redirectIfAuthenticated: '/' },
 	'/applications': { requiresAuth: true, roles: ['applicant'] }
 };

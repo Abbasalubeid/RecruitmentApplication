@@ -23,25 +23,26 @@ export async function handle({ event, resolve }) {
 	const { pathname, search } = event.url;
 	const routeMeta = routeMetadata[pathname];
 
-	if (!routeMeta.requiresAuth) {
+	if (routeMeta?.public) {
 		return await resolve(event);
 	}
 
 	// If the route specifies a redirection for authenticated users, apply it.
-	if (userData && routeMeta.redirectIfAuthenticated) {
+	if (userData && routeMeta?.redirectIfAuthenticated) {
 		redirectWithQuery(search, routeMeta.redirectIfAuthenticated);
 	}
 
-	// Redirect unauthenticated users to the login page, save the originally requested page.
-	if (!userData && routeMeta.requiresAuth) {
+	// For routes requiring authentication, redirect unauthenticated users to the login page.
+	if (!userData && routeMeta?.requiresAuth) {
 		event.cookies.set('org-path', pathname, { path: '/', httpOnly: true, sameSite: 'strict' });
 		redirectWithQuery(search, '/login');
 	}
 
 	// For routes specifying required roles, check the authenticated user's role.
-	if (userData && routeMeta.roles && !routeMeta.roles.includes(userData.role)) {
+	if (userData && routeMeta?.roles && !routeMeta.roles.includes(userData.role)) {
 		redirectWithQuery(search, '/unauthorized');
 	}
 
+	// If none of the above conditions apply, proceed with resolving the request normally.
 	return await resolve(event);
 }
