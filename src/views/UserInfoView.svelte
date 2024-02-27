@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { t } from 'svelte-i18n';
-	export let name: string;
+	export let fullName: string;
 	export let role: string | undefined;
 	export let username: string;
 </script>
@@ -9,7 +9,7 @@
 	<h1
 		class="h1 bg-gradient-to-br from-primary-500 to-primary-100 bg-clip-text text-center text-2xl font-bold text-transparent"
 	>
-		{$t('welcome')}, {name}!
+		{$t('welcome')}, {fullName}!
 	</h1>
 	<h3 class="text-xl">{$t('username')}: {username}</h3>
 	{#if role}
