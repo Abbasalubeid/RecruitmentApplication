@@ -6,9 +6,9 @@
 
 	import LoginView from '../views/LoginView.svelte';
 	import { t } from 'svelte-i18n';
-	import { userStore } from '$lib/stores/UserStore';
-	import { Person } from '../models/Person';
 	import { navigateWithQuery } from '$lib/util/navigation';
+
+	export let originallyRequestedPath: string;
 
 	let errorKey: string | undefined;
 	let loading = false;
@@ -42,22 +42,8 @@
 				return;
 			}
 
-			const { userInfo } = await res.json();
-			const person = new Person(
-				userInfo.person_id,
-				userInfo.name,
-				userInfo.surname,
-				userInfo.email,
-				userInfo.username,
-				userInfo.role
-			);
-			userStore.updateUser(person);
-
-			const queryParams = new URLSearchParams(window.location.search);
-			const lang = queryParams.get('lang');
-
-			navigateWithQuery('/');
-		} catch (err) {
+			navigateWithQuery(originallyRequestedPath, true);
+		} catch (error) {
 			errorKey = 'error.unexpected';
 			loading = false;
 		}
