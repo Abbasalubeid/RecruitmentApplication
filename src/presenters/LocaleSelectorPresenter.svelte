@@ -42,10 +42,8 @@
 	}
 </script>
 
-<div class="absolute right-0 top-0 m-4">
-	<DropDownView
-		selectedOption={selectedLocale}
-		options={availableLocales}
-		on:onLangSelect={(e) => handleLocaleChange(e.detail)}
-	/>
-</div>
+<DropDownView
+	selectedOption={selectedLocale}
+	options={availableLocales}
+	on:onLangSelect={(e) => handleLocaleChange(e.detail)}
+/>
