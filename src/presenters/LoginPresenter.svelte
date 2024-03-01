@@ -28,16 +28,13 @@
 		detail: { formData: { username: string; password: string } };
 	}) {
 		loading = true;
-		console.log(event.detail);
-
-		const { username, password } = event.detail.formData;
 		try {
 			const res = await fetch('/api/auth/login', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
 				},
-				body: JSON.stringify({ username, password })
+				body: JSON.stringify(event.detail.formData)
 			});
 			if (!res.ok) {
 				const { error } = await res.json();
