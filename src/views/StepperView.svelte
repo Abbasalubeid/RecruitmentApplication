@@ -21,8 +21,11 @@
 			<svelte:fragment slot="header">Area of Expertise</svelte:fragment>
 			<ListBox>
 				{#each expertise as exp}
-					<ListBoxItem bind:group={valueSingle} name="expertise" value={exp.name}
-						>{exp.name}</ListBoxItem
+					<ListBoxItem
+						class="bg-primary-500"
+						bind:group={valueSingle}
+						name="expertise"
+						value={exp.name}>{exp.name}</ListBoxItem
 					>
 				{/each}
 			</ListBox>
@@ -48,13 +51,13 @@
 				</div>
 
 				{#each addedExperiences as experience}
-					<li class="mb-4 flex space-x-4 rounded-lg bg-gray-100 p-4">
-						<span class="font-semibold text-gray-800">Expertise:</span>
-						<span class="text-gray-600">{experience.expertise}</span>
+					<li class="mb-4 flex space-x-4 rounded-lg bg-primary-500 p-4">
+						<span class="font-semibold">Expertise:</span>
+						<span class="">{experience.expertise}</span>
 						<span class="flex-grow"></span>
 						<span class="flex-grow"></span>
-						<span class="font-semibold text-gray-800">Years of experience:</span>
-						<span class="flex-shrink-0 text-gray-600">{experience.years}</span>
+						<span class="font-semibold">Years of experience:</span>
+						<span class="flex-shrink-0">{experience.years}</span>
 					</li>
 				{/each}
 			</ul>
@@ -86,13 +89,13 @@
 				</div>
 
 				{#each addedAvailability as availability}
-					<li class="mb-4 flex space-x-4 rounded-lg bg-gray-100 p-4">
-						<span class="font-semibold text-gray-800">From:</span>
-						<span class="text-gray-600">{availability.startDay}</span>
+					<li class="mb-4 flex space-x-4 rounded-lg bg-primary-500 p-4">
+						<span class="font-semibold">From:</span>
+						<span class="">{availability.startDay}</span>
 						<span class="flex-grow"></span>
 						<span class="flex-grow"></span>
-						<span class="font-semibold text-gray-800">To:</span>
-						<span class="flex-shrink-0 text-gray-600">{availability.endDay}</span>
+						<span class="font-semibold">To:</span>
+						<span class="flex-shrink-0">{availability.endDay}</span>
 					</li>
 				{/each}
 			</ul>
@@ -105,13 +108,13 @@
 				</div>
 				<ul class="list mx-auto w-1/2">
 					{#each addedExperiences as experience}
-						<li class="my-0 flex space-x-4 rounded-lg bg-gray-100 p-4">
-							<span class="font-semibold text-gray-800">Expertise:</span>
-							<span class="text-gray-600">{experience.expertise}</span>
+						<li class="my-0 flex space-x-4 rounded-lg bg-primary-500 p-4">
+							<span class="font-semibold">Expertise:</span>
+							<span class="">{experience.expertise}</span>
 							<span class="flex-grow"></span>
 							<span class="flex-grow"></span>
-							<span class="font-semibold text-gray-800">Years of experience:</span>
-							<span class="flex-shrink-0 text-gray-600">{experience.years}</span>
+							<span class="font-semibold">Years of experience:</span>
+							<span class="flex-shrink-0">{experience.years}</span>
 						</li>
 					{/each}
 				</ul>
@@ -122,13 +125,13 @@
 				</div>
 				<ul class="list mx-auto w-1/2">
 					{#each addedAvailability as availability}
-						<li class="my-0 flex space-x-4 rounded-lg bg-gray-100 p-4">
-							<span class="font-semibold text-gray-800">From:</span>
-							<span class="text-gray-600">{availability.startDay}</span>
+						<li class="my-0 flex space-x-4 rounded-lg bg-primary-500 p-4">
+							<span class="font-semibold">From:</span>
+							<span class="">{availability.startDay}</span>
 							<span class="flex-grow"></span>
 							<span class="flex-grow"></span>
-							<span class="font-semibold text-gray-800">To:</span>
-							<span class="flex-shrink-0 text-gray-600">{availability.endDay}</span>
+							<span class="font-semibold">To:</span>
+							<span class="flex-shrink-0">{availability.endDay}</span>
 						</li>
 					{/each}
 				</ul>
