@@ -23,5 +23,5 @@ interface RouteMetadata {
 export const routeMetadata: RouteMetadata = {
 	'/': { public: true },
 	'/login': { redirectIfAuthenticated: '/' },
-	'/applications': { requiresAuth: true, roles: ['applicant'] }
+	'/applications': { requiresAuth: true, roles: ['recruiter'] }
 };
