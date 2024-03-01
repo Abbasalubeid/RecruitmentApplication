@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { t } from 'svelte-i18n';
+	import HomePagePresenter from './../presenters/HomePagePresenter.svelte';
 </script>
 
-<h1>{$t('error.invalidCredentials')}</h1>
+<HomePagePresenter />

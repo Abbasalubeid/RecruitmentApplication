@@ -1,17 +1,16 @@
 import { addMessages, init, getLocaleFromNavigator } from 'svelte-i18n';
 import { locales } from '$lib/locales/localeConfig';
+import { Person } from '../models/Person';
+import { userStore } from '$lib/stores/userStore';
 
 /**
  * Load function for the root layout module.
- * Initializes the svelte-i18n library with locale messages imported from 'localeConfig.ts'.
- * Sets the initial locale based on the 'lang' query parameter or defaults to the navigator language or 'en'.
+ * Initializes i18n and updates client-side user store.
+ * Sets app's initial locale and syncs userStore with server-side user data.
  *
- * @async
- * @function load
- * @param {Object} params - The load parameters provided by SvelteKit, including URL.
- * @returns {Promise<Object>} An empty object, as the load function must return an object.
+ * @param {Object} params - The load parameters provided by SvelteKit.
  */
-export async function load({ url }): Promise<object> {
+export async function load({ url, data }) {
 	Object.entries(locales).forEach(([locale, messages]) => {
 		addMessages(locale, messages);
 	});
@@ -23,5 +22,18 @@ export async function load({ url }): Promise<object> {
 		initialLocale: initialLocale
 	});
 
-	return {};
+	if (data.user) {
+		const { user } = data;
+		const person = new Person(
+			user.person_id,
+			user.name,
+			user.surname,
+			user.email,
+			user.username,
+			user.role
+		);
+		userStore.updateUser(person);
+	} else {
+		userStore.clearUser();
+	}
 }

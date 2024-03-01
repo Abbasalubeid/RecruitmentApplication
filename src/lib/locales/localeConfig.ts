@@ -7,7 +7,6 @@
 
 import en from './en.json';
 import sv from './sv.json';
-// Import additional locales as you add them
 
 /**
  * An object mapping locale keys to their respective imported messages.
@@ -16,5 +15,4 @@ import sv from './sv.json';
 export const locales = {
 	en: en,
 	sv: sv
-	// Add additional locales here
 };

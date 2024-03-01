@@ -13,7 +13,7 @@
 </script>
 
 <select
-	class="rounded-full border border-gray-300 bg-white px-3 py-1 text-sm text-gray-700 focus:border-blue-500 focus:ring-blue-500"
+	class="cursor-pointer bg-secondary-500"
 	bind:value={selectedOption}
 	on:change={handleChange}
 >
