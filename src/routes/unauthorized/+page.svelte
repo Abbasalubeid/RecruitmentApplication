@@ -1,6 +1,6 @@
 <script>
-	import ErrorView from '../../views/ErrorView.svelte';
 	import { t } from 'svelte-i18n';
+	import StatusView from '../../views/StatusView.svelte';
 </script>
 
-<ErrorView errorMessage={$t('accessDenied')} />
+<StatusView message={$t('accessDenied')} viewType="error" />
