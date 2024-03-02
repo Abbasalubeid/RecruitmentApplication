@@ -4,33 +4,37 @@
 	 * It handles user login events, processes login requests, manages login state (loading, errors).
 	 */
 
-	import LoginView from '../views/LoginView.svelte';
 	import { t } from 'svelte-i18n';
 	import { navigateWithQuery } from '$lib/util/navigation';
+	import FormView from '../views/FormView.svelte';
 
 	export let originallyRequestedPath: string;
 
 	let errorKey: string | undefined;
 	let loading = false;
 
+	$: inputs = [
+		{ name: 'username', label: $t('username'), placeholder: $t('enterUsername'), type: 'text' },
+		{ name: 'password', label: $t('password'), placeholder: $t('enterPassword'), type: 'password' }
+	];
+
 	/**
-	 * Handles the login event emitted by the `LoginView` component. It performs a POST request to the
-	 * '/api/auth/login' endpoint with the provided username and password. Upon successful authentication,
-	 * it updates the userStore with the logged-in user's information and redirects to the homepage.
-	 * In case of an error, it sets the appropriate error message to be displayed.
+	 * Handles the login event emitted by the `FormView` component. It performs a POST request to the
+	 * '/api/auth/login' endpoint with the provided username and password.
 	 *
 	 * @param {Object} event - The event object containing the username and password.
 	 */
-	const handleLogin = async (event: { detail: { username: string; password: string } }) => {
+	async function handleLogin(event: {
+		detail: { formData: { username: string; password: string } };
+	}) {
 		loading = true;
-		const { username, password } = event.detail;
 		try {
 			const res = await fetch('/api/auth/login', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
 				},
-				body: JSON.stringify({ username, password })
+				body: JSON.stringify(event.detail.formData)
 			});
 			if (!res.ok) {
 				const { error } = await res.json();
@@ -47,9 +51,16 @@
 			errorKey = 'error.unexpected';
 			loading = false;
 		}
-	};
+	}
 
 	$: errorMessage = errorKey ? $t(errorKey) : undefined;
 </script>
 
-<LoginView on:login={handleLogin} {errorMessage} {loading} />
+<FormView
+	on:submit={handleLogin}
+	{inputs}
+	buttonText={$t('login')}
+	title={$t('login')}
+	{errorMessage}
+	{loading}
+/>

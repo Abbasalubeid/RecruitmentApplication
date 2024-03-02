@@ -2,8 +2,8 @@
 	import { ErrorHandler } from '$lib/util/errorHandler';
 	import { CompetenceProfile } from '../models/CompetenceProfile';
 	import ApplicationCard from '../views/ApplicationCardView.svelte';
-	import ErrorView from '../views/ErrorView.svelte';
 	import { t } from 'svelte-i18n';
+	import StatusView from '../views/StatusView.svelte';
 
 	/**
 	 * Error-related variables
@@ -19,10 +19,10 @@
 	export let extraApplicationData: any;
 	export let updateTable: any;
 
-    /**
-     * Handle status change
-     * @param data Event data for status change
-     */
+	/**
+	 * Handle status change
+	 * @param data Event data for status change
+	 */
 	async function onChangeStatus(data: any) {
 		try {
 			const status = data.target.__value.split(' ')[0];
@@ -40,7 +40,10 @@
 				return;
 			}
 			const { updatedId } = await resCompetenceProfiles.json();
-			let indexOfOldCompetenceProfile = CompetenceProfile.getCompetenceProfileById(updatedId, competence_profiles)
+			let indexOfOldCompetenceProfile = CompetenceProfile.getCompetenceProfileById(
+				updatedId,
+				competence_profiles
+			);
 			competence_profiles[indexOfOldCompetenceProfile].status = status;
 			updateTable(competence_profiles);
 		} catch (error: any) {
@@ -48,14 +51,14 @@
 		}
 	}
 
-    /**
-     * Error message handling
-     */
+	/**
+	 * Error message handling
+	 */
 	$: errorMessage = errorKey ? $t(errorKey) : undefined;
 </script>
 
 {#if errorMessage}
-	<ErrorView {errorMessage} {errorStatus} />
+	<StatusView message={errorMessage} statusNumber={errorStatus} viewType="error" />
 {:else}
 	<ApplicationCard {onChangeStatus} {extraApplicationData} metaData={applicationMetaData}
 	></ApplicationCard>

@@ -4,9 +4,10 @@
  * on authentication status and user roles. It also specifies custom behaviors, such as
  * redirecting authenticated users away from certain routes.
  *
+ * - `public`: Indicates that a route can be accessed without authentication.
  * - `requiresAuth`: Indicates that a route requires the user to be authenticated.
  * - `roles`: An array of roles allowed to access the route. Used with `requiresAuth`.
- * - `redirectIfAuthenticated`: Specifies a path to redirect authenticated users to, useful for routes like '/login'.
+ * - `redirectIfAuthenticated`: Specifies a path to redirect authenticated users to.
  */
 
 interface RouteMeta {
@@ -23,5 +24,5 @@ interface RouteMetadata {
 export const routeMetadata: RouteMetadata = {
 	'/': { public: true },
 	'/login': { redirectIfAuthenticated: '/' },
-	'/applications': { requiresAuth: true, roles: ['applicant'] }
+	'/applications': { requiresAuth: true, roles: ['recruiter'] }
 };
