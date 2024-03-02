@@ -2,10 +2,10 @@
 	import { Stepper, Step, ListBox, ListBoxItem } from '@skeletonlabs/skeleton';
 
 	/**
-     * Array of expertise objects.
-     * @type {Array<{ id: number; name: string }>}
-     */
-	 export let expertise: Array<{ id: number; name: string }> = [];
+	 * Array of expertise objects.
+	 * @type {Array<{ id: number; name: string }>}
+	 */
+	export let expertise: Array<{ id: number; name: string }> = [];
 
 	/**
 	 * Callback function invoked when adding experience.
@@ -31,11 +31,10 @@
 	 */
 	export let addedAvailability: Array<{ startDay: number; endDay: number }> = [];
 
-
 	let valueSingle: string = '';
 	let yearsOfExperience: number = 0;
-	let startDay: number = 0;
-	let endDay: number = 0;
+	let startDay: string = '';
+	let endDay: string = '';
 </script>
 
 <Stepper class="mx-auto w-2/3">
@@ -162,3 +161,7 @@
 		</Step>
 	</form>
 </Stepper>
+
+{#if errorMessage}
+	<div>{errorMessage}</div>
+{/if}
