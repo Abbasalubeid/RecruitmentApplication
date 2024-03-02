@@ -1,5 +1,6 @@
 {
 	"welcome": "Welcome",
+	"createdAccount": "Account successfully created for ",
 	"login": "Login",
 	"logout": "Logout",
 	"username": "Username",
@@ -15,7 +16,7 @@
 	"email": "Email",
 	"enterEmail": "Enter your email",
 	"pnr": "Social Security Number",
-	"pnrFormat": "YYYMMDD-XXX",
+	"pnrFormat": "YYYYMMDD-XXXX",
 	"job": "Job",
 	"signup": "Sign Up",
 	"submit": "Submit",
@@ -39,7 +40,11 @@
 		"invalidEmail": "Invalid email format.",
 		"minLength": "This field must be at least 12 characters long.",
 		"fetchError": "Could not fetch data.",
-		"unexpected": "An unexpected error occurred."
+		"unexpected": "An unexpected error occurred.",
+		"usernameInUse": "Username is already in use.",
+		"emailInUse": "Email is already in use.",
+		"usernameEmailInUse": "Both username and email are already in use.",
+		"signupFailed": "Signup failed. Please try again."
 	},
 	"personName": "Full name",
 	"competence": "Competence",
