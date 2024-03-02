@@ -9,8 +9,6 @@
 	import LoadingView from '../views/LoadingView.svelte';
 	import { Person } from '../models/Person';
 	import { Competence } from '../models/Competence';
-	import { RadioGroup, RadioItem } from '@skeletonlabs/skeleton';
-	import ApplicationCard from '../views/ApplicationCardView.svelte';
 	import { Availability } from '../models/Availability';
 	import ApplicationCardPresenter from './ApplicationCardPresenter.svelte';
 	import SearchboxPresenter from '../presenters/SearchboxPresenter.svelte';
@@ -34,7 +32,9 @@
 			isLoading = true;
 			const resCompetenceProfiles = await fetch('/api/competence_profiles');
 			if (!resCompetenceProfiles.ok) {
-				errorKey = ErrorHandler.handleApiError(new Error());
+				errorKey = ErrorHandler.handleApiError(
+					new Error('Api fetch failed: Could not load /api/competence_profiles')
+				);
 				errorStatus = resCompetenceProfiles.status;
 				return;
 			}
@@ -54,7 +54,9 @@
 			const resPerson = await fetch('/api/persons');
 
 			if (!resPerson.ok) {
-				errorKey = ErrorHandler.handleApiError(new Error());
+				errorKey = ErrorHandler.handleApiError(
+					new Error('Api fetch failed: Could not load /api/persons')
+				);
 				errorStatus = resPerson.status;
 				return;
 			}
@@ -72,7 +74,9 @@
 
 			const resCompetence = await fetch('api/competences');
 			if (!resCompetence.ok) {
-				errorKey = ErrorHandler.handleApiError(new Error());
+				errorKey = ErrorHandler.handleApiError(
+					new Error('Api fetch failed: Could not load api/competences')
+				);
 				errorStatus = resCompetence.status;
 				return;
 			}
@@ -94,7 +98,9 @@
 			const resAvailability = await fetch('/api/availability');
 
 			if (!resAvailability.ok) {
-				errorKey = ErrorHandler.handleApiError(new Error());
+				errorKey = ErrorHandler.handleApiError(
+					new Error('Api fetch failed: Could not load /api/availability')
+				);
 				errorStatus = resAvailability.status;
 				return;
 			}
@@ -153,11 +159,11 @@
 
 		const competence = competences.find((c) => c.competence_id === profile.competence_id);
 
-		const job = competence ? `${competence.name}` : profile.competence_id;
+		const job = competence ? $t(`${competence.name}`) : profile.competence_id;
 		return {
 			personName: fullName,
 			competence: job,
-			status: profile.status
+			status: $t(profile.status)
 		};
 	});
 
@@ -191,7 +197,7 @@
 	function onSelectedTable(meta: any): void {
 		showApplication = true;
 		applicationMetaData = meta;
-		let competence = competences.find((c) => c.name === applicationMetaData.detail[1]);
+		let competence = competences.find((c) => $t(c.name) === applicationMetaData.detail[1]);
 		let person = persons.find(
 			(p) =>
 				p.name === applicationMetaData.detail[0].split(' ')[0] &&

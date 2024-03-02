@@ -44,7 +44,7 @@
 			competence_profiles[indexOfOldCompetenceProfile].status = status;
 			updateTable(competence_profiles);
 		} catch (error: any) {
-			errorKey = ErrorHandler.handleUnexpectedError(error);
+        	errorKey = ErrorHandler.handleUnexpectedError(error);
 		}
 	}
 

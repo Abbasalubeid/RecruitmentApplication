@@ -15,20 +15,17 @@ export class Logger {
 		const filePath = 'logs/' + logName + '.txt';
 		const fileContent = e.message;
 
-		fs.mkdir(directoryPath, { recursive: true }, (err) => {
+		if (!fs.existsSync(directoryPath)) {
+			fs.mkdirSync(directoryPath, { recursive: true });
+			console.log('Directory created successfully.');
+		}
+
+		fs.appendFile(filePath, fileContent + '\n', (err) => {
 			if (err) {
-				console.error('Error creating directory:', err);
+				console.error('Error writing to file:', err);
 				return;
 			}
-			console.log('Directory created successfully.');
-
-			fs.writeFile(filePath, fileContent, (err) => {
-				if (err) {
-					console.error('Error writing to file:', err);
-					return;
-				}
-				console.log('Content has been written to', filePath);
-			});
+			console.log('Content has been written to', filePath);
 		});
 	}
 }
