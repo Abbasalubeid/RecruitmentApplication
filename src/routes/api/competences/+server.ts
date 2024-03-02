@@ -21,8 +21,6 @@ export async function GET() {
 			}
 		});
 	} catch (error) {
-		console.error('LOG: Failed to fetch competences:', error);
-
 		return new Response(JSON.stringify({ error: 'Failed to fetch competences' }), {
 			status: 500,
 			headers: {

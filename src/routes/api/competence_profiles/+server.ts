@@ -39,10 +39,11 @@ export async function PUT({ request }) {
         const data = await request.json();
         const { status, id } = data;
 
-        const updatedCompetenceProfile = await prisma.competence_profile.update({
+        const [updatedCompetenceProfile] = await prisma.$transaction ([
+            prisma.competence_profile.update({
             where: { competence_profile_id: parseInt(id) },
             data: { status: status },
-        });
+        })]);
 		const updatedId = updatedCompetenceProfile.competence_profile_id;
         return new Response(JSON.stringify({ updatedId }), {
             status: 200,
@@ -51,8 +52,6 @@ export async function PUT({ request }) {
             }
         });
     } catch (error) {
-        console.error('LOG: Failed to update competence profile:', error);
-
         return new Response(JSON.stringify({ error: 'Failed to update competence profile' }), {
             status: 500,
             headers: {
