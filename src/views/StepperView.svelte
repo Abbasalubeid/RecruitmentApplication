@@ -3,16 +3,15 @@
 
 	export let expertise: Array<{ id: number; name: string }> = [];
 	export let onAddExperience: (expertise: string, years: number) => void;
-	export let onAddAvailability: (startDay: number, endDay: number) => void;
+	export let onAddAvailability: (startDay: string, endDay: string) => void;
 	export let addedExperiences: Array<{ expertise: string; years: number }> = [];
-	export let addedAvailability: Array<{ startDay: number; endDay: number }> = [];
-
-	//ListBox pre selected value
+	export let addedAvailability: Array<{ startDay: string; endDay: string }> = [];
+	export let errorMessage: string = '';
 
 	let valueSingle: string = '';
 	let yearsOfExperience: number = 0;
-	let startDay: number = 0;
-	let endDay: number = 0;
+	let startDay: string = '';
+	let endDay: string = '';
 </script>
 
 <Stepper class="mx-auto w-2/3">
@@ -139,3 +138,7 @@
 		</Step>
 	</form>
 </Stepper>
+
+{#if errorMessage}
+	<div>{errorMessage}</div>
+{/if}
