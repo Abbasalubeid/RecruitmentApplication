@@ -7,10 +7,12 @@
 	import { t } from 'svelte-i18n';
 	import { navigateWithQuery } from '$lib/util/navigation';
 	import FormView from '../views/FormView.svelte';
+	import Validator from '$lib/util/validator';
 
 	export let originallyRequestedPath: string;
 
 	let errorKey: string | undefined;
+	let inputErrors: Record<string, string | undefined> = {};
 	let loading = false;
 
 	$: inputs = [
@@ -28,6 +30,17 @@
 		detail: { formData: { username: string; password: string } };
 	}) {
 		loading = true;
+
+		const formData = event.detail.formData;
+
+		inputErrors = Validator.validateForm(formData);
+
+		// If any validation errors exist, do not proceed
+
+		if (Object.keys(inputErrors).some((key) => inputErrors[key] !== undefined)) {
+			loading = false;
+			return;
+		}
 		try {
 			const res = await fetch('/api/auth/login', {
 				method: 'POST',
@@ -54,11 +67,20 @@
 	}
 
 	$: errorMessage = errorKey ? $t(errorKey) : undefined;
+
+	$: translatedInputErrors = Object.entries(inputErrors).reduce(
+		(acc: Record<string, string | undefined>, [key, errorKey]) => {
+			acc[key] = errorKey ? $t(errorKey) : undefined;
+			return acc;
+		},
+		{}
+	);
 </script>
 
 <FormView
 	on:submit={handleLogin}
 	{inputs}
+	inputErrors={translatedInputErrors}
 	buttonText={$t('login')}
 	title={$t('login')}
 	{errorMessage}
