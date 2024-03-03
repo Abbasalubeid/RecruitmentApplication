@@ -17,6 +17,7 @@
 		"@sveltejs/adapter-auto": "^3.0.0",
 		"@sveltejs/kit": "^2.0.0",
 		"@sveltejs/vite-plugin-svelte": "^3.0.0",
+		"@types/bcrypt": "^5.0.2",
 		"@types/eslint": "8.56.0",
 		"@types/jsonwebtoken": "^9.0.5",
 		"@types/node": "^20.11.16",
@@ -42,6 +43,7 @@
 	"type": "module",
 	"dependencies": {
 		"@prisma/client": "^5.9.1",
+		"bcrypt": "^5.1.1",
 		"iconify-icon": "^2.0.0",
 		"jsonwebtoken": "^9.0.2",
 		"svelte-i18n": "^4.0.0"
