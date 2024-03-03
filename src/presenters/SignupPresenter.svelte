@@ -8,17 +8,20 @@
 	import { t } from 'svelte-i18n';
 	import FormView from '../views/FormView.svelte';
 	import StatusView from '../views/StatusView.svelte';
+	import Validator from '$lib/util/validator';
 
 	let errorKey: string | undefined;
 	let loading = false;
 	let signupSuccess = false;
-	let username = 'test';
+	let username = '';
+
+	let inputErrors: Record<string, string | undefined> = {};
 
 	$: inputs = [
 		{ name: 'name', label: $t('name'), placeholder: $t('enterName'), type: 'text' },
 		{ name: 'surname', label: $t('surname'), placeholder: $t('enterSurname'), type: 'text' },
 		{ name: 'pnr', label: $t('pnr'), placeholder: $t('pnrFormat'), type: 'text' },
-		{ name: 'email', label: $t('email'), placeholder: $t('enterEmail'), type: 'email' },
+		{ name: 'email', label: $t('email'), placeholder: $t('enterEmail'), type: 'text' },
 		{ name: 'username', label: $t('username'), placeholder: $t('chooseUsername'), type: 'text' },
 		{ name: 'password', label: $t('password'), placeholder: $t('choosePassword'), type: 'password' }
 	];
@@ -43,6 +46,14 @@
 	}) {
 		loading = true;
 		const formData = event.detail.formData;
+
+		inputErrors = Validator.validateForm(formData);
+
+		// If any validation errors exist, do not proceed
+		if (Object.keys(inputErrors).some((key) => inputErrors[key] !== undefined)) {
+			loading = false;
+			return;
+		}
 
 		try {
 			const response = await fetch('/api/auth/signup', {
@@ -78,6 +89,14 @@
 	}
 
 	$: errorMessage = errorKey ? $t(errorKey) : undefined;
+
+	$: translatedInputErrors = Object.entries(inputErrors).reduce(
+		(acc: Record<string, string | undefined>, [key, errorKey]) => {
+			acc[key] = errorKey ? $t(errorKey) : undefined;
+			return acc;
+		},
+		{}
+	);
 </script>
 
 {#if signupSuccess}
@@ -86,6 +105,7 @@
 	<FormView
 		on:submit={handleSignup}
 		{inputs}
+		inputErrors={translatedInputErrors}
 		buttonText={$t('signup')}
 		title={$t('signup')}
 		{errorMessage}

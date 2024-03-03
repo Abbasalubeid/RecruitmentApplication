@@ -1,10 +1,12 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import { ProgressRadial } from '@skeletonlabs/skeleton';
+	import { t } from 'svelte-i18n';
 
 	const dispatch = createEventDispatcher();
 	export let title: string;
 	export let inputs: Array<{ name: string; label: string; placeholder: string; type: string }> = [];
+	export let inputErrors: Record<string, string | undefined> = {};
 	export let buttonText: string;
 	export let errorMessage: string | undefined;
 	export let loading: boolean = false;
@@ -18,10 +20,12 @@
 		{}
 	);
 
-	$: errorClass = errorMessage ? 'input-error' : '';
-
 	function handleInput(event: any, name: string) {
 		formData[name] = event.target.value;
+		// Clear the error for the field when the user starts typing
+		if (inputErrors[name]) {
+			inputErrors[name] = undefined;
+		}
 	}
 
 	function submit() {
@@ -44,23 +48,29 @@
 						<input
 							value={formData[input.name]}
 							on:input={(event) => handleInput(event, input.name)}
-							class="input mt-1 px-3 py-2 {errorClass}"
+							class={`input mt-1 px-3 py-2 ${inputErrors[input.name] ? 'input-error' : ''}`}
 							type={input.type}
 							placeholder={input.placeholder}
-							required
 						/>
+						{#if inputErrors[input.name]}
+							<p class="text-error-500">{inputErrors[input.name]}</p>
+						{/if}
 					</label>
 				</div>
 			{/each}
-			<button type="submit" class="variant-filled-primary btn" disabled={loading}>
+			<button
+				type="submit"
+				class={`btn ${errorMessage ? 'bg-error-500 hover:bg-error-600' : 'variant-filled-primary'}`}
+				disabled={loading}
+			>
 				{#if loading}
 					<ProgressRadial width="w-8" track="stroke-primary-500/30" />
 				{:else}
-					{buttonText}
+					{errorMessage ? $t('tryAgain') : buttonText}
 				{/if}
 			</button>
 			{#if errorMessage}
-				<p class="mt-4 text-center text-sm text-error-500">{errorMessage}</p>
+				<h5 class=" h5 mt-4 text-center text-error-500">{errorMessage}</h5>
 			{/if}
 		</form>
 	</div>

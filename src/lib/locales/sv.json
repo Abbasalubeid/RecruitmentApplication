@@ -32,6 +32,7 @@
 	"fetchingCompetences": "Hämtar kompetenser...",
 	"goToHomepage": "Gå till startsidan",
 	"goToLogin": "Gå till inloggning",
+	"tryAgain": "Försök igen",
 	"logInToContinue": "Logga in för att fortsätta",
 	"accessDenied": "Åtkomst nekad",
 	"error": {
@@ -42,9 +43,13 @@
 		"fetchError": "Kunde inte hämta.",
 		"unexpected": "Ett oväntat fel inträffade.",
 		"usernameInUse": "Användarnamnet är redan taget.",
-		"emailInUse": "E-postadressen är redan i bruk.",
-		"usernameEmailInUse": "Både användarnamn och e-postadress är redan i bruk.",
-		"signupFailed": "Registrering misslyckades. Försök igen."
+		"emailInUse": "E-postadressen är använd i tidigare registrering.",
+		"usernameEmailInUse": "Både användarnamn och e-postadress finns registrerade.",
+		"signupFailed": "Registrering misslyckades. Försök igen.",
+		"invalidPnr": "Ogiltigt personnummerformat, använd ÅÅÅÅMMDD-XXXX",
+		"notOldEnough15": "Du måste vara minst 15 år.",
+		"minLength3": "Detta fält måste vara minst 3 tecken långt.",
+		"minLength8": "Detta fält måste vara minst 8 tecken långt."
 	},
 	"personName": "Fullständigt namn",
 	"competence": "Kompetens",
