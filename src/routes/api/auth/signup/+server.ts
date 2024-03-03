@@ -18,11 +18,13 @@ export async function POST({ request }) {
 	const saltRounds = parseInt(BCRYPT_SALT_ROUNDS);
 	const hashedPassword = await bcrypt.hash(password, saltRounds);
 	try {
-		const existingUser = await prisma.person.findFirst({
-			where: {
-				OR: [{ username }, { email }]
-			}
-		});
+		const [existingUser] = await prisma.$transaction([
+			prisma.person.findFirst({
+				where: {
+					OR: [{ username }, { email }]
+				}
+			})
+		]);
 
 		if (existingUser) {
 			const isUsernameTaken = existingUser.username === username;
@@ -43,17 +45,19 @@ export async function POST({ request }) {
 			});
 		}
 
-		const newUser = await prisma.person.create({
-			data: {
-				name: Utilities.capitalizeFirstLetter(name),
-				surname: Utilities.capitalizeFirstLetter(surname),
-				pnr,
-				email,
-				username,
-				password: hashedPassword,
-				role_id: 2
-			}
-		});
+		const [newUser] = await prisma.$transaction([
+			prisma.person.create({
+				data: {
+					name: Utilities.capitalizeFirstLetter(name),
+					surname: Utilities.capitalizeFirstLetter(surname),
+					pnr,
+					email,
+					username,
+					password: hashedPassword,
+					role_id: 2
+				}
+			})
+		]);
 
 		return new Response(
 			JSON.stringify({
