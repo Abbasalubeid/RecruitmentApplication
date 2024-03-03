@@ -1,4 +1,7 @@
 import prisma from '$lib/server/prismaClient';
+import bcrypt from 'bcrypt';
+import { BCRYPT_SALT_ROUNDS } from '$env/static/private';
+import { Utilities } from '$lib/util/utilites';
 
 /**
  * Processes POST requests for user registration at '/api/auth/signup'. It checks if the provided username or email
@@ -12,6 +15,8 @@ export async function POST({ request }) {
 	const data = await request.json();
 	const { name, surname, pnr, email, username, password } = data;
 
+	const saltRounds = parseInt(BCRYPT_SALT_ROUNDS);
+	const hashedPassword = await bcrypt.hash(password, saltRounds);
 	try {
 		const existingUser = await prisma.person.findFirst({
 			where: {
@@ -40,12 +45,12 @@ export async function POST({ request }) {
 
 		const newUser = await prisma.person.create({
 			data: {
-				name,
-				surname,
+				name: Utilities.capitalizeFirstLetter(name),
+				surname: Utilities.capitalizeFirstLetter(surname),
 				pnr,
 				email,
 				username,
-				password,
+				password: hashedPassword,
 				role_id: 2
 			}
 		});
