@@ -36,6 +36,7 @@ export class Person {
 		this.username = username;
 		this.role = role;
 	}
+	/*
 	 * Returns the full name of the person by concatenating the first name and surname.
 	 * @returns Full name of the person.
 	 */
