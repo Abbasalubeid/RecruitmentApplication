@@ -30,6 +30,13 @@ export class ErrorHandler {
 		return 'error.fetchError';
 	}
 
+	/**
+	 * Logs an error message to the server.
+	 * 
+	 * @param {string} logName - The name of the log to which the error message belongs.
+	 * @param {string} errorMessage - The error message to be logged.
+	 * @returns {Promise<void>} - A Promise that resolves when the error is logged successfully.
+	 */
 	private static async logError(logName: string, errorMessage: string){
 		await fetch('api/logger', {
 			method: 'POST',
