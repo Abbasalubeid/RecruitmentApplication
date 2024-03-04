@@ -1,4 +1,6 @@
 import prisma from '$lib/server/prismaClient';
+import bcrypt from 'bcrypt';
+import { BCRYPT_SALT_ROUNDS } from '$env/static/private';
 
 //TODO: Fix errors.
 
@@ -61,7 +63,7 @@ export async function POST({ request }) {
 				});
 			}
 
-			await prisma.person.update({
+			const updatedPerson = await prisma.person.update({
 				where: {
 					person_id: user.person_id
 				},
@@ -71,11 +73,11 @@ export async function POST({ request }) {
 				}
 			});
 
-			// await prisma.migration_token.delete({
-			// 	where: {
-			// 		person_id: updatedPerson.person_id
-			// 	}
-			// });
+			await prisma.migration_token.delete({
+				where: {
+					person_id: updatedPerson.person_id
+				}
+			});
 
 			return new Response('success', {
 				status: 201,
@@ -99,21 +101,24 @@ export async function POST({ request }) {
 				});
 			}
 
-			await prisma.person.update({
+			const saltRounds = parseInt(BCRYPT_SALT_ROUNDS);
+			const hashedPassword = await bcrypt.hash(missingData.password, saltRounds);
+
+			const updatedPerson = await prisma.person.update({
 				where: {
 					person_id: user.person_id
 				},
 				data: {
 					username: missingData.username,
-					password: missingData.password
+					password: hashedPassword
 				}
 			});
 
-			// await prisma.migration_token.delete({
-			// 	where: {
-			// 		person_id: updatedPerson.person_id
-			// 	}
-			// });
+			await prisma.migration_token.delete({
+				where: {
+					person_id: updatedPerson.person_id
+				}
+			});
 
 			return new Response('success', {
 				status: 201,
