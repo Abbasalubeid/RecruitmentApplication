@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { Role } from './Role';
+import { Role } from './Role';
 
 /**
  * Represents an individual within the organization, encapsulating their personal details and role.
@@ -36,12 +36,25 @@ export class Person {
 		this.username = username;
 		this.role = role;
 	}
-
-	/**
 	 * Returns the full name of the person by concatenating the first name and surname.
 	 * @returns Full name of the person.
 	 */
 	getFullName(): string {
 		return `${this.name} ${this.surname}`;
+	}
+
+	/**
+	 * Converts the Person instance to a plain object suitable for JSON stringification, including nested Role object.
+	 * @returns {Object} A plain object with the Person's properties and the serialized Role object.
+	 */
+	toJSON() {
+		return {
+			person_id: this.person_id,
+			name: this.name,
+			surname: this.surname,
+			email: this.email,
+			username: this.username,
+			role: this.role
+		};
 	}
 }

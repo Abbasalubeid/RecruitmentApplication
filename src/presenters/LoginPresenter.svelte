@@ -4,33 +4,50 @@
 	 * It handles user login events, processes login requests, manages login state (loading, errors).
 	 */
 
-	import LoginView from '../views/LoginView.svelte';
 	import { t } from 'svelte-i18n';
-	import { userStore } from '$lib/stores/UserStore';
-	import { Person } from '../models/Person';
 	import { navigateWithQuery } from '$lib/util/navigation';
+	import FormView from '../views/FormView.svelte';
+	import Validator from '$lib/util/validator';
+
+	export let originallyRequestedPath: string;
 
 	let errorKey: string | undefined;
+	let inputErrors: Record<string, string | undefined> = {};
 	let loading = false;
 
+	$: inputs = [
+		{ name: 'username', label: $t('username'), placeholder: $t('enterUsername'), type: 'text' },
+		{ name: 'password', label: $t('password'), placeholder: $t('enterPassword'), type: 'password' }
+	];
+
 	/**
-	 * Handles the login event emitted by the `LoginView` component. It performs a POST request to the
-	 * '/api/auth/login' endpoint with the provided username and password. Upon successful authentication,
-	 * it updates the userStore with the logged-in user's information and redirects to the homepage.
-	 * In case of an error, it sets the appropriate error message to be displayed.
+	 * Handles the login event emitted by the `FormView` component. It performs a POST request to the
+	 * '/api/auth/login' endpoint with the provided username and password.
 	 *
 	 * @param {Object} event - The event object containing the username and password.
 	 */
-	const handleLogin = async (event: { detail: { username: string; password: string } }) => {
+	async function handleLogin(event: {
+		detail: { formData: { username: string; password: string } };
+	}) {
 		loading = true;
-		const { username, password } = event.detail;
+
+		const formData = event.detail.formData;
+
+		inputErrors = Validator.validateForm(formData);
+
+		// If any validation errors exist, do not proceed
+
+		if (Object.keys(inputErrors).some((key) => inputErrors[key] !== undefined)) {
+			loading = false;
+			return;
+		}
 		try {
 			const res = await fetch('/api/auth/login', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
 				},
-				body: JSON.stringify({ username, password })
+				body: JSON.stringify(event.detail.formData)
 			});
 			if (!res.ok) {
 				const { error } = await res.json();
@@ -42,28 +59,30 @@
 				return;
 			}
 
-			const { userInfo } = await res.json();
-			const person = new Person(
-				userInfo.person_id,
-				userInfo.name,
-				userInfo.surname,
-				userInfo.email,
-				userInfo.username,
-				userInfo.role
-			);
-			userStore.updateUser(person);
-
-			const queryParams = new URLSearchParams(window.location.search);
-			const lang = queryParams.get('lang');
-
-			navigateWithQuery('/');
-		} catch (err) {
+			navigateWithQuery(originallyRequestedPath, true);
+		} catch (error) {
 			errorKey = 'error.unexpected';
 			loading = false;
 		}
-	};
+	}
 
 	$: errorMessage = errorKey ? $t(errorKey) : undefined;
+
+	$: translatedInputErrors = Object.entries(inputErrors).reduce(
+		(acc: Record<string, string | undefined>, [key, errorKey]) => {
+			acc[key] = errorKey ? $t(errorKey) : undefined;
+			return acc;
+		},
+		{}
+	);
 </script>
 
-<LoginView on:login={handleLogin} {errorMessage} {loading} />
+<FormView
+	on:submit={handleLogin}
+	{inputs}
+	inputErrors={translatedInputErrors}
+	buttonText={$t('login')}
+	title={$t('login')}
+	{errorMessage}
+	{loading}
+/>

@@ -5,13 +5,13 @@
 	import { onMount } from 'svelte';
 	import { ErrorHandler } from '$lib/util/errorHandler';
 	import { CompetenceProfile } from '../models/CompetenceProfile';
-	import ErrorView from '../views/ErrorView.svelte';
 	import LoadingView from '../views/LoadingView.svelte';
 	import { Person } from '../models/Person';
 	import { Competence } from '../models/Competence';
 	import { Availability } from '../models/Availability';
 	import ApplicationCardPresenter from './ApplicationCardPresenter.svelte';
 	import SearchboxPresenter from '../presenters/SearchboxPresenter.svelte';
+	import StatusView from '../views/StatusView.svelte';
 
 	/**
 	 * Data variables
@@ -230,7 +230,7 @@
 </script>
 
 {#if errorMessage}
-	<ErrorView {errorMessage} {errorStatus} />
+	<StatusView message={errorMessage} statusNumber={errorStatus} viewType="error" />
 {:else if competence_profiles.length > 0}
 	<PaginatorView
 		interactive={true}
