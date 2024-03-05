@@ -54,6 +54,22 @@ export class ErrorHandler {
 	}
 
 	/**
+	 * Handles an error when signing up fails.
+	 * @returns {string} An error message key indicating signing up failed.
+	 */
+	public static handleSignUpFailedError() {
+		return 'error.signupFailed';
+	}
+
+	/**
+	 * Handles an error where login credentials are incorrect.
+	 * @returns {string} An error message key indicating the login credentials were incorrect.
+	 */
+	public static handleInvalidCredentialsError() {
+		return 'error.invalidCredentials';
+	}
+
+	/**
 	 * Logs an error message to the server.
 	 *
 	 * @param {string} logName - The name of the log to which the error message belongs.

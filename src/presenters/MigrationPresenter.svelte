@@ -126,8 +126,8 @@
 			}
 
 			success = true;
-		} catch (error: any) {
-			errorKey = ErrorHandler.handleUnexpectedError(error);
+		} catch (error) {
+			errorKey = ErrorHandler.handleUnexpectedError(error as Error);
 		} finally {
 			loading = false;
 		}

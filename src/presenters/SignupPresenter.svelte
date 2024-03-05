@@ -9,6 +9,7 @@
 	import FormView from '../views/FormView.svelte';
 	import StatusView from '../views/StatusView.svelte';
 	import Validator from '$lib/util/validator';
+	import { ErrorHandler } from '$lib/util/errorHandler';
 
 	let errorKey: string | undefined;
 	let loading = false;
@@ -67,23 +68,24 @@
 			if (!response.ok) {
 				const { error } = await response.json();
 				if (error.includes('username')) {
-					errorKey = error.includes('email') ? 'error.usernameEmailInUse' : 'error.usernameInUse';
+					errorKey = ErrorHandler.handleUsernameInUseError();
 				} else if (error.includes('email')) {
-					errorKey = 'error.emailInUse';
+					errorKey = ErrorHandler.handleEmailInUseError();
+				} else if (error.includes('pnr')) {
+					errorKey = ErrorHandler.handlePNRInUseError();
 				} else {
-					errorKey = 'error.signupFailed';
+					errorKey = ErrorHandler.handleSignUpFailedError();
 				}
 				loading = false;
 				return;
 			}
 			const { newUser } = await response.json();
-			console.log(newUser);
 
 			username = newUser.name;
 
 			signupSuccess = true;
 		} catch (error) {
-			errorKey = 'error.unexpected';
+			errorKey = ErrorHandler.handleUnexpectedError(error as Error);
 			loading = false;
 		}
 	}
