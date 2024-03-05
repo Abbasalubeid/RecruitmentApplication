@@ -21,22 +21,20 @@ export async function POST({ request }) {
 		const [existingUser] = await prisma.$transaction([
 			prisma.person.findFirst({
 				where: {
-					OR: [{ username }, { email }]
+					OR: [{ username }, { email }, { pnr }]
 				}
 			})
 		]);
 
 		if (existingUser) {
-			const isUsernameTaken = existingUser.username === username;
-			const isEmailTaken = existingUser.email === email;
+			let errorMessage;
 
-			let errorMessage = 'User already exists';
-			if (isUsernameTaken && isEmailTaken) {
-				errorMessage = 'Both username and email are already in use';
-			} else if (isUsernameTaken) {
-				errorMessage = 'username is already in use';
-			} else if (isEmailTaken) {
+			if (existingUser.pnr === pnr) {
+				errorMessage = 'pnr is already in use';
+			} else if (existingUser.email === email) {
 				errorMessage = 'email is already in use';
+			} else {
+				errorMessage = 'username is already in use';
 			}
 
 			return new Response(JSON.stringify({ error: errorMessage }), {

@@ -8,6 +8,7 @@
 	import { navigateWithQuery } from '$lib/util/navigation';
 	import FormView from '../views/FormView.svelte';
 	import Validator from '$lib/util/validator';
+	import { ErrorHandler } from '$lib/util/errorHandler';
 
 	export let originallyRequestedPath: string;
 
@@ -51,10 +52,14 @@
 			});
 			if (!res.ok) {
 				const { error } = await res.json();
-				errorKey =
-					error && error.includes('Invalid username or password')
-						? 'error.invalidCredentials'
-						: 'error.unexpected';
+
+				console.log(error)
+
+				if (error.includes('Invalid')) {
+					errorKey = ErrorHandler.handleInvalidCredentialsError();
+				} else {
+					errorKey = ErrorHandler.handleApiError(new Error(error));
+				}
 				loading = false;
 				return;
 			}
@@ -67,7 +72,7 @@
 				navigateWithQuery(originallyRequestedPath, true);
 			}
 		} catch (error) {
-			errorKey = 'error.unexpected';
+			errorKey = ErrorHandler.handleUnexpectedError(error as Error);
 			loading = false;
 		}
 	}
