@@ -12,6 +12,15 @@ export class ErrorHandler {
 	}
 
 	/**
+	 * Logs errors that occurs when users fails to logout.
+	 * @param {Error} e - The error object to be handled.
+	 * @returns {string} An error message key indicating a logout error.
+	 */
+	public static handleLogoutError(e: Error) {
+		ErrorHandler.logError('logout.log', e.message);
+	}
+
+	/**
 	 * Handles unexpected errors.
 	 * @param {Error} e - The error object to be handled.
 	 * @returns {string} An error message key indicating an unexpected error.
@@ -30,7 +39,7 @@ export class ErrorHandler {
 		return 'error.fetchError';
 	}
 
-	private static async logError(logName: string, errorMessage: string){
+	private static async logError(logName: string, errorMessage: string) {
 		await fetch('api/logger', {
 			method: 'POST',
 			headers: {
