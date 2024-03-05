@@ -20,7 +20,7 @@
 	export let username: string;
 </script>
 
-<div class="flex min-h-screen flex-col items-center justify-center space-y-4">
+<div class="mt-[20vh] flex flex-grow flex-col items-center justify-end space-y-4">
 	<h1
 		class="bg-gradient-to-br from-primary-400 to-primary-800 bg-clip-text text-center text-2xl font-bold text-transparent"
 	>

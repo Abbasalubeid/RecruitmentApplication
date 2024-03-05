@@ -25,5 +25,6 @@ export const routeMetadata: RouteMetadata = {
 	'/': { public: true },
 	'/login': { redirectIfAuthenticated: '/' },
 	'/signup': { redirectIfAuthenticated: '/' },
-	'/applications': { requiresAuth: true, roles: ['recruiter'] }
+	'/applications': { requiresAuth: true, roles: ['recruiter'] },
+	'/apply': { requiresAuth: true, roles: ['applicant'] }
 };

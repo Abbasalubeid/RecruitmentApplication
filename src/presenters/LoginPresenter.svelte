@@ -37,7 +37,6 @@
 		inputErrors = Validator.validateForm(formData);
 
 		// If any validation errors exist, do not proceed
-
 		if (Object.keys(inputErrors).some((key) => inputErrors[key] !== undefined)) {
 			loading = false;
 			return;

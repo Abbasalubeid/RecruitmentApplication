@@ -71,7 +71,7 @@
 	}
 </script>
 
-<div class="flex min-h-screen items-center justify-center">
+<div class="mt-[3vh] flex flex-grow flex-col items-center justify-end space-y-4">
 	<div>
 		<h2
 			class="h2 m-5 bg-gradient-to-br from-primary-400 to-primary-800 bg-clip-text text-center font-bold text-transparent"
