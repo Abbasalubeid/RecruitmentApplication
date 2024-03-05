@@ -3,12 +3,28 @@
 	import { RadioGroup, RadioItem } from '@skeletonlabs/skeleton';
 	import { t } from 'svelte-i18n';
 
+	/**
+	 * Metadata object.
+	 * @type {any}
+	 */
 	export let metaData: any;
+
+ 	/**
+     * Extra application data object.
+     * @type {any}
+     */
 	export let extraApplicationData: any;
+
+	/**
+	 * Callback function invoked when the status changes.
+	 * @type {(data: any) => void}
+	 * @default (data: any) => { console.warn('No action provided'); }
+	 */
 	export let onChangeStatus: (data: any) => void = (data: any) => {
 		console.warn('No action provided');
 	};
 
+	
 	let bindGroup = metaData.detail[2] + ' ' + extraApplicationData[0].competence_profile_id;
 </script>
 

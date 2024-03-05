@@ -1,6 +1,7 @@
 {
 	"welcome": "Welcome",
 	"createdAccount": "Account successfully created for ",
+	"setupSuccess": "Account successfully set up.",
 	"login": "Login",
 	"home": "Home",
 	"apply": "Apply",
@@ -42,6 +43,7 @@
 		"invalidCredentials": "Invalid username or password.",
 		"requiredField": "This field is required.",
 		"invalidEmail": "Invalid email format.",
+		"invalidToken": "Invalid token.",
 		"minLength": "This field must be at least 12 characters long.",
 		"fetchError": "Could not fetch data.",
 		"unexpected": "An unexpected error occurred.",
@@ -52,7 +54,9 @@
 		"invalidPnr": "Invalid format, use YYYYMMDD-XXXX",
 		"notOldEnough15": "You are not old enough. Minimum age is 15 years",
 		"minLength3": "This field must be at least 3 characters long.",
-		"minLength8": "This field must be at least 8 characters long."
+		"minLength8": "This field must be at least 8 characters long.",
+		"pnrInUse": "Social Security Number is already in use.",
+		"pageNotFound": "The page could not be found."
 	},
 	"personName": "Full name",
 	"competence": "Competence",
@@ -68,5 +72,9 @@
 	"Filter table search": "Filter table search",
 	"lotteries": "Lotteries",
 	"ticket sales": "Ticket sales",
-	"roller coaster operation": "Roller coaster operation"
+	"roller coaster operation": "Roller coaster operation",
+	"Lotteries": "lotteries",
+	"Ticket sales": "ticket sales",
+	"Roller coaster operation": "roller coaster operation",
+	"setupAccount": "Set Up Your Account"
 }

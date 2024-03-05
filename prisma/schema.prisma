@@ -42,6 +42,7 @@ model person {
   username           String?              @db.VarChar(255)
   availability       availability[]
   competence_profile competence_profile[]
+  migration_token    migration_token?
   role               role?                @relation(fields: [role_id], references: [role_id], onDelete: NoAction, onUpdate: NoAction)
 }
 
@@ -49,4 +50,10 @@ model role {
   role_id Int      @id @default(autoincrement())
   name    String?  @db.VarChar(255)
   person  person[]
+}
+
+model migration_token {
+  person_id Int    @id
+  token     String @unique @db.VarChar(16)
+  person    person @relation(fields: [person_id], references: [person_id], onDelete: Cascade, onUpdate: NoAction)
 }

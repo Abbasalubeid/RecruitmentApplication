@@ -4,11 +4,42 @@
 	import { t } from 'svelte-i18n';
 
 	const dispatch = createEventDispatcher();
+
+	/**
+	 * The title of the form.
+	 * @type {string}
+	 */
 	export let title: string;
+
+	/**
+	 * Array of input fields with their properties.
+	 * @type {Array<{ name: string; label: string; placeholder: string; type: string }>}
+	 */
 	export let inputs: Array<{ name: string; label: string; placeholder: string; type: string }> = [];
+
+	/**
+	 * Object containing input errors, keyed by input name.
+	 * @type {Record<string, string | undefined>}
+	 */
 	export let inputErrors: Record<string, string | undefined> = {};
+
+	/**
+	 * The text displayed on the submit button.
+	 * @type {string}
+	 */
 	export let buttonText: string;
+
+	/**
+	 * The error message to be displayed, if any.
+	 * @type {string | undefined}
+	 */
 	export let errorMessage: string | undefined;
+
+	/**
+	 * Indicates whether the form is currently in a loading state.
+	 * @type {boolean}
+	 * @default false
+	 */
 	export let loading: boolean = false;
 
 	type FormData = {
@@ -20,14 +51,21 @@
 		{}
 	);
 
+    /**
+     * Handles input change events.
+     * @param {Event} event - The input change event.
+     * @param {string} name - The name of the input field.
+     */
 	function handleInput(event: any, name: string) {
 		formData[name] = event.target.value;
-		// Clear the error for the field when the user starts typing
 		if (inputErrors[name]) {
 			inputErrors[name] = undefined;
 		}
 	}
 
+    /**
+     * Submits the form data.
+     */
 	function submit() {
 		dispatch('submit', { formData });
 	}

@@ -1,6 +1,10 @@
 <script lang="ts">
 	import { ProgressRadial } from '@skeletonlabs/skeleton';
 
+    /**
+     * The message to be displayed.
+     * @type {string}
+     */
 	export let message: string = ' ';
 
 	$: displayedMessage = message;
