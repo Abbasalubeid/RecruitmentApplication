@@ -22,13 +22,45 @@ export class ErrorHandler {
 	}
 
 	/**
+	 * Handles page not found errors.
+	 * @returns {string} An error message key indicating a page not found error.
+	 */
+	public static handlePageNotFoundError() {
+		return 'error.pageNotFound';
+	}
+
+	/**
+	 * Handles conflicting social security number (pnr) errors.
+	 * @returns {string} An error message key indicating a conflicting pnr error.
+	 */
+	public static handlePNRInUseError() {
+		return 'error.pnrInUse';
+	}
+
+	/**
+	 * Handles conflicting email errors.
+	 * @returns {string} An error message key indicating a conflicting email error.
+	 */
+	public static handleEmailInUseError() {
+		return 'error.emailInUse';
+	}
+
+	/**
+	 * Handles conflicting username errors.
+	 * @returns {string} An error message key indicating a conflicting username error.
+	 */
+	public static handleUsernameInUseError() {
+		return 'error.usernameInUse';
+	}
+
+	/**
 	 * Logs an error message to the server.
-	 * 
+	 *
 	 * @param {string} logName - The name of the log to which the error message belongs.
 	 * @param {string} errorMessage - The error message to be logged.
 	 * @returns {Promise<void>} - A Promise that resolves when the error is logged successfully.
 	 */
-	private static async logError(logName: string, errorMessage: string){
+	private static async logError(logName: string, errorMessage: string) {
 		await fetch('api/logger', {
 			method: 'POST',
 			headers: {

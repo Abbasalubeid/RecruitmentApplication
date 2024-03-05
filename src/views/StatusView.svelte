@@ -10,11 +10,11 @@
 	 export let message: string;
 
 	/**
-	 * The type of view, either 'error' or 'welcome'.
-	 * @type {'error' | 'welcome'}
+	 * The type of view, either 'error', 'welcome' or 'success'.
+	 * @type {'error' | 'welcome' | 'success'}
 	 * @default 'welcome'
 	 */
-	export let viewType: 'error' | 'welcome' = 'welcome';
+	export let viewType: 'error' | 'welcome' | 'success' = 'welcome';
 
 	/**
 	 * The status number.
@@ -25,8 +25,8 @@
 
 	$: colorClass = viewType === 'error' ? 'error' : 'primary';
 	$: mainIcon = viewType === 'error' ? 'bi:exclamation-triangle-fill' : 'uil:user-check';
-	$: buttonText = viewType === 'error' ? $t('goToHomepage') : $t('Login');
-	$: buttonIcon = viewType === 'error' ? 'line-md:home-twotone' : 'line-md:login';
+	$: buttonText = viewType === 'welcome' ? $t('Login') : $t('goToHomepage');
+	$: buttonIcon = viewType === 'welcome' ? 'line-md:login' : 'line-md:home-twotone';
 	$: buttonBgColor =
 		viewType === 'error'
 			? 'bg-error-700 hover:bg-error-800'

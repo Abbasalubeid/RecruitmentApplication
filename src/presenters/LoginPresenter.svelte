@@ -59,7 +59,13 @@
 				return;
 			}
 
-			navigateWithQuery(originallyRequestedPath, true);
+			const { userInfo } = await res.json();
+
+			if (userInfo.token) {
+				navigateWithQuery(`/migration?token=${userInfo.token}`)
+			} else {
+				navigateWithQuery(originallyRequestedPath, true);
+			}
 		} catch (error) {
 			errorKey = 'error.unexpected';
 			loading = false;

@@ -1,6 +1,7 @@
 {
 	"welcome": "Välkommen",
 	"createdAccount": "Konto registrerat för ",
+	"setupSuccess": "Kontot har färdigställts.",
 	"login": "Logga in",
 	"logout": "Logga ut",
 	"username": "Användarnamn",
@@ -39,6 +40,7 @@
 		"invalidCredentials": "Ogiltigt användarnamn eller lösenord.",
 		"requiredField": "Detta fält är obligatoriskt.",
 		"invalidEmail": "Ogiltigt e-postformat.",
+		"invalidToken": "Ogiltigt token.",
 		"minLength": "Detta fält måste vara minst 12 tecken långt.",
 		"fetchError": "Kunde inte hämta.",
 		"unexpected": "Ett oväntat fel inträffade.",
@@ -49,7 +51,9 @@
 		"invalidPnr": "Ogiltigt personnummerformat, använd ÅÅÅÅMMDD-XXXX",
 		"notOldEnough15": "Du måste vara minst 15 år.",
 		"minLength3": "Detta fält måste vara minst 3 tecken långt.",
-		"minLength8": "Detta fält måste vara minst 8 tecken långt."
+		"minLength8": "Detta fält måste vara minst 8 tecken långt.",
+		"pnrInUse": "Personnumret är redan i bruk.",
+		"pageNotFound": "Sidan kunde inte hittas."
 	},
 	"personName": "Fullständigt namn",
 	"competence": "Kompetens",
@@ -62,5 +66,6 @@
 	"Filter table search": "Filtrera tabellsökning",
 	"lotteries": "Lotteri",
 	"ticket sales": "Biljett försäljning",
-	"roller coaster operation": "Berg- och dalbana operatör"
+	"roller coaster operation": "Berg- och dalbana operatör",
+	"setupAccount": "Färdigställ ditt konto"
 }
