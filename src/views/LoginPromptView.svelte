@@ -12,13 +12,13 @@
 	<div class="flex space-x-4">
 		<button
 			on:click={() => navigateWithQuery(`/login`)}
-			class="inline-block cursor-pointer rounded-full border-2 border-primary-500 bg-transparent px-6 py-3"
+			class="inline-block cursor-pointer rounded-full border-2 border-primary-500 px-6 py-3 hover:bg-primary-500"
 		>
 			{$t('login')}
 		</button>
 		<button
 			on:click={() => navigateWithQuery(`/signup`)}
-			class="inline-block cursor-pointer rounded-full border-2 border-primary-500 bg-primary-700 px-6 py-3"
+			class="inline-block cursor-pointer rounded-full border-2 border-primary-500 px-6 py-3 hover:bg-primary-500"
 		>
 			{$t('signup')}
 		</button>
