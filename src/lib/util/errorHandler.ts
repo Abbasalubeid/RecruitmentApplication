@@ -22,15 +22,6 @@ export class ErrorHandler {
 	}
 
 	/**
-	 * Handles API errors.
-	 * @param {Error} e - The error object to be handled.
-	 * @returns {string} An error message key indicating an API error.
-	 */
-	public static handleAbortError(e: Error) {
-		return 'error.fetchError';
-	}
-
-	/**
 	 * Logs an error message to the server.
 	 * 
 	 * @param {string} logName - The name of the log to which the error message belongs.
