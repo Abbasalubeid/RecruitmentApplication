@@ -21,7 +21,7 @@ export async function POST({ request, cookies }) {
 		[user] = await prisma.$transaction([
 			prisma.person.findFirst({
 				where: { username },
-				include: { role: true }
+				include: { role: true, migration_token: true }
 			})
 		]);
 
@@ -46,7 +46,8 @@ export async function POST({ request, cookies }) {
 							surname: user.surname,
 							email: user.email,
 							role: user.role,
-							username: user.username
+							username: user.username,
+							token: user.migration_token?.token
 						}
 					}),
 					{
