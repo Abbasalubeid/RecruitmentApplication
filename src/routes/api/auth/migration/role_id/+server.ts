@@ -13,13 +13,15 @@ export async function POST({ request }) {
 	const { token } = data;
 
 	try {
-		const user = await prisma.person.findFirst({
-			where: {
-				migration_token: {
-					token: token
+		const [user] = await prisma.$transaction([
+			prisma.person.findFirst({
+				where: {
+					migration_token: {
+						token: token
+					}
 				}
-			}
-		});
+			})
+		]);
 
 		if (user) {
 			return new Response(JSON.stringify({ role_id: user.role_id }), {

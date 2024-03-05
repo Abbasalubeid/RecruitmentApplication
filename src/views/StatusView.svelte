@@ -4,13 +4,13 @@
 	import { t } from 'svelte-i18n';
 
 	export let message: string;
-	export let viewType: 'error' | 'welcome' = 'welcome';
+	export let viewType: 'error' | 'welcome' | 'success' = 'welcome';
 	export let statusNumber: number | undefined = undefined;
 
 	$: colorClass = viewType === 'error' ? 'error' : 'primary';
 	$: mainIcon = viewType === 'error' ? 'bi:exclamation-triangle-fill' : 'uil:user-check';
-	$: buttonText = viewType === 'error' ? $t('goToHomepage') : $t('Login');
-	$: buttonIcon = viewType === 'error' ? 'line-md:home-twotone' : 'line-md:login';
+	$: buttonText = viewType === 'welcome' ? $t('Login') : $t('goToHomepage');
+	$: buttonIcon = viewType === 'welcome' ? 'line-md:login' : 'line-md:home-twotone';
 	$: buttonBgColor =
 		viewType === 'error'
 			? 'bg-error-700 hover:bg-error-800'

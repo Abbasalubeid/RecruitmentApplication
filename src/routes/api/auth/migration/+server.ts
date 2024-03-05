@@ -17,24 +17,26 @@ export async function POST({ request }) {
 	const { token, formData } = data;
 
 	try {
-		const user = await prisma.person.findFirst({
-			where: {
-				migration_token: {
-					token: token
+		const [user] = await prisma.$transaction([
+			prisma.person.findFirst({
+				where: {
+					migration_token: {
+						token: token
+					}
 				}
-			}
-		});
+			})
+		]);
 
 		if (user) {
 			return await updateUser(user, formData);
 		} else {
-			return new Response(JSON.stringify({ error: 'error.invalidToken' }), {
+			return new Response(JSON.stringify({ error: 'Invalid token.' }), {
 				status: 404,
 				headers: { 'Content-Type': 'application/json' }
 			});
 		}
 	} catch (error) {
-		return new Response(JSON.stringify({ error: 'error.unexpected' }), {
+		return new Response(JSON.stringify({ error: 'An error occured.' }), {
 			status: 500,
 			headers: { 'Content-Type': 'application/json' }
 		});
@@ -43,40 +45,44 @@ export async function POST({ request }) {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	async function updateUser(user: any, missingData: any) {
 		if (user.role_id == 1) {
-			const existingUser = await prisma.person.findFirst({
-				where: {
-					OR: [{ pnr: missingData.pnr }, { email: missingData.email }]
-				}
-			});
+			const [existingUser] = await prisma.$transaction([
+				prisma.person.findFirst({
+					where: {
+						OR: [{ pnr: missingData.pnr }, { email: missingData.email }]
+					}
+				})
+			]);
 
 			if (existingUser) {
-				let errorKey;
+				let error;
 				if (existingUser.pnr === missingData.pnr) {
-					errorKey = 'error.pnrInUse';
+					error = 'Social Security Number is already in use.';
 				} else {
-					errorKey = 'error.emailInUse';
+					error = 'Email is already in use.';
 				}
 
-				return new Response(JSON.stringify({ error: errorKey }), {
+				return new Response(JSON.stringify({ error: error }), {
 					status: 409,
 					headers: { 'Content-Type': 'application/json' }
 				});
 			}
 
-			const updatedPerson = await prisma.person.update({
-				where: {
-					person_id: user.person_id
-				},
-				data: {
-					pnr: missingData.pnr,
-					email: missingData.email
-				}
-			});
+			await prisma.$transaction(async (prisma) => {
+				const updatedPerson = await prisma.person.update({
+					where: {
+						person_id: user.person_id
+					},
+					data: {
+						pnr: missingData.pnr,
+						email: missingData.email
+					}
+				});
 
-			await prisma.migration_token.delete({
-				where: {
-					person_id: updatedPerson.person_id
-				}
+				await prisma.migration_token.delete({
+					where: {
+						person_id: updatedPerson.person_id
+					}
+				});
 			});
 
 			return new Response('success', {
@@ -86,16 +92,18 @@ export async function POST({ request }) {
 				}
 			});
 		} else {
-			const existingUser = await prisma.person.findFirst({
-				where: {
-					username: missingData.username
-				}
-			});
+			const [existingUser] = await prisma.$transaction([
+				prisma.person.findFirst({
+					where: {
+						username: missingData.username
+					}
+				})
+			]);
 
 			if (existingUser) {
-				const errorKey = 'error.usernameInUse';
+				const error = 'Username is already in use.';
 
-				return new Response(JSON.stringify({ error: errorKey }), {
+				return new Response(JSON.stringify({ error: error }), {
 					status: 409,
 					headers: { 'Content-Type': 'application/json' }
 				});
@@ -104,20 +112,22 @@ export async function POST({ request }) {
 			const saltRounds = parseInt(BCRYPT_SALT_ROUNDS);
 			const hashedPassword = await bcrypt.hash(missingData.password, saltRounds);
 
-			const updatedPerson = await prisma.person.update({
-				where: {
-					person_id: user.person_id
-				},
-				data: {
-					username: missingData.username,
-					password: hashedPassword
-				}
-			});
+			await prisma.$transaction(async (prisma) => {
+				const updatedPerson = await prisma.person.update({
+					where: {
+						person_id: user.person_id
+					},
+					data: {
+						username: missingData.username,
+						password: hashedPassword
+					}
+				});
 
-			await prisma.migration_token.delete({
-				where: {
-					person_id: updatedPerson.person_id
-				}
+				await prisma.migration_token.delete({
+					where: {
+						person_id: updatedPerson.person_id
+					}
+				});
 			});
 
 			return new Response('success', {

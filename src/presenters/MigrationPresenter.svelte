@@ -5,15 +5,17 @@
 	import StatusView from '../views/StatusView.svelte';
 	import Validator from '$lib/util/validator';
 	import { onMount } from 'svelte';
+	import { ErrorHandler } from '$lib/util/errorHandler';
 
 	export let token: string | null;
 
-	let errorKey: string | undefined;
 	let loading = true;
 	let success = false;
 	let validToken = true;
 	let roleID = -1;
 
+	let errorKey: string;
+	let errorStatus:  number;
 	let inputErrors: Record<string, string | undefined> = {};
 
 	$: title = $t('setupAccount');
@@ -37,6 +39,15 @@
 		});
 
 		if (!response.ok) {
+			errorStatus = response.status;
+
+			if (errorStatus == 500) {
+				const { errorMessage } = await response.json();
+				errorKey = ErrorHandler.handleApiError(new Error(errorMessage))
+			} else {
+				errorKey = ErrorHandler.handlePageNotFoundError();
+			}
+
 			validToken = false;
 			loading = false;
 			return;
@@ -59,10 +70,10 @@
 	 async function handleMissingData(event: {
 		detail: {
 			formData: {
-				pnr: string | never;
-				email: string | never;
-				username: string | never;
-				password: string | never;
+				pnr: string;
+				email: string;
+				username: string;
+				password: string;
 			};
 		};
 	}) {
@@ -88,13 +99,35 @@
 
 			if (!response.ok) {
 				const { error } = await response.json();
-				errorKey = error;
+
+				if (response.status != 409) {
+					errorStatus = response.status;
+
+					if (errorStatus == 500) {
+						const { errorMessage } = await response.json();
+						errorKey = ErrorHandler.handleApiError(new Error(errorMessage))
+					} else {
+						errorKey = ErrorHandler.handlePageNotFoundError();
+					}
+
+					validToken = false;
+				} else {
+					if (error.includes('Social Security Number')) {
+						errorKey = ErrorHandler.handlePNRInUseError();
+					} else if (error.includes('Email')) {
+						errorKey = ErrorHandler.handleEmailInUseError();
+					} else if (error.includes('Username')) {
+						errorKey = ErrorHandler.handleUsernameInUseError();
+					}
+				}
+
+				loading = false;
 				return;
 			}
 
 			success = true;
-		} catch (error) {
-			errorKey = 'error.unexpected';
+		} catch (error: any) {
+			errorKey = ErrorHandler.handleUnexpectedError(error);
 		} finally {
 			loading = false;
 		}
@@ -116,7 +149,7 @@
 {:else}
 	{#if validToken}
 		{#if success}
-			<StatusView message={$t('setupSuccess')} viewType="welcome" />
+			<StatusView message={$t('setupSuccess')} viewType='success' />
 		{:else}
 			<FormView
 				on:submit={handleMissingData}
@@ -129,6 +162,6 @@
 			/>
 		{/if}
 	{:else}
-		<StatusView viewType='error' statusNumber={404} message={$t('error.pageNotFound')} />
+		<StatusView viewType='error' statusNumber={errorStatus} message={$t(errorKey)} />
 	{/if}
 {/if}
