@@ -26,6 +26,7 @@ model competence_profile {
   person_id             Int?
   competence_id         Int?
   years_of_experience   Decimal?    @db.Decimal(4, 2)
+  status                String?     @default("unhandled") @db.VarChar(20)
   competence            competence? @relation(fields: [competence_id], references: [competence_id], onDelete: NoAction, onUpdate: NoAction)
   person                person?     @relation(fields: [person_id], references: [person_id], onDelete: NoAction, onUpdate: NoAction)
 }
