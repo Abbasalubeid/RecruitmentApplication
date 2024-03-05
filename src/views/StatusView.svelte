@@ -3,8 +3,24 @@
 	import 'iconify-icon';
 	import { t } from 'svelte-i18n';
 
-	export let message: string;
+    /**
+     * The message to be displayed.
+     * @type {string}
+     */
+	 export let message: string;
+
+	/**
+	 * The type of view, either 'error', 'welcome' or 'success'.
+	 * @type {'error' | 'welcome' | 'success'}
+	 * @default 'welcome'
+	 */
 	export let viewType: 'error' | 'welcome' | 'success' = 'welcome';
+
+	/**
+	 * The status number.
+	 * @type {number | undefined}
+	 * @default undefined
+	 */
 	export let statusNumber: number | undefined = undefined;
 
 	$: colorClass = viewType === 'error' ? 'error' : 'primary';
