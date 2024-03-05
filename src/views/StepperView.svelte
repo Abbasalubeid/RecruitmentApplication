@@ -1,13 +1,36 @@
 <script lang="ts">
 	import { Stepper, Step, ListBox, ListBoxItem } from '@skeletonlabs/skeleton';
 
-	export let expertise: Array<{ id: number; name: string }> = [];
+	/**
+     * Array of expertise objects.
+     * @type {Array<{ id: number; name: string }>}
+     */
+	 export let expertise: Array<{ id: number; name: string }> = [];
+
+	/**
+	 * Callback function invoked when adding experience.
+	 * @type {(expertise: string, years: number) => void}
+	 */
 	export let onAddExperience: (expertise: string, years: number) => void;
+
+	/**
+	 * Callback function invoked when adding availability.
+	 * @type {(startDay: number, endDay: number) => void}
+	 */
 	export let onAddAvailability: (startDay: number, endDay: number) => void;
+
+	/**
+	 * Array of added experiences.
+	 * @type {Array<{ expertise: string; years: number }>}
+	 */
 	export let addedExperiences: Array<{ expertise: string; years: number }> = [];
+
+	/**
+	 * Array of added availabilities.
+	 * @type {Array<{ startDay: number; endDay: number }>}
+	 */
 	export let addedAvailability: Array<{ startDay: number; endDay: number }> = [];
 
-	//ListBox pre selected value
 
 	let valueSingle: string = '';
 	let yearsOfExperience: number = 0;

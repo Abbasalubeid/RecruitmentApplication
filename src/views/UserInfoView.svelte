@@ -1,7 +1,22 @@
 <script lang="ts">
 	import { t } from 'svelte-i18n';
-	export let fullName: string;
+
+	/**
+     * The full name of the user.
+     * @type {string}
+     */
+	 export let fullName: string;
+
+	/**
+	 * The role of the user, if available.
+	 * @type {string | undefined}
+	 */
 	export let role: string | undefined;
+
+	/**
+	 * The username of the user.
+	 * @type {string}
+	 */
 	export let username: string;
 </script>
 
