@@ -1,20 +1,21 @@
 <script lang="ts">
 	import { Stepper, Step, ListBox, ListBoxItem } from '@skeletonlabs/skeleton';
 
-	export let expertise: Array<{ id: number; name: string }> = [];
-	export let onAddExperience: (expertise: string, years: number) => void;
+	export let expertise: Array<{ competence_id: number; name: string }> = [];
+	export let onAddExperience: (expertise: [number, string], years: number) => void;
 	export let onAddAvailability: (startDay: string, endDay: string) => void;
-	export let addedExperiences: Array<{ expertise: string; years: number }> = [];
+	export let onCompleteHandler: () => void;
+	export let addedExperiences: Array<{ expertise: [number, string]; years: number }> = [];
 	export let addedAvailability: Array<{ startDay: string; endDay: string }> = [];
 	export let errorMessage: string = '';
 
-	let valueSingle: string = '';
+	let selectedExpertise: [number, string] = [0, ''];
 	let yearsOfExperience: number = 0;
 	let startDay: string = '';
 	let endDay: string = '';
 </script>
 
-<Stepper class="mx-auto w-2/3">
+<Stepper on:complete={onCompleteHandler} class="mx-auto w-2/3">
 	<form action="post">
 		<Step>
 			<svelte:fragment slot="header">Area of Expertise</svelte:fragment>
@@ -22,9 +23,9 @@
 				{#each expertise as exp}
 					<ListBoxItem
 						class="bg-primary-500"
-						bind:group={valueSingle}
+						bind:group={selectedExpertise}
 						name="expertise"
-						value={exp.name}>{exp.name}</ListBoxItem
+						value={[exp.competence_id, exp.name]}>{exp.name}</ListBoxItem
 					>
 				{/each}
 			</ListBox>
@@ -32,13 +33,13 @@
 				<label class="label">
 					<span>Years of experience</span>
 
-					<input bind:value={yearsOfExperience} class="input pl-2" type="text" placeholder="0" />
+					<input bind:value={yearsOfExperience} class="input pl-2" type="number" placeholder="0" />
 				</label>
 				<br />
 				<button
-					class="select-none rounded-lg bg-gray-900 px-6 py-3 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+					class="select-none rounded-lg bg-primary-500 px-6 py-3 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
 					type="button"
-					on:click={() => onAddExperience(valueSingle, yearsOfExperience)}
+					on:click={() => onAddExperience(selectedExpertise, yearsOfExperience)}
 				>
 					Add experience
 				</button>
@@ -52,7 +53,7 @@
 				{#each addedExperiences as experience}
 					<li class="mb-4 flex space-x-4 rounded-lg bg-primary-500 p-4">
 						<span class="font-semibold">Expertise:</span>
-						<span class="">{experience.expertise}</span>
+						<span class="">{experience.expertise[1]}</span>
 						<span class="flex-grow"></span>
 						<span class="flex-grow"></span>
 						<span class="font-semibold">Years of experience:</span>
@@ -67,7 +68,7 @@
 				<label class="label">
 					<span>Start Day</span>
 					<input class="input pl-2" type="date" bind:value={startDay} />
-				</label>
+				</label>years, addedExperiences
 				<br />
 				<label class="label">
 					<span>End Day</span>
@@ -75,7 +76,7 @@
 				</label>
 			</div>
 			<button
-				class="select-none rounded-lg bg-gray-900 px-6 py-3 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+				class="select-none rounded-lg bg-primary-500 px-6 py-3 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
 				type="button"
 				on:click={() => onAddAvailability(startDay, endDay)}
 			>
@@ -90,11 +91,11 @@
 				{#each addedAvailability as availability}
 					<li class="mb-4 flex space-x-4 rounded-lg bg-primary-500 p-4">
 						<span class="font-semibold">From:</span>
-						<span class="">{availability.startDay}</span>
+						<span class="">{availability.startDay.split('T')[0]}</span>
 						<span class="flex-grow"></span>
 						<span class="flex-grow"></span>
 						<span class="font-semibold">To:</span>
-						<span class="flex-shrink-0">{availability.endDay}</span>
+						<span class="flex-shrink-0">{availability.endDay.split('T')[0]}</span>
 					</li>
 				{/each}
 			</ul>
@@ -109,7 +110,7 @@
 					{#each addedExperiences as experience}
 						<li class="my-0 flex space-x-4 rounded-lg bg-primary-500 p-4">
 							<span class="font-semibold">Expertise:</span>
-							<span class="">{experience.expertise}</span>
+							<span class="">{experience.expertise[1]}</span>
 							<span class="flex-grow"></span>
 							<span class="flex-grow"></span>
 							<span class="font-semibold">Years of experience:</span>
@@ -126,11 +127,11 @@
 					{#each addedAvailability as availability}
 						<li class="my-0 flex space-x-4 rounded-lg bg-primary-500 p-4">
 							<span class="font-semibold">From:</span>
-							<span class="">{availability.startDay}</span>
+							<span class="">{availability.startDay.split('T')[0]}</span>
 							<span class="flex-grow"></span>
 							<span class="flex-grow"></span>
 							<span class="font-semibold">To:</span>
-							<span class="flex-shrink-0">{availability.endDay}</span>
+							<span class="flex-shrink-0">{availability.endDay.split('T')[0]}</span>
 						</li>
 					{/each}
 				</ul>
