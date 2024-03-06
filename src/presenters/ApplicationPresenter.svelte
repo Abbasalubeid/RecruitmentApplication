@@ -4,8 +4,6 @@
 	import { userStore } from '$lib/stores/userStore';
 	import type { Person } from '../models/Person';
 	import { ErrorHandler } from '$lib/util/errorHandler';
-	import type { CompetenceProfile } from '../models/CompetenceProfile';
-	import type { Availability } from '../models/Availability';
 
 	let errorKey: string | undefined;
 	let errorStatus: number | undefined;
@@ -28,14 +26,16 @@
 		try {
 			const res = await fetch('/api/apply');
 			if (!res.ok) {
-				errorKey = 'error.fetchError';
+				errorKey = ErrorHandler.handleApiError(
+					new Error('Failed to fetch competences using apply api')
+				);
 				errorStatus = res.status;
 				return;
 			}
 			const data = await res.json();
 			expertise = data.competences;
 		} catch (error) {
-			errorKey = 'error.unexpected';
+			errorKey = ErrorHandler.handleUnexpectedError(error as Error);
 			console.log(error);
 		}
 	});
@@ -110,15 +110,15 @@
 				body: JSON.stringify({ person_id, experiences, availabilities })
 			});
 			if (!resCompetenceProfiles.ok) {
-				errorKey = ErrorHandler.handleApiError(new Error());
+				errorKey = ErrorHandler.handleApiError(
+					new Error('Failed to insert competence profiles and availabilities using apply api')
+				);
 				errorStatus = resCompetenceProfiles.status;
 				return;
 			}
-		} catch (error: any) {
-			errorKey = ErrorHandler.handleUnexpectedError(error);
+		} catch (error) {
+			errorKey = ErrorHandler.handleUnexpectedError(error as Error);
 		}
-
-		console.log('onComplete don in presenter');
 	}
 </script>
 
