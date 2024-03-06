@@ -24,6 +24,7 @@
 	let errorKey: string | undefined;
 	let errorStatus: number | undefined;
 	let paginatorLimit = 5;
+	let paginatorPage = 0;
 
 	/**
 	 * On component mount, fetch data and initialize component
@@ -131,7 +132,7 @@
 	 * Pagination settings
 	 */
 	$: paginationSettings = {
-		page: 0,
+		page: paginatorPage,
 		limit: paginatorLimit,
 		size: competence_profiles.length,
 		amounts: [1, 2, 5, 10]
@@ -188,7 +189,8 @@
 	/**
 	 * Handle pagination changes
 	 */
-	function onPageinatorPageChange(): void {
+	function onPageinatorPageChange(data: any): void {
+		paginatorPage = data.detail;
 		paginatedSource = competence_profiles.slice(
 			paginationSettings.page * paginationSettings.limit,
 			paginationSettings.page * paginationSettings.limit + paginationSettings.limit

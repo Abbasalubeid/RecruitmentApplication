@@ -58,7 +58,7 @@
 	 * @type {() => void}
 	 * @default () => { console.warn("No action provided"); }
 	 */
-	 export let onPageinatorPageChange: () => void = () => {
+	 export let onPageinatorPageChange: (data:any) => void = () => {
 		console.warn("No action provided");
 	};
 
