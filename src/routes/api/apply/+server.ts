@@ -1,10 +1,8 @@
 import prisma from '$lib/server/prismaClient';
 
 /**
- * Handles GET requests to the /api/apply endpoint.
- * Fetches all available competences from the database.
- *
- * @returns A Response object containing the competences data in JSON format, or an error message.
+ * Retrieves a list of competences.
+ * @returns {Promise<Response>} A Promise that resolves to a Response object containing the list of competences.
  */
 export async function GET() {
 	try {
@@ -28,14 +26,16 @@ export async function GET() {
 	}
 }
 
+/**
+ * Handles the PUT request for updating an application.
+ * @param {Object} request - The request object.
+ * @returns {Response} - The response object.
+ */
 export async function PUT({ request }) {
 	try {
 		const data = await request.json();
 		const { person_id, experiences, availabilities } = data;
 
-		console.log(person_id);
-		console.log(experiences); //array
-		console.log(availabilities); //array
 		typeof availabilities[0].from_date;
 		await prisma.$transaction(async (prisma) => {
 			await prisma.availability.createMany({
@@ -65,7 +65,6 @@ export async function PUT({ request }) {
 		});
 	} catch (error) {
 		console.error('LOG: Failed to update application:', error);
-		console.log('skipped 200');
 
 		return new Response(JSON.stringify({ error: 'Failed to update application' }), {
 			status: 500,
