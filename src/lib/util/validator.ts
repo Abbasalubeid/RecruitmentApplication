@@ -37,7 +37,7 @@ export default class Validator {
 	 * @returns {string | undefined} - An error key if the value is empty, otherwise undefined.
 	 */
 	private static isNotEmpty(value: string): string | undefined {
-		return value.trim() ? undefined : 'error.requiredField';
+		return value.trim() ? undefined : 'requiredField';
 	}
 
 	/**
@@ -71,7 +71,7 @@ export default class Validator {
 	 */
 	private static isEmailValid(email: string): string | undefined {
 		const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-		return emailPattern.test(email) ? undefined : 'error.invalidEmail';
+		return emailPattern.test(email) ? undefined : 'invalidEmail';
 	}
 
 	/**
@@ -83,10 +83,10 @@ export default class Validator {
 	private static isPnrValid(pnr: string): string | undefined {
 		const pnrPattern = /^\d{4}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])-\d{4}$/;
 		if (!pnrPattern.test(pnr)) {
-			return 'error.invalidPnr';
+			return 'invalidPnr';
 		}
 		if (Validator.calculateAge(Validator.parseDateFromPnr(pnr)) < 15) {
-			return 'error.notOldEnough15';
+			return 'notOldEnough15';
 		}
 		return undefined;
 	}
@@ -99,7 +99,7 @@ export default class Validator {
 	 * @returns {string | undefined} - An error key if the string is too short, otherwise undefined.
 	 */
 	private static hasMinLength(value: string, minLength: number): string | undefined {
-		return value.length >= minLength ? undefined : `error.minLength${minLength}`;
+		return value.length >= minLength ? undefined : `minLength${minLength}`;
 	}
 
 	/**
