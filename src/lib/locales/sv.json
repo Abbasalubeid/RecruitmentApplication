@@ -54,6 +54,7 @@
 	"notOldEnough15": "Du måste vara minst 15 år.",
 	"minLength3": "Detta fält måste vara minst 3 tecken långt.",
 	"minLength8": "Detta fält måste vara minst 8 tecken långt.",
+	"maxLength255": "Detta fält måste vara max 255 tecken långt.",
 	"pnrInUse": "Personnumret är redan i bruk.",
 	"pageNotFound": "Sidan kunde inte hittas.",
 	"personName": "Fullständigt namn",

@@ -2,6 +2,7 @@ import { JWT_SECRET } from '$env/static/private';
 import prisma from '$lib/server/prismaClient';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
+import Validator from '$lib/util/validator.js';
 
 /**
  * Handles POST requests to the '/api/auth/login' endpoint for user authentication.
@@ -14,7 +15,33 @@ import bcrypt from 'bcrypt';
  */
 export async function POST({ request, cookies }) {
 	const data = await request.json();
+
+	if (
+		!data ||
+		!data.username ||
+		!data.password ||
+		!Validator.isString(data.username) ||
+		!Validator.isString(data.password)
+	) {
+		return new Response(JSON.stringify({ error: 'Invalid data format.' }), {
+			status: 400,
+			headers: { 'Content-Type': 'application/json' }
+		});
+	}
+
 	const { username, password } = data;
+
+	if (Validator.isUsernameInvalid(username)) {
+		return new Response(JSON.stringify({ error: 'Invalid username format.' }), {
+			status: 400,
+			headers: { 'Content-Type': 'application/json' }
+		});
+	} else if (Validator.isPasswordInvalid(password)) {
+		return new Response(JSON.stringify({ error: 'Invalid password format.' }), {
+			status: 400,
+			headers: { 'Content-Type': 'application/json' }
+		});
+	}
 
 	let user;
 	try {

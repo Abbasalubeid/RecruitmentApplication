@@ -54,6 +54,7 @@
 	"notOldEnough15": "You are not old enough. Minimum age is 15 years",
 	"minLength3": "This field must be at least 3 characters long.",
 	"minLength8": "This field must be at least 8 characters long.",
+	"maxLength255": "This field must be at most 255 characters long.",
 	"pnrInUse": "Social Security Number is already in use.",
 	"pageNotFound": "The page could not be found.",
 	"personName": "Full name",

@@ -1,6 +1,7 @@
 import prisma from '$lib/server/prismaClient';
 import bcrypt from 'bcrypt';
 import { BCRYPT_SALT_ROUNDS } from '$env/static/private';
+import Validator from '$lib/util/validator.js';
 
 //TODO: Fix errors.
 
@@ -15,6 +16,20 @@ import { BCRYPT_SALT_ROUNDS } from '$env/static/private';
 export async function POST({ request }) {
 	const data = await request.json();
 	const { token, formData } = data;
+
+	if (!data || !data.token || !data.formData || !Validator.isString(data.token)) {
+		return new Response(JSON.stringify({ error: 'Invalid data format.' }), {
+			status: 400,
+			headers: { 'Content-Type': 'application/json' }
+		});
+	}
+
+	if (Validator.isTokenInvalid(token)) {
+		return new Response(JSON.stringify({ error: 'Invalid token format.' }), {
+			status: 400,
+			headers: { 'Content-Type': 'application/json' }
+		});
+	}
 
 	try {
 		const [user] = await prisma.$transaction([
@@ -45,6 +60,30 @@ export async function POST({ request }) {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	async function updateUser(user: any, missingData: any) {
 		if (user.role_id == 1) {
+			if (
+				!missingData.pnr ||
+				!missingData.email ||
+				!Validator.isString(missingData.pnr) ||
+				!Validator.isString(missingData.email)
+			) {
+				return new Response(JSON.stringify({ error: 'Invalid data format.' }), {
+					status: 400,
+					headers: { 'Content-Type': 'application/json' }
+				});
+			}
+
+			if (Validator.isPnrInvalid(missingData.pnr)) {
+				return new Response(JSON.stringify({ error: 'Invalid social security number format.' }), {
+					status: 400,
+					headers: { 'Content-Type': 'application/json' }
+				});
+			} else if (Validator.isEmailInvalid(missingData.email)) {
+				return new Response(JSON.stringify({ error: 'Invalid email format.' }), {
+					status: 400,
+					headers: { 'Content-Type': 'application/json' }
+				});
+			}
+
 			const [existingUser] = await prisma.$transaction([
 				prisma.person.findFirst({
 					where: {
@@ -92,6 +131,30 @@ export async function POST({ request }) {
 				}
 			});
 		} else {
+			if (
+				!missingData.username ||
+				!missingData.password ||
+				!Validator.isString(missingData.username) ||
+				!Validator.isString(missingData.password)
+			) {
+				return new Response(JSON.stringify({ error: 'Invalid data format.' }), {
+					status: 400,
+					headers: { 'Content-Type': 'application/json' }
+				});
+			}
+
+			if (Validator.isUsernameInvalid(missingData.username)) {
+				return new Response(JSON.stringify({ error: 'Invalid username format.' }), {
+					status: 400,
+					headers: { 'Content-Type': 'application/json' }
+				});
+			} else if (Validator.isPasswordInvalid(missingData.password)) {
+				return new Response(JSON.stringify({ error: 'Invalid password format.' }), {
+					status: 400,
+					headers: { 'Content-Type': 'application/json' }
+				});
+			}
+
 			const [existingUser] = await prisma.$transaction([
 				prisma.person.findFirst({
 					where: {
