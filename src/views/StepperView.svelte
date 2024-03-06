@@ -1,35 +1,13 @@
 <script lang="ts">
 	import { Stepper, Step, ListBox, ListBoxItem } from '@skeletonlabs/skeleton';
 
-	/**
-	 * Array of expertise objects.
-	 * @type {Array<{ id: number; name: string }>}
-	 */
-	export let expertise: Array<{ id: number; name: string }> = [];
-
-	/**
-	 * Callback function invoked when adding experience.
-	 * @type {(expertise: string, years: number) => void}
-	 */
-	export let onAddExperience: (expertise: string, years: number) => void;
-
-	/**
-	 * Callback function invoked when adding availability.
-	 * @type {(startDay: number, endDay: number) => void}
-	 */
-	export let onAddAvailability: (startDay: number, endDay: number) => void;
-
-	/**
-	 * Array of added experiences.
-	 * @type {Array<{ expertise: string; years: number }>}
-	 */
-	export let addedExperiences: Array<{ expertise: string; years: number }> = [];
-
-	/**
-	 * Array of added availabilities.
-	 * @type {Array<{ startDay: number; endDay: number }>}
-	 */
-	export let addedAvailability: Array<{ startDay: number; endDay: number }> = [];
+	export let expertise: Array<{ competence_id: number; name: string }> = [];
+	export let onAddExperience: (expertise: [number, string], years: number) => void;
+	export let onAddAvailability: (startDay: string, endDay: string) => void;
+	export let onCompleteHandler: () => void;
+	export let addedExperiences: Array<{ expertise: [number, string]; years: number }> = [];
+	export let addedAvailability: Array<{ startDay: string; endDay: string }> = [];
+	export let errorMessage: string = '';
 
 	let selectedExpertise: [number, string] = [0, ''];
 	let yearsOfExperience: number = 0;
