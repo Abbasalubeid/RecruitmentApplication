@@ -1,19 +1,30 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import StepperView from '../views/StepperView.svelte';
+	import { userStore } from '$lib/stores/userStore';
+	import type { Person } from '../models/Person';
+	import { ErrorHandler } from '$lib/util/errorHandler';
+	import type { CompetenceProfile } from '../models/CompetenceProfile';
+	import type { Availability } from '../models/Availability';
 
-	let expertise: Array<{ id: number; name: string }> = [];
 	let errorKey: string | undefined;
 	let errorStatus: number | undefined;
 	let errorMessage: string = '';
 
-	let addedExperiences: Array<{ expertise: string; years: number }> = [];
+	let expertise: Array<{ competence_id: number; name: string }> = [];
+	let addedExperiences: Array<{ expertise: [number, string]; years: number }> = [];
 	let addedAvailability: Array<{ startDay: string; endDay: string }> = [];
+
+	let person: Person | null = null;
 
 	/**
 	 * Lifecycle hook for component initialization and data fetching. It attempts to fetch competence data from the API, and handles any errors that might occur during the fetch operation.
 	 */
 	onMount(async () => {
+		userStore.subscribe((userData) => {
+			person = userData;
+		});
+
 		try {
 			const res = await fetch('/api/apply');
 			if (!res.ok) {
@@ -25,14 +36,15 @@
 			expertise = data.competences;
 		} catch (error) {
 			errorKey = 'error.unexpected';
+			console.log(error);
 		}
 	});
 
-	function onAddExperience(expertise: string, years: number) {
+	function onAddExperience(expertise: [number, string], years: number) {
 		if (!expertise && !years) {
 			errorMessage = 'Please provide an area of expertise and a number of years of experience.';
 			return;
-		} else if (!expertise) {
+		} else if (!expertise[0]) {
 			errorMessage = 'Please provide an area of expertise.';
 			return;
 		} else if (!years) {
@@ -54,6 +66,7 @@
 		}
 
 		addedExperiences = [...addedExperiences, { expertise, years }];
+
 		errorMessage = '';
 	}
 
@@ -77,15 +90,43 @@
 			return;
 		}
 
+		startDay = new Date(startDay).toISOString();
+		endDay = new Date(endDay).toISOString();
+
 		addedAvailability = [...addedAvailability, { startDay, endDay }];
 		errorMessage = '';
+	}
+
+	async function onCompleteHandler() {
+		try {
+			const person_id = person?.person_id;
+			const experiences = addedExperiences;
+			const availabilities = addedAvailability;
+			const resCompetenceProfiles = await fetch('api/apply', {
+				method: 'PUT',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({ person_id, experiences, availabilities })
+			});
+			if (!resCompetenceProfiles.ok) {
+				errorKey = ErrorHandler.handleApiError(new Error());
+				errorStatus = resCompetenceProfiles.status;
+				return;
+			}
+		} catch (error: any) {
+			errorKey = ErrorHandler.handleUnexpectedError(error);
+		}
+
+		console.log('onComplete don in presenter');
 	}
 </script>
 
 <StepperView
-	{expertise}
 	{onAddExperience}
 	{onAddAvailability}
+	{onCompleteHandler}
+	{expertise}
 	{addedExperiences}
 	{addedAvailability}
 	{errorMessage}
