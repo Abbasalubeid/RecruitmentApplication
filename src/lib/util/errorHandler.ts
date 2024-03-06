@@ -8,7 +8,7 @@ export class ErrorHandler {
 	 */
 	public static handleApiError(e: Error) {
 		ErrorHandler.logError('api.log', e.message);
-		return 'error.fetchError';
+		return 'fetchError';
 	}
 
 	/**
@@ -27,7 +27,7 @@ export class ErrorHandler {
 	 */
 	public static handleUnexpectedError(e: Error) {
 		ErrorHandler.logError('unexpected.log', e.message);
-		return 'error.unexpected';
+		return 'unexpected';
 	}
 
 	/**
@@ -35,7 +35,7 @@ export class ErrorHandler {
 	 * @returns {string} An error message key indicating a page not found error.
 	 */
 	public static handlePageNotFoundError() {
-		return 'error.pageNotFound';
+		return 'pageNotFound';
 	}
 
 	/**
@@ -43,7 +43,7 @@ export class ErrorHandler {
 	 * @returns {string} An error message key indicating a conflicting pnr error.
 	 */
 	public static handlePNRInUseError() {
-		return 'error.pnrInUse';
+		return 'pnrInUse';
 	}
 
 	/**
@@ -51,7 +51,7 @@ export class ErrorHandler {
 	 * @returns {string} An error message key indicating a conflicting email error.
 	 */
 	public static handleEmailInUseError() {
-		return 'error.emailInUse';
+		return 'emailInUse';
 	}
 
 	/**
@@ -59,7 +59,7 @@ export class ErrorHandler {
 	 * @returns {string} An error message key indicating a conflicting username error.
 	 */
 	public static handleUsernameInUseError() {
-		return 'error.usernameInUse';
+		return 'usernameInUse';
 	}
 
 	/**
@@ -67,7 +67,7 @@ export class ErrorHandler {
 	 * @returns {string} An error message key indicating signing up failed.
 	 */
 	public static handleSignUpFailedError() {
-		return 'error.signupFailed';
+		return 'signupFailed';
 	}
 
 	/**
@@ -75,7 +75,7 @@ export class ErrorHandler {
 	 * @returns {string} An error message key indicating the login credentials were incorrect.
 	 */
 	public static handleInvalidCredentialsError() {
-		return 'error.invalidCredentials';
+		return 'invalidCredentials';
 	}
 
 	/**
