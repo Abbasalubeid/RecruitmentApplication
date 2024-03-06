@@ -23,6 +23,7 @@
 	let isLoading: boolean = false;
 	let errorKey: string | undefined;
 	let errorStatus: number | undefined;
+	let paginatorLimit = 5;
 
 	/**
 	 * On component mount, fetch data and initialize component
@@ -131,7 +132,7 @@
 	 */
 	$: paginationSettings = {
 		page: 0,
-		limit: 5,
+		limit: paginatorLimit,
 		size: competence_profiles.length,
 		amounts: [1, 2, 5, 10]
 	} satisfies PaginationSettings;
@@ -176,7 +177,18 @@
 	 * Handle pagination changes
 	 */
 
-	function onPageinatorChange(): void {
+	function onPageinatorAmountChange(data: any): void {
+		paginatorLimit = data.detail;
+		paginatedSource = competence_profiles.slice(
+			paginationSettings.page * paginationSettings.limit,
+			paginationSettings.page * paginationSettings.limit + paginationSettings.limit
+		);
+	}
+
+	/**
+	 * Handle pagination changes
+	 */
+	function onPageinatorPageChange(): void {
 		paginatedSource = competence_profiles.slice(
 			paginationSettings.page * paginationSettings.limit,
 			paginationSettings.page * paginationSettings.limit + paginationSettings.limit
@@ -235,7 +247,8 @@
 	<PaginatorView
 		interactive={true}
 		{onSelectedTable}
-		{onPageinatorChange}
+		{onPageinatorAmountChange}
+		{onPageinatorPageChange}
 		classSetting="mx-auto w-5/6 mt-5"
 		head={translatedHead}
 		body={bodyData}

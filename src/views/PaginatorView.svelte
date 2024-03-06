@@ -45,11 +45,20 @@
 	export let showPreviousNextButtons: boolean;
 
 	/**
-	 * Callback function invoked when the paginator changes.
+	 * Callback function invoked when the paginator amount to show changes.
 	 * @type {() => void}
 	 * @default () => { console.warn("No action provided"); }
 	 */
-	export let onPageinatorChange: () => void = () => {
+	export let onPageinatorAmountChange: (data:any) => void = () => {
+		console.warn("No action provided");
+	};
+
+	/**
+	 * Callback function invoked when the paginator page changes.
+	 * @type {() => void}
+	 * @default () => { console.warn("No action provided"); }
+	 */
+	 export let onPageinatorPageChange: () => void = () => {
 		console.warn("No action provided");
 	};
 
@@ -66,8 +75,8 @@
 <TableView {classSetting} {onSelectedTable} {interactive} {head} {body} />
 
 <Paginator
-	on:amount={onPageinatorChange}
-	on:page={onPageinatorChange}
+	on:amount={onPageinatorAmountChange}
+	on:page={onPageinatorPageChange}
 	class={classSetting}
 	bind:settings
 	{showFirstLastButtons}
