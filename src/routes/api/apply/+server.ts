@@ -1,4 +1,5 @@
 import prisma from '$lib/server/prismaClient';
+import Validator from '$lib/util/validator.js';
 
 /**
  * Retrieves a list of competences.
@@ -33,6 +34,80 @@ export async function GET() {
 export async function PUT({ request }) {
 	try {
 		const data = await request.json();
+
+		if (!data) {
+			return new Response(JSON.stringify({ error: 'Invalid data format.' }), {
+				status: 400,
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			});
+		}
+
+		if (!data.person_id || !Validator.isIntegerWithMaxSize(data.person_id, 4)) {
+			return new Response(JSON.stringify({ error: 'Invalid data format.' }), {
+				status: 400,
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			});
+		}
+
+		if (!data.experiences || !Array.isArray(data.experiences)) {
+			return new Response(JSON.stringify({ error: 'Invalid data format.' }), {
+				status: 400,
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			});
+		}
+
+		for (let index = 0; index < data.experiences.length; index++) {
+			const experience = data.experiences[index];
+			if (
+				!experience.expertise[0] ||
+				!experience.expertise[1] ||
+				!Validator.isIntegerWithMaxSize(experience.expertise[0], 4) ||
+				!Validator.isString(experience.expertise[1]) ||
+				!experience.years ||
+				!(experience.years < 99 && experience.years > 0)
+			) {
+				return new Response(JSON.stringify({ error: 'Invalid data format.' }), {
+					status: 400,
+					headers: {
+						'Content-Type': 'application/json'
+					}
+				});
+			}
+		}
+
+		if (!data.availabilities || !Array.isArray(data.availabilities)) {
+			return new Response(JSON.stringify({ error: 'Invalid data format.' }), {
+				status: 400,
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			});
+		}
+
+		for (let index = 0; index < data.availabilities.length; index++) {
+			const availability = data.availabilities[index];
+			if (
+				!availability.startDay ||
+				!availability.endDay ||
+				!Validator.isString(availability.startDay) ||
+				!Validator.isString(availability.endDay) ||
+				Validator.isDateRangeInvalid(availability.startDay, availability.endDay)
+			) {
+				return new Response(JSON.stringify({ error: 'Invalid data format.' }), {
+					status: 400,
+					headers: {
+						'Content-Type': 'application/json'
+					}
+				});
+			}
+		}
+
 		const { person_id, experiences, availabilities } = data;
 
 		await prisma.$transaction(async (prisma) => {
