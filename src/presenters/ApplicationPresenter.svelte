@@ -9,7 +9,6 @@
 	let errorKey: string | undefined;
 	let errorStatus: number | undefined;
 	let displayMessage: string = '';
-	const maxYearsOfExperience: number = 99;
 
 	let expertise: Array<{ competence_id: number; name: string }> = [];
 	let addedExperiences: Array<{ expertise: [number, string]; years: number }> = [];
