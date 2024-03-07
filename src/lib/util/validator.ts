@@ -134,7 +134,7 @@ export default class Validator {
 	 * @returns {string | undefined} - An error key of the token is invalid, otherwise undefined.
 	 */
 	static isTokenInvalid(token: string): string | undefined {
-		const tokenPattern = /^\[a-zA-Z0-9]{16}$/;
+		const tokenPattern = /^[a-zA-Z0-9]{16}$/;
 		if (!tokenPattern.test(token)) {
 			return 'invalidToken';
 		}
