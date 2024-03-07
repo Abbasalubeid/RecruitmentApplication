@@ -1,4 +1,5 @@
 import prisma from '$lib/server/prismaClient';
+import Validator from '$lib/util/validator.js';
 
 /**
  * Process POST requests for retrieving the role_id of a person from a migration token at '/api/auth/migration/role_id'.
@@ -11,6 +12,20 @@ import prisma from '$lib/server/prismaClient';
 export async function POST({ request }) {
 	const data = await request.json();
 	const { token } = data;
+
+	if (!data || !data.token || !Validator.isString(data.token)) {
+		return new Response(JSON.stringify({ error: 'Invalid data format.' }), {
+			status: 400,
+			headers: { 'Content-Type': 'application/json' }
+		});
+	}
+
+	if (Validator.isTokenInvalid(token)) {
+		return new Response(JSON.stringify({ error: 'Invalid token format.' }), {
+			status: 400,
+			headers: { 'Content-Type': 'application/json' }
+		});
+	}
 
 	try {
 		const [user] = await prisma.$transaction([
