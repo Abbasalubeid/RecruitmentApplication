@@ -64,7 +64,7 @@
 			const { userInfo } = await res.json();
 
 			if (userInfo.token) {
-				navigateWithQuery(`/migration?token=${userInfo.token}`);
+				navigateWithQuery(`/migration?token=${userInfo.token}`, true);
 			} else {
 				navigateWithQuery(originallyRequestedPath, true);
 			}

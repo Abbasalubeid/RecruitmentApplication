@@ -15,9 +15,11 @@ import { redirect } from '@sveltejs/kit';
 export function navigateWithQuery(path: string, forceReload = false) {
 	const queryParams = new URLSearchParams(window.location.search);
 	const lang = queryParams.get('lang');
-	const queryString = lang ? `lang=${lang}` : '';
+	const hasExistingQuery = path.includes('?');
 
-	const fullPath = queryString ? `${path}?${queryString}` : path;
+	const additionalQueryString = lang ? `${hasExistingQuery ? '&' : '?'}lang=${lang}` : '';
+
+	const fullPath = `${path}${additionalQueryString}`;
 
 	if (forceReload) {
 		window.location.href = fullPath;
