@@ -224,13 +224,23 @@
 
 		let personAvailability = availabilities.filter((a) => a.person_id === person?.person_id);
 		extraApplicationData = [competence_profile, personAvailability];
+		extraApplicationData[0].competence_name = (competence?.name);
 	}
 
 	/**
 	 * Update competence_profiles data
 	 * @param new_competence_profiles New competence profiles data
 	 */
-	function updateTable(new_competence_profiles: CompetenceProfile[]): void {
+	function updateTableForSearchBox(new_competence_profiles: CompetenceProfile[]): void {
+		paginatorPage = 0;
+		competence_profiles = new_competence_profiles;
+	}
+
+	/**
+	 * Update competence_profiles data
+	 * @param new_competence_profiles New competence profiles data
+	 */
+	function updateTableForCard(new_competence_profiles: CompetenceProfile[]): void {
 		competence_profiles = new_competence_profiles;
 	}
 
@@ -260,7 +270,7 @@
 	/>
 	<SearchboxPresenter
 		{setApplicationBoolean}
-		{updateTable}
+		updateTable={updateTableForSearchBox}
 		{competences}
 		{persons}
 		{competence_profiles}
@@ -268,7 +278,7 @@
 	{#if showApplication}
 		<ApplicationCardPresenter
 			{competence_profiles}
-			{updateTable}
+			updateTable={updateTableForCard}
 			{extraApplicationData}
 			{applicationMetaData}
 		></ApplicationCardPresenter>

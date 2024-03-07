@@ -74,5 +74,9 @@
 	"Lotteries": "lotteries",
 	"Ticket sales": "ticket sales",
 	"Roller coaster operation": "roller coaster operation",
-	"setupAccount": "Set Up Your Account"
+	"setupAccount": "Set Up Your Account",
+	"lessMonth": "Less than a month",
+	"and" : "and",
+	"year(s)" : "Year(s)",
+	"month(s)" : "Month(s)"
 }

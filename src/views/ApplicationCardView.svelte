@@ -9,10 +9,10 @@
 	 */
 	export let metaData: any;
 
- 	/**
-     * Extra application data object.
-     * @type {any}
-     */
+	/**
+	 * Extra application data object.
+	 * @type {any}
+	 */
 	export let extraApplicationData: any;
 
 	/**
@@ -23,8 +23,6 @@
 	export let onChangeStatus: (data: any) => void = (data: any) => {
 		console.warn('No action provided');
 	};
-
-	
 	let bindGroup = metaData.detail[2] + ' ' + extraApplicationData[0].competence_profile_id;
 </script>
 
@@ -35,8 +33,16 @@
 		</h3>
 	</header>
 	<p class="m-2">{$t('name')}: {metaData.detail[0]}</p>
-	<p class="m-2">{$t('job')}: {metaData.detail[1]}</p>
-	<p class="m-2">{$t('experience')}: {extraApplicationData[0].formatYearsOfExperience()}</p>
+	<p class="m-2">{$t('job')}: {$t(extraApplicationData[0].competence_name)}</p>
+	<p class="m-2">
+		{$t('experience')}:
+		{#if extraApplicationData[0].extractYearsAndMonths()[0] !== 0}
+			{extraApplicationData[0].extractYearsAndMonths()[0]} {$t('year(s)')}
+		{/if}
+		{#if extraApplicationData[0].extractYearsAndMonths()[1] !== 0}
+			{extraApplicationData[0].extractYearsAndMonths()[1]} {$t('month(s)')}
+		{/if}
+	</p>
 	<p class="m-2 text-center">{$t('availability')}:</p>
 	{#each extraApplicationData[1] as availability}
 		<p class="m-2 text-center">

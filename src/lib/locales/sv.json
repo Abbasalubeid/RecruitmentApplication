@@ -68,5 +68,9 @@
 	"lotteries": "Lotteri",
 	"ticket sales": "Biljett försäljning",
 	"roller coaster operation": "Berg- och dalbana operatör",
-	"setupAccount": "Färdigställ ditt konto"
+	"setupAccount": "Färdigställ ditt konto",
+	"lessMonth" : "Mindre än en månad",
+	"and" : "och",
+	"year(s)" : "År",
+	"month(s)" : "Månad(er)"
 }

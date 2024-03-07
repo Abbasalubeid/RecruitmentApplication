@@ -30,16 +30,12 @@ export class CompetenceProfile {
 	}
 
 	/**
-	 * Formats the years of experience into a more readable string.
-	 * @returns A string representation of the years of experience, in years and months.
+	 * Extracts the years and months from the total years of experience.
+	 * @returns {Array<number>} An array containing the years and months.
 	 */
-	formatYearsOfExperience(): string {
+	extractYearsAndMonths(): Array<number> {
 		const years = Math.floor(this.years_of_experience);
 		const months = Math.round((this.years_of_experience - years) * 12);
-		let formatted = years > 0 ? `${years} year${years > 1 ? 's' : ''}` : '';
-		if (months > 0) {
-			formatted += `${formatted ? ' and ' : ''}${months} month${months > 1 ? 's' : ''}`;
-		}
-		return formatted || 'Less than a month';
+		return [years, months];
 	}
 }
