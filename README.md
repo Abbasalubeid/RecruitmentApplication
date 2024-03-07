@@ -1,6 +1,6 @@
 ## Project Description
 
-This project was developed as part of a software architecture course. The primary goal was to facilitate the recruitment process for an amusement park that was expected to attract approximately 15,000 applications within two weeks. A critical requirement was the integration with an existing database, which lacked data that needed addressing to meet the new system's requirements.
+This project was developed as part of a software architecture course. The primary goal was to facilitate the recruitment process for an amusement park that was expected to attract approximately 15,000 applications within two weeks. The application had an existing database, which lacked data that needed addressing to meet the new system's requirements.
 
 ## Tech Stack
 
