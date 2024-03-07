@@ -8,8 +8,7 @@ import prisma from '$lib/server/prismaClient';
  */
 export async function GET() {
 	try {
-		    const availability = await prisma.availability.findMany({
-		});
+		const [availability] = await prisma.$transaction([prisma.availability.findMany({})]);
 
 		return new Response(JSON.stringify({ availability }), {
 			status: 200,
@@ -18,8 +17,6 @@ export async function GET() {
 			}
 		});
 	} catch (error) {
-		console.error('LOG: Failed to fetch availabilities:', error);
-
 		return new Response(JSON.stringify({ error: 'Failed to fetch availabilities' }), {
 			status: 500,
 			headers: {

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { Role } from './Role';
+import { Role } from './Role';
 
 /**
  * Represents an individual within the organization, encapsulating their personal details and role.
@@ -36,51 +36,26 @@ export class Person {
 		this.username = username;
 		this.role = role;
 	}
-
-	/**
-	 * Finds the first person in the given array whose first name and surname match the provided values.
-	 *
-	 * @param {string} firstName - The first name of the person to search for.
-	 * @param {string} surname - The surname of the person to search for.
-	 * @param {Person[]} persons - The array of persons to search within.
-	 * @returns {Person | undefined} The first person found with the matching first name and surname, or undefined if no match is found.
-	 */
-	public static getFirstPersonByFullname(firstName: string, surname: string, persons: Person[]) {
-		const person = persons.find((p) => p.name === firstName && p.surname === surname);
-		return person;
-	}
-
-	/**
-	 * Finds a person in the given array based on their competence profile.
-	 *
-	 * @param {any} competence_profile - The competence profile to match against.
-	 * @param {Person[]} persons - The array of persons to search within.
-	 * @returns {Person | undefined} The person found based on the competence profile, or undefined if no match is found.
-	 */
-	public static getPersonByCompetenceProfile(competence_profile: any, persons: Person[]) {
-		const person = persons.find((p) => p.person_id === competence_profile.person_id);
-		return person;
-	}
-
-	/**
-	 * Finds all persons in the given array whose name or surname contain the specified substring.
-	 * 
-	 * @param {string} name - The substring to search for within names and surnames.
-	 * @param {Person[]} persons - The array of persons to search within.
-	 * @returns {Person[]} An array of persons whose names or surnames contain the specified substring.
-	 */
-	public static getPersonsContainingName(name: string, persons: Person[]) {
-		const possible_persons = persons.filter(
-			(p) => p.name.includes(name) || p.surname.includes(name)
-		);
-		return possible_persons;
-	}
-
-	/**
+	/*
 	 * Returns the full name of the person by concatenating the first name and surname.
 	 * @returns Full name of the person.
 	 */
 	getFullName(): string {
 		return `${this.name} ${this.surname}`;
+	}
+
+	/**
+	 * Converts the Person instance to a plain object suitable for JSON stringification, including nested Role object.
+	 * @returns {Object} A plain object with the Person's properties and the serialized Role object.
+	 */
+	toJSON() {
+		return {
+			person_id: this.person_id,
+			name: this.name,
+			surname: this.surname,
+			email: this.email,
+			username: this.username,
+			role: this.role
+		};
 	}
 }

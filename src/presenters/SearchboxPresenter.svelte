@@ -4,6 +4,7 @@
 	import type { Competence } from '../models/Competence';
 	import SearchboxView from '../views/SearchboxView.svelte';
 	import { Utilities } from '$lib/util/utilites';
+	import { t } from 'svelte-i18n';
 
 	export let competence_profiles: CompetenceProfile[];
 	export let persons: Person[];
@@ -27,20 +28,21 @@
 	 * @param event - The event object containing the chip value.
 	 */
 	function onAdd(event: any) {
-		let possible_persons = Person.getPersonsContainingName(
-			Utilities.capitalizeFirstLetter(event.detail.chipValue),
-			persons
+		let possible_persons = persons.filter(
+			(p) =>
+				p.name.includes(Utilities.capitalizeFirstLetter(event.detail.chipValue)) ||
+				p.surname.includes(Utilities.capitalizeFirstLetter(event.detail.chipValue))
 		);
 
 		let possible_persons_ids: number[] = possible_persons.map((person) => person.person_id);
 
-		let possible_job = competences.filter((c) => c.name.includes(event.detail.chipValue));
-		
+		let possible_job = competences.filter((c) => Utilities.lowercaseFirstLetter($t(c.name)).includes(Utilities.lowercaseFirstLetter(event.detail.chipValue)));
+
 		let possible_job_ids: number[] = possible_job.map((job) => job.competence_id);
 
 		let possible_competence_profiles = competence_profiles.filter(
 			(c) =>
-				c.status.includes(event.detail.chipValue) ||
+				Utilities.lowercaseFirstLetter($t(c.status)).includes(Utilities.lowercaseFirstLetter(event.detail.chipValue)) ||
 				possible_job_ids.includes(c.competence_id) ||
 				possible_persons_ids.includes(c.person_id)
 		);

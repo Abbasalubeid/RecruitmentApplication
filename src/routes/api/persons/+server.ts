@@ -8,8 +8,7 @@ import prisma from '$lib/server/prismaClient';
  */
 export async function GET() {
 	try {
-		    const person = await prisma.person.findMany({
-		});
+		const [person] = await prisma.$transaction([prisma.person.findMany({})]);
 
 		return new Response(JSON.stringify({ person }), {
 			status: 200,
@@ -18,8 +17,6 @@ export async function GET() {
 			}
 		});
 	} catch (error) {
-		console.error('LOG: Failed to fetch persons:', error);
-
 		return new Response(JSON.stringify({ error: 'Failed to fetch persons' }), {
 			status: 500,
 			headers: {

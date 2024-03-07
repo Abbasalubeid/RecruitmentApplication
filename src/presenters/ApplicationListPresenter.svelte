@@ -5,15 +5,13 @@
 	import { onMount } from 'svelte';
 	import { ErrorHandler } from '$lib/util/errorHandler';
 	import { CompetenceProfile } from '../models/CompetenceProfile';
-	import ErrorView from '../views/ErrorView.svelte';
 	import LoadingView from '../views/LoadingView.svelte';
 	import { Person } from '../models/Person';
 	import { Competence } from '../models/Competence';
-	import { RadioGroup, RadioItem } from '@skeletonlabs/skeleton';
-	import ApplicationCard from '../views/ApplicationCardView.svelte';
 	import { Availability } from '../models/Availability';
 	import ApplicationCardPresenter from './ApplicationCardPresenter.svelte';
 	import SearchboxPresenter from '../presenters/SearchboxPresenter.svelte';
+	import StatusView from '../views/StatusView.svelte';
 
 	/**
 	 * Data variables
@@ -25,6 +23,8 @@
 	let isLoading: boolean = false;
 	let errorKey: string | undefined;
 	let errorStatus: number | undefined;
+	let paginatorLimit = 5;
+	let paginatorPage = 0;
 
 	/**
 	 * On component mount, fetch data and initialize component
@@ -34,7 +34,9 @@
 			isLoading = true;
 			const resCompetenceProfiles = await fetch('/api/competence_profiles');
 			if (!resCompetenceProfiles.ok) {
-				errorKey = ErrorHandler.handleApiError(new Error());
+				errorKey = ErrorHandler.handleApiError(
+					new Error('Api fetch failed: Could not load /api/competence_profiles')
+				);
 				errorStatus = resCompetenceProfiles.status;
 				return;
 			}
@@ -54,7 +56,9 @@
 			const resPerson = await fetch('/api/persons');
 
 			if (!resPerson.ok) {
-				errorKey = ErrorHandler.handleApiError(new Error());
+				errorKey = ErrorHandler.handleApiError(
+					new Error('Api fetch failed: Could not load /api/persons')
+				);
 				errorStatus = resPerson.status;
 				return;
 			}
@@ -72,7 +76,9 @@
 
 			const resCompetence = await fetch('api/competences');
 			if (!resCompetence.ok) {
-				errorKey = ErrorHandler.handleApiError(new Error());
+				errorKey = ErrorHandler.handleApiError(
+					new Error('Api fetch failed: Could not load api/competences')
+				);
 				errorStatus = resCompetence.status;
 				return;
 			}
@@ -94,7 +100,9 @@
 			const resAvailability = await fetch('/api/availability');
 
 			if (!resAvailability.ok) {
-				errorKey = ErrorHandler.handleApiError(new Error());
+				errorKey = ErrorHandler.handleApiError(
+					new Error('Api fetch failed: Could not load /api/availability')
+				);
 				errorStatus = resAvailability.status;
 				return;
 			}
@@ -124,8 +132,8 @@
 	 * Pagination settings
 	 */
 	$: paginationSettings = {
-		page: 0,
-		limit: 5,
+		page: paginatorPage,
+		limit: paginatorLimit,
 		size: competence_profiles.length,
 		amounts: [1, 2, 5, 10]
 	} satisfies PaginationSettings;
@@ -147,17 +155,17 @@
 	 * Transformed data for table display
 	 */
 	$: transformedData = paginatedSource.map((profile) => {
-		const person = Person.getPersonByCompetenceProfile(profile, persons);
+		const person = persons.find((p) => p.person_id === profile.person_id);
 
 		const fullName = person ? `${person.name} ${person.surname}` : profile.person_id;
 
-		const competence = Competence.getCompetenceByCompetenceProfile(profile, competences);
+		const competence = competences.find((c) => c.competence_id === profile.competence_id);
 
-		const job = competence ? `${competence.name}` : profile.competence_id;
+		const job = competence ? $t(`${competence.name}`) : profile.competence_id;
 		return {
 			personName: fullName,
 			competence: job,
-			status: profile.status
+			status: $t(profile.status)
 		};
 	});
 
@@ -170,7 +178,19 @@
 	 * Handle pagination changes
 	 */
 
-	function onPageinatorChange(): void {
+	function onPageinatorAmountChange(data: any): void {
+		paginatorLimit = data.detail;
+		paginatedSource = competence_profiles.slice(
+			paginationSettings.page * paginationSettings.limit,
+			paginationSettings.page * paginationSettings.limit + paginationSettings.limit
+		);
+	}
+
+	/**
+	 * Handle pagination changes
+	 */
+	function onPageinatorPageChange(data: any): void {
+		paginatorPage = data.detail;
 		paginatedSource = competence_profiles.slice(
 			paginationSettings.page * paginationSettings.limit,
 			paginationSettings.page * paginationSettings.limit + paginationSettings.limit
@@ -191,20 +211,18 @@
 	function onSelectedTable(meta: any): void {
 		showApplication = true;
 		applicationMetaData = meta;
-		let competence = Competence.getCompetenceByName(competences, applicationMetaData.detail[1]);
-		let person = Person.getFirstPersonByFullname(
-			applicationMetaData.detail[0].split(' ')[0],
-			applicationMetaData.detail[0].split(' ')[1],
-			persons
+		let competence = competences.find((c) => $t(c.name) === applicationMetaData.detail[1]);
+		let person = persons.find(
+			(p) =>
+				p.name === applicationMetaData.detail[0].split(' ')[0] &&
+				p.surname === applicationMetaData.detail[0].split(' ')[1]
 		);
 
-		let competence_profile = CompetenceProfile.getCompetenceProfileByPersonAndCompetence(
-			competence,
-			person,
-			competence_profiles
+		let competence_profile = competence_profiles.find(
+			(cp) => cp.competence_id === competence?.competence_id && cp.person_id === person?.person_id
 		);
 
-		let personAvailability = Availability.getAvailabilitiesForPerson(person, availabilities);
+		let personAvailability = availabilities.filter((a) => a.person_id === person?.person_id);
 		extraApplicationData = [competence_profile, personAvailability];
 	}
 
@@ -226,12 +244,13 @@
 </script>
 
 {#if errorMessage}
-	<ErrorView {errorMessage} {errorStatus} />
+	<StatusView message={errorMessage} statusNumber={errorStatus} viewType="error" />
 {:else if competence_profiles.length > 0}
 	<PaginatorView
 		interactive={true}
 		{onSelectedTable}
-		{onPageinatorChange}
+		{onPageinatorAmountChange}
+		{onPageinatorPageChange}
 		classSetting="mx-auto w-5/6 mt-5"
 		head={translatedHead}
 		body={bodyData}

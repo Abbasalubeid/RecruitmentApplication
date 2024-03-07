@@ -1,4 +1,5 @@
 import prisma from '$lib/server/prismaClient';
+import Validator from '$lib/util/validator.js';
 
 /**
  * Handles GET requests to the /api/competence_profile endpoint.
@@ -8,8 +9,7 @@ import prisma from '$lib/server/prismaClient';
  */
 export async function GET() {
 	try {
-		    const competence_profile = await prisma.competence_profile.findMany({
-		});
+		const competence_profile = await prisma.competence_profile.findMany({});
 
 		return new Response(JSON.stringify({ competence_profile }), {
 			status: 200,
@@ -35,29 +35,44 @@ export async function GET() {
  * @returns {Promise<Response>} Response containing updated competence profile ID or error message
  */
 export async function PUT({ request }) {
-    try {
-        const data = await request.json();
-        const { status, id } = data;
+	try {
+		const data = await request.json();
 
-        const updatedCompetenceProfile = await prisma.competence_profile.update({
-            where: { competence_profile_id: parseInt(id) },
-            data: { status: status },
-        });
+		if (
+			!data ||
+			!data.status ||
+			!data.id ||
+			!Validator.isString(data.status) ||
+			!Validator.isString(data.id) ||
+			!Validator.isIntegerWithMaxSize(parseInt(data.id), 4)
+		) {
+			return new Response(JSON.stringify({ error: 'Invalid data format.' }), {
+				status: 400,
+				headers: { 'Content-Type': 'application/json' }
+			});
+		}
+
+		const { status, id } = data;
+
+		const [updatedCompetenceProfile] = await prisma.$transaction([
+			prisma.competence_profile.update({
+				where: { competence_profile_id: parseInt(id) },
+				data: { status: status }
+			})
+		]);
 		const updatedId = updatedCompetenceProfile.competence_profile_id;
-        return new Response(JSON.stringify({ updatedId }), {
-            status: 200,
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-    } catch (error) {
-        console.error('LOG: Failed to update competence profile:', error);
-
-        return new Response(JSON.stringify({ error: 'Failed to update competence profile' }), {
-            status: 500,
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-    }
+		return new Response(JSON.stringify({ updatedId }), {
+			status: 200,
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		});
+	} catch (error) {
+		return new Response(JSON.stringify({ error: 'Failed to update competence profile' }), {
+			status: 500,
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		});
+	}
 }
