@@ -133,4 +133,34 @@ export default class Validator {
 			parseInt(pnr.substring(6, 8), 10)
 		);
 	}
+
+	/**
+	 * Checks if the provided year is more than 0 and less than 99
+	 * @param {number} years - The number of years to check.
+	 * @returns {string} - An error message if the years are invalid, otherwise an empty string.
+	 */
+
+	static isYearsOfExperienceInvalid(years: number): string {
+		if (years > 99) {
+			return 'provide experience less than 100';
+		} else if (years < 0) {
+			return 'provide experience greater than 0';
+		}
+		return '';
+	}
+
+	/**
+	 * Checks if the provided date is valid.
+	 * @param {string} startDay - The start date to check.
+	 * @param {string} endDay - The end date to check.
+	 * @returns {string} - An error message if the years are invalid, otherwise an empty string.
+	 */
+	static isDateRangeInvalid(startDay: string, endDay: string): string {
+		if (new Date(startDay) < new Date()) {
+			return 'startday in past';
+		} else if (new Date(endDay) < new Date(startDay)) {
+			return 'endday before startday';
+		}
+		return '';
+	}
 }
