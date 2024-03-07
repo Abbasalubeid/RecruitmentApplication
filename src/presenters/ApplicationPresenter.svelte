@@ -4,10 +4,12 @@
 	import { userStore } from '$lib/stores/userStore';
 	import type { Person } from '../models/Person';
 	import { ErrorHandler } from '$lib/util/errorHandler';
+	import Validator from '$lib/util/validator';
 
 	let errorKey: string | undefined;
 	let errorStatus: number | undefined;
-	let errorMessage: string = '';
+	let displayMessage: string = '';
+	const maxYearsOfExperience: number = 99;
 
 	let expertise: Array<{ competence_id: number; name: string }> = [];
 	let addedExperiences: Array<{ expertise: [number, string]; years: number }> = [];
@@ -16,7 +18,10 @@
 	let person: Person | null = null;
 
 	/**
-	 * Lifecycle hook for component initialization and data fetching. It attempts to fetch competence data from the API, and handles any errors that might occur during the fetch operation.
+	 * Async function for initialization and data fetching.
+	 * It gets the user that is logged in and then attempts to
+	 * fetch competence data from the API, and handles
+	 * any errors that might occur during the fetch operation.
 	 */
 	onMount(async () => {
 		userStore.subscribe((userData) => {
@@ -40,53 +45,58 @@
 		}
 	});
 
+	/**
+	 * Function to validate and save user submitted experiences.
+	 */
 	function onAddExperience(expertise: [number, string], years: number) {
 		if (!expertise && !years) {
-			errorMessage = 'Please provide an area of expertise and a number of years of experience.';
+			displayMessage = 'provide expertise and years of experience';
 			return;
 		} else if (!expertise[0]) {
-			errorMessage = 'Please provide an area of expertise.';
+			displayMessage = 'provide expertise';
 			return;
 		} else if (!years) {
-			errorMessage = 'Please provide a number of years of experience.';
+			displayMessage = 'provide years of experience';
 			return;
 		}
 
-		if (years > 99) {
-			errorMessage = 'Please provide a number of years of experience less than 100.';
-			return;
-		} else if (years < 0) {
-			errorMessage = 'Please provide a number of years of experience greater than 0.';
+		displayMessage = Validator.isYearsOfExperienceInvalid(years);
+		if (displayMessage) {
 			return;
 		}
 
 		if (addedExperiences.some((exp) => exp.expertise === expertise)) {
-			errorMessage = 'You have already added this experience.';
+			displayMessage = 'already added experience';
 			return;
 		}
 
 		addedExperiences = [...addedExperiences, { expertise, years }];
-
-		errorMessage = '';
+		displayMessage = '';
 	}
 
 	function onAddAvailability(startDay: string, endDay: string) {
 		if (!startDay && !endDay) {
-			errorMessage = 'Please provide both start day and end day.';
+			displayMessage = 'provide start and end day';
 			return;
 		} else if (!startDay) {
-			errorMessage = 'Please provide a start day.';
+			displayMessage = 'provide start day';
 			return;
 		} else if (!endDay) {
-			errorMessage = 'Please provide an end day.';
+			displayMessage = 'provide end day';
 			return;
 		}
 
 		if (new Date(startDay) < new Date()) {
-			errorMessage = 'Start day cannot be in the past.';
+			displayMessage = 'startday in past';
 			return;
 		} else if (new Date(endDay) < new Date(startDay)) {
-			errorMessage = 'End day cannot be before the start day.';
+			displayMessage = 'endday before startday';
+			return;
+		}
+
+		displayMessage = Validator.isDateRangeInvalid(startDay, endDay);
+
+		if (displayMessage) {
 			return;
 		}
 
@@ -94,7 +104,7 @@
 		endDay = new Date(endDay).toISOString();
 
 		addedAvailability = [...addedAvailability, { startDay, endDay }];
-		errorMessage = '';
+		displayMessage = '';
 	}
 
 	async function onCompleteHandler() {
@@ -119,6 +129,10 @@
 		} catch (error) {
 			errorKey = ErrorHandler.handleUnexpectedError(error as Error);
 		}
+
+		addedAvailability = [];
+		addedExperiences = [];
+		displayMessage = 'application submitted';
 	}
 </script>
 
@@ -129,5 +143,5 @@
 	{expertise}
 	{addedExperiences}
 	{addedAvailability}
-	{errorMessage}
+	{displayMessage}
 />

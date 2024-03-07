@@ -6,8 +6,7 @@ import prisma from '$lib/server/prismaClient';
  */
 export async function GET() {
 	try {
-		const competences = await prisma.competence.findMany();
-
+		const [competences] = await prisma.$transaction([prisma.competence.findMany()]);
 		return new Response(JSON.stringify({ competences }), {
 			status: 200,
 			headers: {
@@ -36,25 +35,28 @@ export async function PUT({ request }) {
 		const data = await request.json();
 		const { person_id, experiences, availabilities } = data;
 
-		typeof availabilities[0].from_date;
 		await prisma.$transaction(async (prisma) => {
-			await prisma.availability.createMany({
-				data: availabilities.map((availability: { startDay: string; endDay: string }) => ({
-					person_id: person_id,
-					from_date: availability.startDay,
-					to_date: availability.endDay
-				}))
-			});
-
-			await prisma.competence_profile.createMany({
-				data: experiences.map(
-					(experience: { expertise: Array<[number, string]>; years: number }) => ({
+			if (availabilities) {
+				await prisma.availability.createMany({
+					data: availabilities.map((availability: { startDay: string; endDay: string }) => ({
 						person_id: person_id,
-						competence_id: experience.expertise[0],
-						years_of_experience: experience.years
-					})
-				)
-			});
+						from_date: availability.startDay,
+						to_date: availability.endDay
+					}))
+				});
+			}
+
+			if (experiences) {
+				await prisma.competence_profile.createMany({
+					data: experiences.map(
+						(experience: { expertise: Array<[number, string]>; years: number }) => ({
+							person_id: person_id,
+							competence_id: experience.expertise[0],
+							years_of_experience: experience.years
+						})
+					)
+				});
+			}
 		});
 
 		return new Response(JSON.stringify({ success: true }), {

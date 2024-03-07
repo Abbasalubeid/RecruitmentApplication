@@ -86,5 +86,18 @@
 	"selected availabilities": "Dina valda tillgängligheter",
 	"next": "Nästa",
 	"back": "Tillbaka",
-	"step": "Steg"
+	"step": "Steg",
+	"provide experience less than 100": "Vänligen ange ett antal år av erfarenhet mindre än 100.",
+	"provide experience greater than 0": "Vänligen ange ett antal år av erfarenhet större än 0.",
+	"provide expertise and years of experience": "Vänligen ange ett expertisområde och ett antal år av erfarenhet.",
+	"provide expertise": "Vänligen ange ett expertisområde.",
+	"provide years of experience": "Vänligen ange ett antal år av erfarenhet.",
+	"provide start and end day": "Vänligen ange både startdag och slutdag.",
+	"provide start day": "Vänligen ange startdag.",
+	"provide end day": "Vänligen ange slutdag.",
+	"startday in past": "Startdagen kan inte ligga förr i tiden.",
+	"endday before startday": "Slutdagen kan inte vara före startdagen.",
+	"already added experience": "Du har redan lagt till denna erfarenhet",
+	"complete": "Klar",
+	"application submitted": "Din ansökan har registrerats."
 }

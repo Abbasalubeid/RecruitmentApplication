@@ -89,5 +89,18 @@
 	"selected availabilities": "Your selected availabilities",
 	"next": "Next",
 	"back": "Back",
-	"step": "Step"
+	"step": "Step",
+	"provide experience less than 100": "Please provide a number of years of experience less than 100.",
+	"provide experience greater than 0": "Please provide a number of years of experience greater than 0.",
+	"provide expertise and years of experience": "Please provide an area of expertise and a number of years of experience.",
+	"provide expertise": "Please provide an area of expertise",
+	"provide years of experience": "Please provide a number of years of experience",
+	"provide start and end day": "Please provide both stgart day and end day",
+	"provide start day": "Please provide start day",
+	"provide end day": "Please provide end day",
+	"startday in past": "Start day cannot be in the past",
+	"endday before startday": "End day cannot be before start day",
+	"already added experience": "You have already added this experience.",
+	"complete": "Complete",
+	"application submitted": "Application has successfully been registered."
 }
