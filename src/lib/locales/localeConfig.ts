@@ -1,10 +1,3 @@
-/**
- * Configuration module for application locales.
- * Manually imports JSON files for each supported locale and exports them as a single object.
- *
- * @module localeConfig
- */
-
 import en from './en.json';
 import sv from './sv.json';
 

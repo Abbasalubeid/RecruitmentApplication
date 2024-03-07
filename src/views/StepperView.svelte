@@ -1,157 +1,179 @@
 <script lang="ts">
 	import { Stepper, Step, ListBox, ListBoxItem } from '@skeletonlabs/skeleton';
+	import { t } from 'svelte-i18n';
 
 	/**
-     * Array of expertise objects.
-     * @type {Array<{ id: number; name: string }>}
-     */
-	 export let expertise: Array<{ id: number; name: string }> = [];
-
-	/**
-	 * Callback function invoked when adding experience.
-	 * @type {(expertise: string, years: number) => void}
+	 * Area of expertise data.
+	 * @type {Array<{ competence_id: number; name: string }>}
 	 */
-	export let onAddExperience: (expertise: string, years: number) => void;
+	export let expertise: Array<{ competence_id: number; name: string }> = [];
 
 	/**
-	 * Callback function invoked when adding availability.
-	 * @type {(startDay: number, endDay: number) => void}
+	 * Callback function for adding experience.
+	 * @type {() => void)}
 	 */
-	export let onAddAvailability: (startDay: number, endDay: number) => void;
+	export let onAddExperience: (expertise: [number, string], years: number) => void;
 
 	/**
-	 * Array of added experiences.
-	 * @type {Array<{ expertise: string; years: number }>}
+	 * Callback function for adding availability.
+	 * @type {() => void}
 	 */
-	export let addedExperiences: Array<{ expertise: string; years: number }> = [];
+	export let onAddAvailability: (startDay: string, endDay: string) => void;
 
 	/**
-	 * Array of added availabilities.
-	 * @type {Array<{ startDay: number; endDay: number }>}
+	 * Callback function invoked when form is submitted.
+	 * @type {() => void}
 	 */
-	export let addedAvailability: Array<{ startDay: number; endDay: number }> = [];
+	export let onCompleteHandler: () => void;
 
+	/**
+	 * Experiences added by the user.
+	 * @type {Array<{ expertise: [number, string]; years: number }>}
+	 */
+	export let addedExperiences: Array<{ expertise: [number, string]; years: number }> = [];
 
-	let valueSingle: string = '';
+	/**
+	 * Availabilities added by the user.
+	 * @type {Array<{ startDay: string; endDay: string }>}
+	 */
+	export let addedAvailability: Array<{ startDay: string; endDay: string }> = [];
+
+	/**
+	 * User validation error message.
+	 * @type {String}
+	 */
+	export let displayMessage: string = '';
+
+	let selectedExpertise: [number, string] = [0, ''];
 	let yearsOfExperience: number = 0;
-	let startDay: number = 0;
-	let endDay: number = 0;
+	let startDay: string = '';
+	let endDay: string = '';
 </script>
 
-<Stepper class="mx-auto w-2/3">
+<Stepper
+	buttonCompleteLabel={$t('complete')}
+	buttonBackLabel={$t('back')}
+	buttonNextLabel={$t('next')}
+	stepTerm={$t('step')}
+	on:complete={onCompleteHandler}
+	class="mx-auto w-2/3"
+>
 	<form action="post">
 		<Step>
-			<svelte:fragment slot="header">Area of Expertise</svelte:fragment>
+			<svelte:fragment slot="header">{$t('area of expertise')}</svelte:fragment>
 			<ListBox>
 				{#each expertise as exp}
-					<ListBoxItem bind:group={valueSingle} name="expertise" value={exp.name}
-						>{exp.name}</ListBoxItem
+					<ListBoxItem
+						class="bg-primary-500"
+						bind:group={selectedExpertise}
+						name="expertise"
+						value={[exp.competence_id, exp.name]}>{$t(exp.name)}</ListBoxItem
 					>
 				{/each}
 			</ListBox>
 			<div class="w-72">
 				<label class="label">
-					<span>Years of experience</span>
+					<span>{$t('years of experience')}</span>
 
-					<input bind:value={yearsOfExperience} class="input pl-2" type="text" placeholder="0" />
+					<input bind:value={yearsOfExperience} class="input pl-2" type="number" placeholder="0" />
 				</label>
 				<br />
 				<button
-					class="select-none rounded-lg bg-gray-900 px-6 py-3 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+					class="select-none rounded-lg bg-primary-500 px-6 py-3 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
 					type="button"
-					on:click={() => onAddExperience(valueSingle, yearsOfExperience)}
+					on:click={() => onAddExperience(selectedExpertise, yearsOfExperience)}
 				>
-					Add experience
+					{$t('add experience')}
 				</button>
 			</div>
 
 			<ul class="list mx-auto w-1/2">
 				<div class="text-center">
-					<span class="text-lg font-bold">Your added experiences:</span>
+					<span class="text-lg font-bold">{$t('added experiences')}:</span>
 				</div>
 
 				{#each addedExperiences as experience}
-					<li class="mb-4 flex space-x-4 rounded-lg bg-gray-100 p-4">
-						<span class="font-semibold text-gray-800">Expertise:</span>
-						<span class="text-gray-600">{experience.expertise}</span>
+					<li class="mb-4 flex space-x-4 rounded-lg bg-primary-500 p-4">
+						<span class="font-semibold">{$t('expertise')}:</span>
+						<span class="">{$t(experience.expertise[1])}</span>
 						<span class="flex-grow"></span>
 						<span class="flex-grow"></span>
-						<span class="font-semibold text-gray-800">Years of experience:</span>
-						<span class="flex-shrink-0 text-gray-600">{experience.years}</span>
+						<span class="font-semibold">{$t('years of experience')}:</span>
+						<span class="flex-shrink-0">{experience.years}</span>
 					</li>
 				{/each}
 			</ul>
 		</Step>
 		<Step>
-			<svelte:fragment slot="header">Pick a an availability range</svelte:fragment>
+			<svelte:fragment slot="header">{$t('pick avaiability range')}</svelte:fragment>
 			<div class="w-72">
 				<label class="label">
-					<span>Start Day</span>
+					<span>{$t('start day')}</span>
 					<input class="input pl-2" type="date" bind:value={startDay} />
 				</label>
 				<br />
 				<label class="label">
-					<span>End Day</span>
+					<span>{$t('end day')}</span>
 					<input class="input pl-2" type="date" bind:value={endDay} />
 				</label>
 			</div>
 			<button
-				class="select-none rounded-lg bg-gray-900 px-6 py-3 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+				class="select-none rounded-lg bg-primary-500 px-6 py-3 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
 				type="button"
 				on:click={() => onAddAvailability(startDay, endDay)}
 			>
-				Add availability
+				{$t('add availability')}
 			</button>
 
 			<ul class="list mx-auto w-1/2">
 				<div class="text-center">
-					<span class="text-lg font-bold">Your added availabilities:</span>
+					<span class="text-lg font-bold">{$t('added availabilities')}:</span>
 				</div>
 
 				{#each addedAvailability as availability}
-					<li class="mb-4 flex space-x-4 rounded-lg bg-gray-100 p-4">
-						<span class="font-semibold text-gray-800">From:</span>
-						<span class="text-gray-600">{availability.startDay}</span>
+					<li class="mb-4 flex space-x-4 rounded-lg bg-primary-500 p-4">
+						<span class="font-semibold">{$t('from')}:</span>
+						<span class="">{availability.startDay.split('T')[0]}</span>
 						<span class="flex-grow"></span>
 						<span class="flex-grow"></span>
-						<span class="font-semibold text-gray-800">To:</span>
-						<span class="flex-shrink-0 text-gray-600">{availability.endDay}</span>
+						<span class="font-semibold">{$t('to')}:</span>
+						<span class="flex-shrink-0">{availability.endDay.split('T')[0]}</span>
 					</li>
 				{/each}
 			</ul>
 		</Step>
 		<Step>
-			<svelte:fragment slot="header">Summary</svelte:fragment>
+			<svelte:fragment slot="header">{$t('summary')}</svelte:fragment>
 			<div>
 				<div class="text-center">
-					<span class="text-lg font-bold">Your selected experiences:</span>
+					<span class="text-lg font-bold">{$t('selected experiences')}:</span>
 				</div>
 				<ul class="list mx-auto w-1/2">
 					{#each addedExperiences as experience}
-						<li class="my-0 flex space-x-4 rounded-lg bg-gray-100 p-4">
-							<span class="font-semibold text-gray-800">Expertise:</span>
-							<span class="text-gray-600">{experience.expertise}</span>
+						<li class="my-0 flex space-x-4 rounded-lg bg-primary-500 p-4">
+							<span class="font-semibold">{$t('expertise')}:</span>
+							<span class="">{$t(experience.expertise[1])}</span>
 							<span class="flex-grow"></span>
 							<span class="flex-grow"></span>
-							<span class="font-semibold text-gray-800">Years of experience:</span>
-							<span class="flex-shrink-0 text-gray-600">{experience.years}</span>
+							<span class="font-semibold">{$t('years of experience')}:</span>
+							<span class="flex-shrink-0">{experience.years}</span>
 						</li>
 					{/each}
 				</ul>
 			</div>
 			<div>
 				<div class="text-center">
-					<span class="text-lg font-bold">Your selected availabilities:</span>
+					<span class="text-lg font-bold">{$t('selected availabilites')}:</span>
 				</div>
 				<ul class="list mx-auto w-1/2">
 					{#each addedAvailability as availability}
-						<li class="my-0 flex space-x-4 rounded-lg bg-gray-100 p-4">
-							<span class="font-semibold text-gray-800">From:</span>
-							<span class="text-gray-600">{availability.startDay}</span>
+						<li class="my-0 flex space-x-4 rounded-lg bg-primary-500 p-4">
+							<span class="font-semibold">{$t('from')}</span>
+							<span class="">{availability.startDay.split('T')[0]}</span>
 							<span class="flex-grow"></span>
 							<span class="flex-grow"></span>
-							<span class="font-semibold text-gray-800">To:</span>
-							<span class="flex-shrink-0 text-gray-600">{availability.endDay}</span>
+							<span class="font-semibold">{$t('to')}:</span>
+							<span class="flex-shrink-0">{availability.endDay.split('T')[0]}</span>
 						</li>
 					{/each}
 				</ul>
@@ -159,3 +181,7 @@
 		</Step>
 	</form>
 </Stepper>
+
+{#if displayMessage}
+	<div class="text-center">{$t(displayMessage)}</div>
+{/if}

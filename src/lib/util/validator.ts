@@ -50,17 +50,31 @@ export default class Validator {
 	 */
 	private static validateField(field: string, value: string): string | undefined {
 		switch (field) {
+			case 'name':
+				return Validator.isNameInvalid(value);
+			case 'surname':
+				return Validator.isNameInvalid(value);
 			case 'email':
-				return Validator.isEmailValid(value);
+				return Validator.isEmailInvalid(value);
 			case 'pnr':
-				return Validator.isPnrValid(value);
+				return Validator.isPnrInvalid(value);
 			case 'username':
-				return Validator.hasMinLength(value, 3);
+				return Validator.isUsernameInvalid(value);
 			case 'password':
-				return Validator.hasMinLength(value, 8);
+				return Validator.isPasswordInvalid(value);
 			default:
 				return undefined;
 		}
+	}
+
+	/**
+	 * Validates a name.
+	 *
+	 * @param {string} name - The name to validate.
+	 * @returns {string | undefined} - An error key if the name format is invalid, otherwise undefined.
+	 */
+	static isNameInvalid(name: string): string | undefined {
+		return this.isTooLong(name, 255);
 	}
 
 	/**
@@ -69,9 +83,9 @@ export default class Validator {
 	 * @param {string} email - The email address to validate.
 	 * @returns {string | undefined} - An error key if the email format is invalid, otherwise undefined.
 	 */
-	private static isEmailValid(email: string): string | undefined {
+	static isEmailInvalid(email: string): string | undefined {
 		const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-		return emailPattern.test(email) ? undefined : 'invalidEmail';
+		return emailPattern.test(email) ? this.isTooLong(email, 255) : 'invalidEmail';
 	}
 
 	/**
@@ -80,7 +94,7 @@ export default class Validator {
 	 * @param {string} pnr - The PNR to validate.
 	 * @returns {string | undefined} - An error key if the PNR is invalid or the person is too young, otherwise undefined.
 	 */
-	private static isPnrValid(pnr: string): string | undefined {
+	static isPnrInvalid(pnr: string): string | undefined {
 		const pnrPattern = /^\d{4}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])-\d{4}$/;
 		if (!pnrPattern.test(pnr)) {
 			return 'invalidPnr';
@@ -92,6 +106,68 @@ export default class Validator {
 	}
 
 	/**
+	 * Validates the format of a username.
+	 *
+	 * @param {string} username - The username to validate.
+	 * @returns {string | undefined} - An error key if the username is invalid, otherwise undefined.
+	 */
+	static isUsernameInvalid(username: string): string | undefined {
+		const minLengthErrorKey = this.hasMinLength(username, 3);
+		return minLengthErrorKey ? minLengthErrorKey : this.isTooLong(username, 255);
+	}
+
+	/**
+	 * Validates the format of a password.
+	 *
+	 * @param {string} password - The password to validate.
+	 * @returns {string | undefined} - An error key if the password is invalid, otherwise undefined.
+	 */
+	static isPasswordInvalid(password: string): string | undefined {
+		const minLengthErrorKey = this.hasMinLength(password, 8);
+		return minLengthErrorKey ? minLengthErrorKey : this.isTooLong(password, 255);
+	}
+
+	/**
+	 * Validates the format of a token.
+	 *
+	 * @param {string} token - The token to validate.
+	 * @returns {string | undefined} - An error key of the token is invalid, otherwise undefined.
+	 */
+	static isTokenInvalid(token: string): string | undefined {
+		const tokenPattern = /^[a-zA-Z0-9]{16}$/;
+		if (!tokenPattern.test(token)) {
+			return 'invalidToken';
+		}
+		return undefined;
+	}
+
+	/**
+	 * Checks if the argument is a string.
+	 *
+	 * @param {unknown} value - Argument to be checked.
+	 * @returns {boolean} - True if value is a string, otherwise false.
+	 */
+	static isString(value: unknown): boolean {
+		return typeof value === 'string';
+	}
+
+	/**
+	 * Checks if the argument is an integer with a max byte size of n.
+	 *
+	 * @param {unknown} value - Argument to be checked.
+	 * @param {number} n - Max byte size.
+	 * @returns {boolean} - True if value is a number no exceeding n bytes.
+	 */
+	static isIntegerWithMaxSize(value: unknown, n: number): boolean {
+		if (!Number.isInteger(value)) {
+			return false;
+		}
+
+		const byteSize = Math.ceil(Math.log2(Math.abs(value as number) + 1) / 8);
+		return byteSize <= n;
+	}
+
+	/**
 	 * Checks if a string meets a specified minimum length requirement.
 	 *
 	 * @param {string} value - The string to validate.
@@ -100,6 +176,17 @@ export default class Validator {
 	 */
 	private static hasMinLength(value: string, minLength: number): string | undefined {
 		return value.length >= minLength ? undefined : `minLength${minLength}`;
+	}
+
+	/**
+	 * Checks if a string meets a specified maximum length requirement.
+	 *
+	 * @param {string} value - The string to validate.
+	 * @param {number} maxLength - The maximum length required.
+	 * @returns {string | undefined} - An error key if the string is too long, otherwise undefined.
+	 */
+	static isTooLong(value: string, maxLength: number): string | undefined {
+		return value.length > maxLength ? `maxLength${maxLength}` : undefined;
 	}
 
 	/**
@@ -132,5 +219,35 @@ export default class Validator {
 			parseInt(pnr.substring(4, 6), 10) - 1,
 			parseInt(pnr.substring(6, 8), 10)
 		);
+	}
+
+	/**
+	 * Checks if the provided year is more than 0 and less than 99
+	 * @param {number} years - The number of years to check.
+	 * @returns {string} - An error message if the years are invalid, otherwise an empty string.
+	 */
+
+	static isYearsOfExperienceInvalid(years: number): string {
+		if (years > 99) {
+			return 'provide experience less than 100';
+		} else if (years < 0) {
+			return 'provide experience greater than 0';
+		}
+		return '';
+	}
+
+	/**
+	 * Checks if the provided date is valid.
+	 * @param {string} startDay - The start date to check.
+	 * @param {string} endDay - The end date to check.
+	 * @returns {string} - An error message if the years are invalid, otherwise an empty string.
+	 */
+	static isDateRangeInvalid(startDay: string, endDay: string): string {
+		if (new Date(startDay) < new Date()) {
+			return 'startday in past';
+		} else if (new Date(endDay) < new Date(startDay)) {
+			return 'endday before startday';
+		}
+		return '';
 	}
 }

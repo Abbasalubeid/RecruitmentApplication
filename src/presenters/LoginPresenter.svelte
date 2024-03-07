@@ -52,8 +52,6 @@
 			if (!res.ok) {
 				const { error } = await res.json();
 
-				console.log(error)
-
 				if (error.includes('Invalid')) {
 					errorKey = ErrorHandler.handleInvalidCredentialsError();
 				} else {
@@ -66,7 +64,7 @@
 			const { userInfo } = await res.json();
 
 			if (userInfo.token) {
-				navigateWithQuery(`/migration?token=${userInfo.token}`)
+				navigateWithQuery(`/migration?token=${userInfo.token}`);
 			} else {
 				navigateWithQuery(originallyRequestedPath, true);
 			}
