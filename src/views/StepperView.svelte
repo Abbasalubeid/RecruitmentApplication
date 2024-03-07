@@ -2,13 +2,47 @@
 	import { Stepper, Step, ListBox, ListBoxItem } from '@skeletonlabs/skeleton';
 	import { t } from 'svelte-i18n';
 
+	/**
+	 * Area of expertise data.
+	 * @type {Array<{ competence_id: number; name: string }>}
+	 */
 	export let expertise: Array<{ competence_id: number; name: string }> = [];
+
+	/**
+	 * Callback function for adding experience.
+	 * @type {() => void)}
+	 */
 	export let onAddExperience: (expertise: [number, string], years: number) => void;
+
+	/**
+	 * Callback function for adding availability.
+	 * @type {() => void}
+	 */
 	export let onAddAvailability: (startDay: string, endDay: string) => void;
+
+	/**
+	 * Callback function invoked when form is submitted.
+	 * @type {() => void}
+	 */
 	export let onCompleteHandler: () => void;
+
+	/**
+	 * Experiences added by the user.
+	 * @type {Array<{ expertise: [number, string]; years: number }>}
+	 */
 	export let addedExperiences: Array<{ expertise: [number, string]; years: number }> = [];
+
+	/**
+	 * Availabilities added by the user.
+	 * @type {Array<{ startDay: string; endDay: string }>}
+	 */
 	export let addedAvailability: Array<{ startDay: string; endDay: string }> = [];
-	export let errorMessage: string = '';
+
+	/**
+	 * User validation error message.
+	 * @type {String}
+	 */
+	export let displayMessage: string = '';
 
 	let selectedExpertise: [number, string] = [0, ''];
 	let yearsOfExperience: number = 0;
@@ -17,6 +51,7 @@
 </script>
 
 <Stepper
+	buttonCompleteLabel={$t('complete')}
 	buttonBackLabel={$t('back')}
 	buttonNextLabel={$t('next')}
 	stepTerm={$t('step')}
@@ -117,7 +152,7 @@
 					{#each addedExperiences as experience}
 						<li class="my-0 flex space-x-4 rounded-lg bg-primary-500 p-4">
 							<span class="font-semibold">{$t('expertise')}:</span>
-							<span class="">{$t(experience.expertise[1])}{experience.expertise[1]}</span>
+							<span class="">{$t(experience.expertise[1])}</span>
 							<span class="flex-grow"></span>
 							<span class="flex-grow"></span>
 							<span class="font-semibold">{$t('years of experience')}:</span>
@@ -147,6 +182,6 @@
 	</form>
 </Stepper>
 
-{#if errorMessage}
-	<div>{errorMessage}</div>
+{#if displayMessage}
+	<div class="text-center">{$t(displayMessage)}</div>
 {/if}
