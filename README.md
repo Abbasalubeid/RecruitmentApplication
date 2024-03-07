@@ -1,8 +1,6 @@
 ## Project Description
 
-This project was developed as a part of a system architecture course, focusing on creating a solution for a real-world customer in need of a recruitment system. The primary goal was to facilitate the recruitment process for an amusement park that was expected to attract approximately 15,000 applications within a two-week period.
-
-A critical requirement was the integration with an existing database, which had gaps and lacked data that needed addressing to meet the new system's requirements.
+This project was developed as part of a software architecture course. The primary goal was to facilitate the recruitment process for an amusement park that was expected to attract approximately 15,000 applications within two weeks. A critical requirement was the integration with an existing database, which lacked data that needed addressing to meet the new system's requirements.
 
 ## Tech Stack
 
@@ -115,9 +113,9 @@ To run the Python scripts, ensure you have the necessary dependencies installed:
 pip install googletrans==3.1.0a0 psycopg2==2.9.9 python-dotenv==1.0.1
 ```
 
-## Localization with `$t` Function
+## Localization with `t` Function
 
-The `$t` function from `svelte-i18n` is used to display localized text in the app. To use it properly, follow these steps:
+The `t` function from `svelte-i18n` is used to display localized text in the app. To use it properly, follow these steps:
 
 1. **Import `t`** in your Svelte component:
 
