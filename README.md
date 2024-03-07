@@ -45,7 +45,24 @@ git clone https://github.com/Abbasalubeid/RecruitmentApplication.git
 cd RecruitmentApplication
 ```
 
-### 2. Environment Setup
+### 2. Install Dependencies
+
+Install the required Node.js packages:
+
+```bash
+npm install
+```
+
+### 3. Database Initialization
+
+Open the PostgreSQL command line tool and create a database
+
+```bash
+
+CREATE DATABASE your_database_name;
+```
+
+### 4. Environment Setup
 
 Create a `.env` file based on the [example.env](https://github.com/Abbasalubeid/RecruitmentApplication/blob/main/example.env) provided in this repository:
 
@@ -55,36 +72,12 @@ cp example.env .env
 
 Make sure to change the .env file to match your local database.
 
-### 3. Install Dependencies
-
-Install the required Node.js packages:
-
-```bash
-npm install
-```
-
-### 4. Database Initialization
-
-Open the PostgreSQL command line tool and set up your database based on the [database-setup.sql](https://github.com/Abbasalubeid/RecruitmentApplication/blob/main/SQL/database-setup.sql) provided in this repository:
-
-```bash
-
-# Create a new database (replace 'your_database_name' with your desired name)
-CREATE DATABASE your_database_name;
-
-# Connect to your database
-\c your_database_name
-
-# Execute the setup SQL script
-\i path/to/SQL/database-setup.sql
-```
-
 ### 5. Prisma Integration
 
-Sync the database schema with Prisma and generate the client:
+Synchronize your database schema with Prisma and generate the client by running:
 
 ```bash
-npx prisma db pull
+npx prisma db push
 npx prisma generate
 ```
 
