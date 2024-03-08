@@ -3,6 +3,7 @@
 	import { RadioGroup, RadioItem } from '@skeletonlabs/skeleton';
 	import { t } from 'svelte-i18n';
 
+	export let showStatusChangeError: boolean;
 	/**
 	 * Metadata object.
 	 * @type {any}
@@ -51,7 +52,10 @@
 	{/each}
 
 	<p class="m-2 text-center">
-		Status:
+		{#if showStatusChangeError}
+			<p>{$t('Another recruiter is currently interacting with the application')}</p>
+		{/if}
+		{$t('status')}:
 		<RadioGroup display="flex" active="variant-filled-primary" hover="hover:variant-soft-primary">
 			<RadioItem
 				on:change={onChangeStatus}

@@ -19,6 +19,8 @@
 	export let extraApplicationData: any;
 	export let updateTable: any;
 
+	$: showStatusChangeError = false;
+
 	/**
 	 * Handle status change
 	 * @param data Event data for status change
@@ -27,24 +29,32 @@
 		try {
 			const status = data.target.__value.split(' ')[0];
 			const id = data.target.__value.split(' ')[1];
+			const version = extraApplicationData[0].version;
 			const resCompetenceProfiles = await fetch('api/competence_profiles', {
 				method: 'PUT',
 				headers: {
 					'Content-Type': 'application/json'
 				},
-				body: JSON.stringify({ status, id })
+				body: JSON.stringify({ status, id, version })
 			});
 			if (!resCompetenceProfiles.ok) {
+				if (resCompetenceProfiles.status === 520) {
+					showStatusChangeError = true;
+					return;
+				}
 				errorKey = ErrorHandler.handleApiError(new Error());
 				errorStatus = resCompetenceProfiles.status;
 				return;
 			}
 			const { updatedId } = await resCompetenceProfiles.json();
-			let indexOfOldCompetenceProfile = competence_profiles.findIndex((c) => c.competence_profile_id == id);
+			let indexOfOldCompetenceProfile = competence_profiles.findIndex(
+				(c) => c.competence_profile_id == id
+			);
 			competence_profiles[indexOfOldCompetenceProfile].status = status;
+			competence_profiles[indexOfOldCompetenceProfile].version = version+1;
 			updateTable(competence_profiles);
 		} catch (error: any) {
-        	errorKey = ErrorHandler.handleUnexpectedError(error);
+			errorKey = ErrorHandler.handleUnexpectedError(error);
 		}
 	}
 
@@ -57,6 +67,10 @@
 {#if errorMessage}
 	<StatusView message={errorMessage} statusNumber={errorStatus} viewType="error" />
 {:else}
-	<ApplicationCard {onChangeStatus} {extraApplicationData} metaData={applicationMetaData}
+	<ApplicationCard
+		{onChangeStatus}
+		{showStatusChangeError}
+		{extraApplicationData}
+		metaData={applicationMetaData}
 	></ApplicationCard>
 {/if}
