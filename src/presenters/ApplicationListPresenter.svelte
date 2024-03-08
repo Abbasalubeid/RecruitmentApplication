@@ -12,6 +12,7 @@
 	import ApplicationCardPresenter from './ApplicationCardPresenter.svelte';
 	import SearchboxPresenter from '../presenters/SearchboxPresenter.svelte';
 	import StatusView from '../views/StatusView.svelte';
+	import { showStatusChangeErrorStore } from '../lib/stores/showStatusChangeErrorStore';
 
 	/**
 	 * Data variables
@@ -227,6 +228,7 @@
 		let personAvailability = availabilities.filter((a) => a.person_id === person?.person_id);
 		extraApplicationData = [competence_profile, personAvailability];
 		extraApplicationData[0].competence_name = (competence?.name);
+		showStatusChangeErrorStore.set(false);
 	}
 
 	/**

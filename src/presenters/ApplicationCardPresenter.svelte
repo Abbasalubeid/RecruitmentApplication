@@ -4,6 +4,7 @@
 	import ApplicationCard from '../views/ApplicationCardView.svelte';
 	import { t } from 'svelte-i18n';
 	import StatusView from '../views/StatusView.svelte';
+	import { showStatusChangeErrorStore } from '../lib/stores/showStatusChangeErrorStore';
 
 	/**
 	 * Error-related variables
@@ -19,7 +20,7 @@
 	export let extraApplicationData: any;
 	export let updateTable: any;
 
-	$: showStatusChangeError = false;
+	$: showStatusChangeError = $showStatusChangeErrorStore;
 
 	/**
 	 * Handle status change
@@ -39,7 +40,7 @@
 			});
 			if (!resCompetenceProfiles.ok) {
 				if (resCompetenceProfiles.status === 520) {
-					showStatusChangeError = true;
+					showStatusChangeErrorStore.set(true);
 					return;
 				}
 				errorKey = ErrorHandler.handleApiError(new Error());
