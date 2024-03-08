@@ -96,7 +96,7 @@ The application will be accessible at `http://localhost:5173/`.
 The [/scripts](https://github.com/Abbasalubeid/RecruitmentApplication/tree/main/scripts) directory contains utility scripts used in the development process:
 
 - [token-generator.py](https://github.com/Abbasalubeid/RecruitmentApplication/blob/main/scripts/token-generator.py): Generates unique tokens for users which is cruical for the data migration process.
-- [email-token.py](https://github.com/Abbasalubeid/RecruitmentApplication/blob/main/scripts/email-token.py): Sends emails to every applicant with a link to the /migration with their unique migration token.
+- [email-token.py](https://github.com/Abbasalubeid/RecruitmentApplication/blob/main/scripts/email-token.py): Sends emails to every applicant with a link to the **/migration** page with their unique migration token.
 - [add-new-lang.py](https://github.com/Abbasalubeid/RecruitmentApplication/blob/main/scripts/add-new-lang.py): Simplifies the process of adding new languages to the application. Running this script automatically updates the locale configurations, making the new desired language immediately available in the app.
 - [translate-new-competence-names.py](https://github.com/Abbasalubeid/RecruitmentApplication/blob/main/scripts/translate-new-competence-names.py): Automates the translation of new competence names from the databse into the current supported languages using Google Translate.
 - [encrypt-passwords.js](https://github.com/Abbasalubeid/RecruitmentApplication/blob/main/scripts/encrypt-passwords.js): Encrypts existing plaintext passwords in the database, ensuring users with pre-existing accounts can log in after the implementation of the encryption feature.
