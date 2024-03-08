@@ -7,18 +7,18 @@
 	 */
 	export let selectedOption: string;
 
-    /**
-     * Array of options containing both value and label.
-     * @type {{ value: string; label: string }[]}
-     */
+	/**
+	 * Array of options containing both value and label.
+	 * @type {{ value: string; label: string }[]}
+	 */
 	export let options: { value: string; label: string }[];
 
 	const dispatch = createEventDispatcher();
 
 	/**
-     * Handles the change event of the select element.
-     * @param {Event} event - The change event object.
-     */
+	 * Handles the change event of the select element.
+	 * @param {Event} event - The change event object.
+	 */
 	function handleChange(event: Event): void {
 		const selectedValue = (event.target as HTMLSelectElement).value;
 		dispatch('onLangSelect', selectedValue);
@@ -26,7 +26,7 @@
 </script>
 
 <select
-	class="cursor-pointer bg-secondary-500"
+	class="border-5 inline-block cursor-pointer rounded-full bg-primary-500 p-2"
 	bind:value={selectedOption}
 	on:change={handleChange}
 >
