@@ -6,6 +6,7 @@ export class CompetenceProfile {
 	competence_id: number;
 	years_of_experience: number;
 	status: string;
+	version : number;
 
 	/**
 	 * Constructs a new CompetenceProfile instance.
@@ -14,19 +15,22 @@ export class CompetenceProfile {
 	 * @param competence_id The ID of the competence associated with this profile.
 	 * @param years_of_experience The years of experience in this competence profile.
 	 * @param status The current status of this competence profile.
+	 * @param version The current version of this competence profile.
 	 */
 	constructor(
 		competence_profile_id: number,
 		person_id: number,
 		competence_id: number,
 		years_of_experience: number,
-		status: string
+		status: string,
+		version : number
 	) {
 		this.competence_profile_id = competence_profile_id;
 		this.person_id = person_id;
 		this.competence_id = competence_id;
 		this.years_of_experience = years_of_experience;
 		this.status = status;
+		this.version = version;
 	}
 
 	/**

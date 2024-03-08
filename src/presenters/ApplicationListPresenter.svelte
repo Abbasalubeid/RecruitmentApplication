@@ -49,7 +49,8 @@
 						profileData.person_id,
 						profileData.competence_id,
 						profileData.years_of_experience,
-						profileData.status
+						profileData.status,
+						profileData.version
 					)
 			);
 
@@ -91,7 +92,8 @@
 							profileData.person_id,
 							profileData.competence_id,
 							profileData.years_of_experience,
-							profileData.status
+							profileData.status,
+							profileData.version
 						)
 				);
 				return new Competence(competenceData.competence_id, competenceData.name, profiles);

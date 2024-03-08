@@ -107,5 +107,7 @@
 	"endday before startday": "End day cannot be before start day",
 	"already added experience": "You have already added this experience.",
 	"complete": "Complete",
-	"application submitted": "Application has successfully been registered."
+	"application submitted": "Application has successfully been registered.",
+	"status" : "Status",
+	"Another recruiter is currently interacting with the application" : "Another recruiter is currently interacting with the application, please wait"
 }

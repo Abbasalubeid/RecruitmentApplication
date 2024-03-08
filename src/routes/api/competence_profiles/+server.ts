@@ -9,7 +9,9 @@ import Validator from '$lib/util/validator.js';
  */
 export async function GET() {
 	try {
-		const competence_profile = await prisma.competence_profile.findMany({});
+		const [competence_profile] = await prisma.$transaction([
+			prisma.competence_profile.findMany({})
+		]);
 
 		return new Response(JSON.stringify({ competence_profile }), {
 			status: 200,
@@ -42,8 +44,10 @@ export async function PUT({ request }) {
 			!data ||
 			!data.status ||
 			!data.id ||
+			!data.version ||
 			!Validator.isString(data.status) ||
 			!Validator.isString(data.id) ||
+			!Validator.isIntegerWithMaxSize(parseInt(data.version), 4) ||
 			!Validator.isIntegerWithMaxSize(parseInt(data.id), 4)
 		) {
 			return new Response(JSON.stringify({ error: 'Invalid data format.' }), {
@@ -52,21 +56,35 @@ export async function PUT({ request }) {
 			});
 		}
 
-		const { status, id } = data;
+		const { status, id, version } = data;
 
-		const [updatedCompetenceProfile] = await prisma.$transaction([
-			prisma.competence_profile.update({
-				where: { competence_profile_id: parseInt(id) },
-				data: { status: status }
+		const [existingCompetenceProfile] = await prisma.$transaction ([prisma.competence_profile.findUnique({
+			where: { competence_profile_id: parseInt(id) }
 			})
 		]);
-		const updatedId = updatedCompetenceProfile.competence_profile_id;
-		return new Response(JSON.stringify({ updatedId }), {
-			status: 200,
-			headers: {
-				'Content-Type': 'application/json'
-			}
-		});
+
+		if (existingCompetenceProfile && existingCompetenceProfile.version === version) {
+			const [updatedCompetenceProfile] = await prisma.$transaction([
+				prisma.competence_profile.update({
+					where: { competence_profile_id: parseInt(id) },
+					data: { status: status, version: version + 1 }
+				})
+			]);
+			const updatedId = updatedCompetenceProfile.competence_profile_id;
+			return new Response(JSON.stringify({ updatedId }), {
+				status: 200,
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			});
+		} else {
+			return new Response(JSON.stringify({ error: 'Not the same version' }), {
+				status: 520,
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			});
+		}
 	} catch (error) {
 		return new Response(JSON.stringify({ error: 'Failed to update competence profile' }), {
 			status: 500,
