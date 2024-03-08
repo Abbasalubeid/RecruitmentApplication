@@ -146,7 +146,9 @@
 			<svelte:fragment slot="header">{$t('summary')}</svelte:fragment>
 			<div>
 				<div class="text-center">
-					<span class="text-lg font-bold">{$t('selected experiences')}:</span>
+					{#if addedExperiences.length !== 0}
+						<span class="text-lg font-bold">{$t('selected experiences')}:</span>
+					{/if}
 				</div>
 				<ul class="list mx-auto w-1/2">
 					{#each addedExperiences as experience}
@@ -163,7 +165,9 @@
 			</div>
 			<div>
 				<div class="text-center">
-					<span class="text-lg font-bold">{$t('selected availabilites')}:</span>
+					{#if addedAvailability.length !== 0}
+						<span class="text-lg font-bold">{$t('selected availabilities')}:</span>
+					{/if}
 				</div>
 				<ul class="list mx-auto w-1/2">
 					{#each addedAvailability as availability}

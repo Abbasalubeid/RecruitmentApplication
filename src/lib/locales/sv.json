@@ -106,5 +106,6 @@
 	"complete": "Klar",
 	"application submitted": "Din ansökan har registrerats.",
 	"status" : "Status",
-	"Another recruiter is currently interacting with the application" : "En annan rekryterare interagerar med denna applikationen för tillfället, var god vänta"
+	"Another recruiter is currently interacting with the application" : "En annan rekryterare interagerar med denna applikationen för tillfället, var god vänta",
+	"availability added": "Denna tillgänglighet har redan lagts till innan."
 }

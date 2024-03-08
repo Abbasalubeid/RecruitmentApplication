@@ -9,7 +9,6 @@
 	let errorKey: string | undefined;
 	let errorStatus: number | undefined;
 	let displayMessage: string = '';
-	const maxYearsOfExperience: number = 99;
 
 	let expertise: Array<{ competence_id: number; name: string }> = [];
 	let addedExperiences: Array<{ expertise: [number, string]; years: number }> = [];
@@ -102,6 +101,15 @@
 
 		startDay = new Date(startDay).toISOString();
 		endDay = new Date(endDay).toISOString();
+
+		if (
+			addedAvailability.some(
+				(availability) => availability.startDay === startDay && availability.endDay === endDay
+			)
+		) {
+			displayMessage = 'availability added';
+			return;
+		}
 
 		addedAvailability = [...addedAvailability, { startDay, endDay }];
 		displayMessage = '';

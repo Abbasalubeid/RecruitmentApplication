@@ -109,5 +109,6 @@
 	"complete": "Complete",
 	"application submitted": "Application has successfully been registered.",
 	"status" : "Status",
-	"Another recruiter is currently interacting with the application" : "Another recruiter is currently interacting with the application, please wait"
+	"Another recruiter is currently interacting with the application" : "Another recruiter is currently interacting with the application, please wait",
+	"availability added": "This availability has already been added."
 }
