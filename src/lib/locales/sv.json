@@ -100,5 +100,6 @@
 	"endday before startday": "Slutdagen kan inte vara före startdagen.",
 	"already added experience": "Du har redan lagt till denna erfarenhet",
 	"complete": "Klar",
-	"application submitted": "Din ansökan har registrerats."
+	"application submitted": "Din ansökan har registrerats.",
+	"availability added": "Denna tillgänglighet har redan lagts till innan."
 }

@@ -103,5 +103,6 @@
 	"endday before startday": "End day cannot be before start day",
 	"already added experience": "You have already added this experience.",
 	"complete": "Complete",
-	"application submitted": "Application has successfully been registered."
+	"application submitted": "Application has successfully been registered.",
+	"availability added": "This availability has already been added."
 }
