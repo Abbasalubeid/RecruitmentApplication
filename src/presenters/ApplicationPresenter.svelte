@@ -102,6 +102,15 @@
 		startDay = new Date(startDay).toISOString();
 		endDay = new Date(endDay).toISOString();
 
+		if (
+			addedAvailability.some(
+				(availability) => availability.startDay === startDay && availability.endDay === endDay
+			)
+		) {
+			displayMessage = 'availability added';
+			return;
+		}
+
 		addedAvailability = [...addedAvailability, { startDay, endDay }];
 		displayMessage = '';
 	}
